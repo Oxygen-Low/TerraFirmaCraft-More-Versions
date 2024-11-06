@@ -5,6 +5,8 @@
     "tfc:canyons",
     "tfc:volcanic_mountains",
     "tfc:volcanic_oceanic_mountains",
+    "tfc:active_oceanic_shield_volcano",
+    "tfc:active_continental_shield_volcano",
     "tfc:volcanic_mountain_lake",
     "tfc:volcanic_oceanic_mountain_lake"
   ]

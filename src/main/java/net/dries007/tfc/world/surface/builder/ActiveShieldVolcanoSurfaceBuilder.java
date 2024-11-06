@@ -7,23 +7,22 @@
 package net.dries007.tfc.world.surface.builder;
 
 
-import net.minecraft.world.level.block.state.BlockState;
-
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
-import net.dries007.tfc.world.surface.SoilSurfaceState;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
-import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class ActiveShieldVolcanoSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory INSTANCE = ActiveShieldVolcanoSurfaceBuilder::new;
+    public static final SurfaceBuilderFactory ACTIVE = seed -> new ActiveShieldVolcanoSurfaceBuilder(seed, BiomeNoise.activeShieldVolcano(seed, 0, BiomeNoise.activeHotSpots(seed)));
 
-    ActiveShieldVolcanoSurfaceBuilder(long seed) {}
+    private final Noise2D heightNoise;
+
+    ActiveShieldVolcanoSurfaceBuilder(long seed, Noise2D heightNoise)
+    {
+        this.heightNoise = heightNoise;
+    }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
@@ -34,8 +33,14 @@ public class ActiveShieldVolcanoSurfaceBuilder implements SurfaceBuilder
         final int x = context.pos().getX();
         final int z = context.pos().getZ();
         final double flowValue = lavaFlows.noise(x, z);
+        final double height = this.heightNoise.noise(x, z);
+
+
+        final int depth = height > 50 ? (int) (height - 50) : 0;
+        endY = startY - depth;
 
         final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
+
 
         if (flowValue < 0.40)
         {
@@ -49,7 +54,7 @@ public class ActiveShieldVolcanoSurfaceBuilder implements SurfaceBuilder
             {
                 if (noiseValue > 0)
                 {
-                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.RAW);
+                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.RAW, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL);
                 }
                 else
                 {
@@ -60,22 +65,22 @@ public class ActiveShieldVolcanoSurfaceBuilder implements SurfaceBuilder
             {
                 if (noiseValue > 0)
                 {
-                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.RAW);
+                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.RAW, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL);
                 }
                 else
                 {
-                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.RAW);
+                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.RAW, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE);
                 }
             }
             else
             {
                 if (noiseValue > -0.6)
                 {
-                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT, SurfaceStates.BASALT, SurfaceStates.RAW);
+                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT, SurfaceStates.BASALT, SurfaceStates.RAW, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE);
                 }
                 else
                 {
-                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.RAW);
+                    surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.RAW, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE);
                 }
             }
 

@@ -101,6 +101,7 @@ public class TFCLayers
     public static final int DORMANT_CONTINENTAL_SHIELD_VOLCANO = idFor(TFCBiomes.DORMANT_CONTINENTAL_SHIELD_VOLCANO);
     public static final int EXTINCT_CONTINENTAL_SHIELD_VOLCANO = idFor(TFCBiomes.EXTINCT_CONTINENTAL_SHIELD_VOLCANO);
     public static final int ANCIENT_CONTINENTAL_SHIELD_VOLCANO = idFor(TFCBiomes.ANCIENT_CONTINENTAL_SHIELD_VOLCANO);
+    public static final int SHIELD_VOLCANO_SHORE = idFor(TFCBiomes.SHIELD_VOLCANO_SHORE);
 
     public static BiomeExtension getFromLayerId(int id)
     {
@@ -210,7 +211,8 @@ public class TFCLayers
 
     public static boolean hasShore(int value)
     {
-        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS && value != TOWER_KARST_BAY;
+        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS
+            && value != TOWER_KARST_BAY && value != ANCIENT_OCEANIC_SHIELD_VOLCANO;
     }
 
     public static int shoreFor(int value)
@@ -228,16 +230,17 @@ public class TFCLayers
             return TOWER_KARST_BAY;
         }
         if (value == ACTIVE_CONTINENTAL_SHIELD_VOLCANO || value == DORMANT_CONTINENTAL_SHIELD_VOLCANO || value == EXTINCT_CONTINENTAL_SHIELD_VOLCANO || value == ANCIENT_CONTINENTAL_SHIELD_VOLCANO
-        || value == ACTIVE_OCEANIC_SHIELD_VOLCANO || value == DORMANT_OCEANIC_SHIELD_VOLCANO || value == EXTINCT_OCEANIC_SHIELD_VOLCANO || value == ANCIENT_OCEANIC_SHIELD_VOLCANO)
+        || value == ACTIVE_OCEANIC_SHIELD_VOLCANO || value == DORMANT_OCEANIC_SHIELD_VOLCANO || value == EXTINCT_OCEANIC_SHIELD_VOLCANO)
         {
-            return value;
+            return SHIELD_VOLCANO_SHORE;
         }
         return SHORE;
     }
 
     public static boolean hasLake(int value)
     {
-        return !isOcean(value) && value != BADLANDS;
+        return (!isOcean(value) && value != BADLANDS && value != ACTIVE_CONTINENTAL_SHIELD_VOLCANO && value != DORMANT_CONTINENTAL_SHIELD_VOLCANO
+            && value != EXTINCT_CONTINENTAL_SHIELD_VOLCANO && value != ANCIENT_CONTINENTAL_SHIELD_VOLCANO);
     }
 
     public static int lakeFor(int value)

@@ -21,6 +21,8 @@ public enum AddHotspots implements RegionTask
     {
         final Region region = context.region;
         final long seed = context.generator().levelSeed();
+        final double threshold = 0.65;
+        final double expansionThreshold = 0.05;
 
         final Noise2D hotspotAge = BiomeNoise.hotSpotAge(seed).spread(128);
         final Noise2D hotspotIntensity = BiomeNoise.hotSpotIntensity(seed).spread(128); //TODO: Remove the point.intensity, maybe even remove this noise map
@@ -28,7 +30,7 @@ public enum AddHotspots implements RegionTask
 
         final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
 
-        // If a location reaches a value of at least 0.55 (large enough to form a crater) a hot spot is placed
+        // If a location reaches a value of at least exceeding a threshold value, a hot spot is placed in the region
         //TODO: Limit number of chains per cell? Remove intensity map?
         for (final var point : region.points())
         {
@@ -36,16 +38,11 @@ public enum AddHotspots implements RegionTask
              final double edgeDist = Math.abs(cell.f1() - cell.f2());
 
             double val = hotspotIntensity.noise(shift(point.x), shift(point.z));
-            if (val > 0.55 && edgeDist > 0.05)
+            if (val > threshold && edgeDist > 0.05)
             {
                 point.hotSpotAge = (byte) (int) hotspotAge.noise(shift(point.x), shift(point.z));
-
+                point.setLand();
                 queue.enqueue(point.index);
-            }
-            // TODO: Remove, this is just handy for debug
-            if (edgeDist < 0.02)
-            {
-                point.hotSpotAge = 1;
             }
         }
 
@@ -67,17 +64,18 @@ public enum AddHotspots implements RegionTask
                     {
                         if (next.hotSpotAge == 0)
                         {
-                            if (intensityNoise.noise(shift(next.x), shift(next.z)) > 0.15)
+                            if (intensityNoise.noise(shift(next.x), shift(next.z)) > expansionThreshold)
                             {
                                 queue.enqueue(next.index);
+                                next.setLand();
                                 next.hotSpotAge = lastAge;
                             }
                             // This guarantees the 8 points around any caldera are filled in to keep biome blending away from the crater
-                            else if (intensityNoise.noise(shift(next.x) - dx, shift(next.z) - dz ) > 0.55)
+                            else if (intensityNoise.noise(shift(next.x) - dx, shift(next.z) - dz ) > threshold)
                             {
                                 next.hotSpotAge = lastAge;
-                                //TODO: Delete if unused, seems best to query hotspot age map as little as possible
-//                                next.hotSpotAge = (byte) (int) hotspotAge.noise(shift(next.x) - dx, shift(next.z) - dz );
+                                if (lastAge != 4)
+                                    next.setLand();
                             }
                         }
                     }
