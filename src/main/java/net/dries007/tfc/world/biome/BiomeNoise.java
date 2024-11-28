@@ -211,6 +211,27 @@ public final class BiomeNoise
         return cirques.scaled(0, 1, 20, 46).lazyProduct(shape).cliffMap(cliffStartHeight.addConstant(20), cliffScale).cliffMap(cliffStartHeight, cliffScale).addConstant(SEA_LEVEL_Y - 12); // TODO: Improve cliff function
     }
 
+    // TODO: too high, too flat, knobs/kettles very rare
+    public static Noise2D knobAndKettle(long seed)
+    {
+        return new OpenSimplex2D(seed).octaves(4).spread(0.08f).map(y -> y > 0.5 ? 2 * y - 1 : y < -0.5 ? 2 * y + 1 : 0).scaled(-10, 10).add(BiomeNoise.hills(seed, 4, 8));
+    }
+
+    public static Noise2D drumlins(long seed)
+    {
+        return new OpenSimplex2D(seed).octaves(3).spread(0.04f).scaled(SEA_LEVEL_Y - 12, 24).stretchX(2.5);
+    }
+
+
+    // TODO: Detail work
+    public static Noise2D channeledScablands(long seed)
+    {
+        return new OpenSimplex2D(seed).octaves(3).spread(0.04f).map(y -> {
+            y = Math.abs(Math.abs(y) - 0.5);
+            return Math.min(y, Math.max(y, 0.2));
+        }).scaled(0.2, 0.3, 26, -3).add(hills(seed, 8, 8));
+    }
+
     /**
      * Inspired by the bare Karst at Burren, Ireland
      * Can be applied over any base terrain noise map, adds to the base terrain
@@ -656,8 +677,6 @@ public final class BiomeNoise
                 : y < 0.6 ? Mth.map(y, 0.4, 0.6, mtnBaseElev, calderaEdgeElev) // Mountain side/slope up to caldera
                 : y < 0.62 ? Mth.map(y, 0.6, 0.62, calderaEdgeElev, cliffEdgeElev) // Caldera cliff
                 : y < 0.75 ? Mth.map(y, 0.62, 0.75, cliffEdgeElev, calderaCenterElev) : calderaCenterElev); // Downward slope to flat bottom of caldera
-
-        final Noise2D cliffiness = new OpenSimplex2D(seed + 130993L).spread(0.025);
 
         final OpenSimplex2D warp = new OpenSimplex2D(seed + 43L).octaves(4).spread(0.03f).scaled(-100f, 100f);
         final Noise2D surface = new OpenSimplex2D(seed + 44L)

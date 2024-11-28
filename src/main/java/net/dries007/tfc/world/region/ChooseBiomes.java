@@ -131,10 +131,13 @@ public enum ChooseBiomes implements RegionTask
                 {
                     point.biome = getGlacialEdgeBiome(point.biome);
                 }
-                else if (temperature < maxIceSheetTemp + 2f && !(point.biome == MOUNTAINS || point.biome == VOLCANIC_MOUNTAINS
-                    || point.biome == OCEANIC_MOUNTAINS || point.biome == VOLCANIC_OCEANIC_MOUNTAINS || point.biome == OLD_MOUNTAINS))
+                else if (temperature < maxIceSheetTemp + 3.5f)
                 {
-                    point.biome = DRUMLINS;
+                    point.biome = getPeriglacialBiome(point.biome);
+                }
+                else if (temperature < maxIceSheetTemp + 6f)
+                {
+                    point.biome = getPaleoPeriglacialBiome(point.biome);
                 }
             }
 
@@ -205,6 +208,44 @@ public enum ChooseBiomes implements RegionTask
         return ICE_SHEET_EDGE;
     }
 
+    // TODO: Improve/remove
+    private int getPeriglacialBiome(int biome)
+    {
+        if (biome == MOUNTAINS || biome == MOUNTAIN_LAKE || biome == OLD_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS || biome == VOLCANIC_MOUNTAINS
+            || biome == VOLCANIC_MOUNTAIN_LAKE)
+            return GLACIATED_MOUNTAINS;
+        if (biome == OCEANIC_MOUNTAINS || biome == OCEANIC_MOUNTAIN_LAKE || biome == VOLCANIC_OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAIN_LAKE
+            || biome == ICE_SHEET_OCEANIC_MOUNTAINS)
+            return GLACIATED_OCEANIC_MOUNTAINS;
+        if (biome == LOWLANDS || biome == LOW_CANYONS || biome == PLAINS)
+            return PATTERNED_KNOB_AND_KETTLE;
+        if (biome == CANYONS)
+            return TUYAS;
+        if (biome == HILLS || biome == ROLLING_HILLS || biome == BADLANDS)
+            return PATTERNED_KNOB_AND_KETTLE;
+        return biome;
+    }
+
+    private int getPaleoPeriglacialBiome(int biome)
+    {
+        if (biome == MOUNTAINS || biome == MOUNTAIN_LAKE || biome == OLD_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS || biome == VOLCANIC_MOUNTAINS
+            || biome == VOLCANIC_MOUNTAIN_LAKE)
+            return GLACIALLY_CARVED_MOUNTAINS;
+        if (biome == OCEANIC_MOUNTAINS || biome == OCEANIC_MOUNTAIN_LAKE || biome == VOLCANIC_OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAIN_LAKE
+            || biome == ICE_SHEET_OCEANIC_MOUNTAINS)
+            return GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
+        if (biome == LOWLANDS || biome == LOW_CANYONS || biome == PLAINS)
+            return KNOB_AND_KETTLE; // TODO: These shouldnt be so far south
+        if (biome == CANYONS)
+            return TUYAS;
+        if (biome == HILLS || biome == ROLLING_HILLS || biome == BADLANDS)
+            return PATTERNED_KNOB_AND_KETTLE;
+        if (biome == PLATEAU || biome == INVERTED_BADLANDS || biome == HIGHLANDS)
+            return CHANNELED_SCABLANDS;
+
+        return biome;
+    }
+
     private int getTowerKarstBiome(int biome)
     {
         if (biome == SALT_MARSH)
@@ -246,8 +287,10 @@ public enum ChooseBiomes implements RegionTask
     {
         if (biome == PLAINS || biome == CANYONS)
             return BURREN_PLAINS;
-        if (biome == BADLANDS || biome == HILLS || biome == ROLLING_HILLS)
+        if (biome == BADLANDS)
             return BURREN_BADLANDS;
+        if (biome == DRUMLINS  || biome == HILLS || biome == ROLLING_HILLS)
+            return BURREN_ROCHE_MOUTONEE;
         if (biome == INVERTED_BADLANDS || biome == HIGHLANDS)
             return BURREN_BADLANDS_TALL;
         if (biome == PLATEAU)

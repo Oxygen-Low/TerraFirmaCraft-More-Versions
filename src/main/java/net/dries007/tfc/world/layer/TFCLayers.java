@@ -72,6 +72,7 @@ public class TFCLayers
     public static final int BURREN_PLATEAU = idFor(TFCBiomes.BURREN_PLATEAU);
     public static final int BURREN_BADLANDS = idFor(TFCBiomes.BURREN_BADLANDS);
     public static final int BURREN_BADLANDS_TALL = idFor(TFCBiomes.BURREN_BADLANDS_TALL);
+    public static final int BURREN_ROCHE_MOUTONEE = idFor(TFCBiomes.BURREN_ROCHE_MOUTONEE);
     public static final int BURREN_PLAINS = idFor(TFCBiomes.BURREN_PLAINS);
     public static final int SHILIN_PLAINS = idFor(TFCBiomes.SHILIN_PLAINS);
     public static final int SHILIN_CANYONS = idFor(TFCBiomes.SHILIN_CANYONS);
@@ -323,6 +324,10 @@ public class TFCLayers
         if (value == ICE_SHEET_SHIELD_VOLCANO)
         {
             return ICE_SHEET_SHIELD_VOLCANO;
+        }
+        if (value == ICE_SHEET_EDGE)
+        {
+            return MELTWATER_LAKE;
         }
         return LAKE;
     }

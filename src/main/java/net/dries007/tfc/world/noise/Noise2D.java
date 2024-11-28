@@ -287,4 +287,14 @@ public interface Noise2D
             }
         };
     }
+
+    default Noise2D stretchZ(double stretch)
+    {
+        return (x, z) -> this.noise(x, z / stretch);
+    }
+
+    default Noise2D stretchX(double stretch)
+    {
+        return (x, z) -> this.noise(x / stretch, z);
+    }
 }
