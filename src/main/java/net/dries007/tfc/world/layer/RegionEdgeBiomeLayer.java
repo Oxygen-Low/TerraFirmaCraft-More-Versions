@@ -45,39 +45,46 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
             }
         }
 
-        // Add ice sheet edges
-        if (TFCLayers.isFlatIceSheet(center))
+        // Add ice sheet edges // TODO: Rewrite border system??
+
+        if (center == GLACIATED_OCEANIC_MOUNTAINS)
         {
-            // TODO: Rewrite border system completely
-            if ((matcher.test(i -> i == DRUMLINS)) && matcher.test(TFCLayers::isFlatIceSheet))
+            if (matcher.test(TFCLayers::isNotIceSheetOrGlaciated) && matcher.test(i -> i == GLACIATED_OCEANIC_MOUNTAINS))
             {
-                return ICE_SHEET_EDGE;
+                return GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
+            }
+        }
+        if (center == GLACIATED_MOUNTAINS)
+        {
+            if (matcher.test(TFCLayers::isNotIceSheetOrGlaciated) && matcher.test(i -> i == GLACIATED_MOUNTAINS))
+            {
+                return GLACIALLY_CARVED_MOUNTAINS;
+            }
+        }
+
+        if (center == ICE_SHEET_OCEANIC_MOUNTAINS)
+        {
+            if (matcher.test(TFCLayers::isNotIceSheet) && matcher.test(i -> i == ICE_SHEET_OCEANIC_MOUNTAINS))
+            {
+                return GLACIATED_OCEANIC_MOUNTAINS;
+            }
+        }
+        if (center == ICE_SHEET_MOUNTAINS)
+        {
+            if (matcher.test(TFCLayers::isNotIceSheet) && matcher.test(i -> i == ICE_SHEET_MOUNTAINS))
+            {
+                return GLACIATED_MOUNTAINS;
             }
         }
         if (TFCLayers.isFlatIceSheet(center))
         {
-            if ((matcher.test(i -> i == DRUMLINS)) && (matcher.test(i -> i == ICE_SHEET_EDGE)))
+            if ((matcher.test(TFCLayers::isNotIceSheet)) && matcher.test(TFCLayers::isFlatIceSheet))
             {
                 return ICE_SHEET_EDGE;
             }
         }
 
-        // TODO: Clean up this mess/duplicate code if possible
-        // Add ice sheet mountain edges
-        if (center == ICE_SHEET_MOUNTAINS)
-        {
-            if ((matcher.test(i -> i == DRUMLINS)) && matcher.test(i -> i == ICE_SHEET_MOUNTAINS))
-            {
-                return GLACIATED_MOUNTAINS;
-            }
-        }
-        if (center == ICE_SHEET_MOUNTAINS)
-        {
-            if ((matcher.test(i -> i == DRUMLINS)) && matcher.test(i -> i == ICE_SHEET_MOUNTAINS))
-            {
-                return GLACIATED_MOUNTAINS;
-            }
-        }
+
 
         if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)
         {

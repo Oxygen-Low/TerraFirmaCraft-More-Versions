@@ -152,17 +152,17 @@ public final class BiomeNoise
 
     public static Noise2D glacialCirquesIceSurface(long seed)
     {
-        return glacialValleyAbsNoise(seed).map(y -> y < 0.41 ? -100 : y < 0.61 ? 5 * (y - 0.41) * 16: 16).add(BiomeNoise.hills(seed, 30, 38)); // TODO: -100 is a dumb way to do this, tidy up
+        return glacialValleyAbsNoise(seed)
+            .map(y ->
+                y < 0.38 ? -100 :
+                y < 0.43 ? Mth.map(y, 0.38, 0.43, -50, 0) :
+                    Mth.map(y, 0.43, 1, 0, 22))
+            .add(BiomeNoise.hills(seed, 25, 33));
     }
 
     public static Noise2D glacialOceanicCirquesIceSurface(long seed)
     {
         return glacialValleyAbsNoise(seed).map(y -> y < 0.41 ? -100 : y < 0.61 ? 5 * (y - 0.41) * 16: 16).add(BiomeNoise.hills(seed, 18, 26));
-    }
-
-    public static Noise2D glacialMountainsBase(long seed)
-    {
-        return BiomeNoise.glacialCirques(seed);
     }
 
     public static Noise2D glacialValleyBaseNoise(long seed)
@@ -211,25 +211,25 @@ public final class BiomeNoise
         return cirques.scaled(0, 1, 20, 46).lazyProduct(shape).cliffMap(cliffStartHeight.addConstant(20), cliffScale).cliffMap(cliffStartHeight, cliffScale).addConstant(SEA_LEVEL_Y - 12); // TODO: Improve cliff function
     }
 
-    // TODO: too high, too flat, knobs/kettles very rare
+    // TODO: too high, too flat, knobs/kettles very rare, add patterned ground stuff
     public static Noise2D knobAndKettle(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.08f).map(y -> y > 0.5 ? 2 * y - 1 : y < -0.5 ? 2 * y + 1 : 0).scaled(-10, 10).add(BiomeNoise.hills(seed, 4, 8));
+        return new OpenSimplex2D(seed).octaves(4).spread(0.08f)
+            .map(y -> y > 0.5 ? 2 * y - 1 : y < -0.5 ? 2 * y + 1 : 0)
+            .scaled(-10, 10).add(BiomeNoise.hills(seed, 4, 8));
     }
 
     public static Noise2D drumlins(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(3).spread(0.04f).scaled(SEA_LEVEL_Y - 12, 24).stretchX(2.5);
+        return new OpenSimplex2D(seed).octaves(3).spread(0.06f).scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y + 24).stretchX(2.5);
     }
-
 
     // TODO: Detail work
     public static Noise2D channeledScablands(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(3).spread(0.04f).map(y -> {
-            y = Math.abs(Math.abs(y) - 0.5);
-            return Math.min(y, Math.max(y, 0.2));
-        }).scaled(0.2, 0.3, 26, -3).add(hills(seed, 8, 8));
+        return new OpenSimplex2D(seed).octaves(3).spread(0.015f)
+            .map(y -> Math.clamp(Math.abs(y), 0.2, 0.3))
+            .scaled(0.2, 0.3, 0, 22).add(hills(seed, -4, 8));
     }
 
     /**

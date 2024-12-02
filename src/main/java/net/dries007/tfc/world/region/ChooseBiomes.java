@@ -21,6 +21,17 @@ public enum ChooseBiomes implements RegionTask
         {PLAINS, HILLS, ROLLING_HILLS, HIGHLANDS, INVERTED_BADLANDS, BADLANDS, PLATEAU, CANYONS, LOW_CANYONS}, // Mid
         {HIGHLANDS, HIGHLANDS, HIGHLANDS, ROLLING_HILLS, BADLANDS, PLATEAU, PLATEAU, OLD_MOUNTAINS, OLD_MOUNTAINS}, // High
     };
+    private static final int[][] ICE_SHEET_ALTITUDE_BIOMES = {
+        {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS}, // Low
+        {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS, ICE_SHEET, ICE_SHEET_TUYAS}, // Mid
+        {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS, ICE_SHEET_MOUNTAINS, ICE_SHEET_TUYAS}, // High
+    };
+    private static final int[][] PALEO_ICE_SHEET_ALTITUDE_BIOMES = {
+        {PATTERNED_KNOB_AND_KETTLE, PATTERNED_KNOB_AND_KETTLE, KNOB_AND_KETTLE, KNOB_AND_KETTLE, KNOB_AND_KETTLE, DRUMLINS, TUYAS, LOWLANDS, LOWLANDS}, // Low
+        {PATTERNED_KNOB_AND_KETTLE, KNOB_AND_KETTLE, DRUMLINS, DRUMLINS, DRUMLINS, DRUMLINS, TUYAS, TUYAS}, // Mid
+        {DRUMLINS, DRUMLINS, DRUMLINS, BADLANDS, BADLANDS, CHANNELED_SCABLANDS, PLATEAU, PLATEAU, PLATEAU, ICE_SHEET_MOUNTAINS}, // High
+    };
+    private static final int[] SUBGLACIAL_HIGHLANDS = {DRUMLINS, DRUMLINS, BADLANDS, CHANNELED_SCABLANDS, CHANNELED_SCABLANDS, CHANNELED_SCABLANDS, PLATEAU, PLATEAU, PLATEAU, GLACIATED_MOUNTAINS};
     private static final int[] ISLAND_BIOMES = {PLAINS, HILLS, ROLLING_HILLS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS};
     private static final int[] MID_DEPTH_OCEAN_BIOMES = {DEEP_OCEAN, OCEAN, OCEAN, OCEAN_REEF, OCEAN_REEF, OCEAN_REEF};
     private static final int[] DRY_LOWLANDS_REPLACEMENT_BIOMES = {MUD_FLATS, MUD_FLATS, GRASSY_DUNES, GRASSY_DUNES};
@@ -43,13 +54,55 @@ public enum ChooseBiomes implements RegionTask
             }
             else if (point.mountain())
             {
-                point.biome = randomSeededFrom(rngSeed, areaSeed, point.coastalMountain()
-                    ? OCEANIC_MOUNTAIN_ALTITUDE_BIOMES
-                    : MOUNTAIN_ALTITUDE_BIOMES);
+                // TODO: Balance values, -18 seems like a good value for FLAT LANDS once climate is moderated, these are MOUNTAIN biomes, though
+                final float maxIceSheetTemp = -8f + 0.006f * point.rainfall;
+                final float temp = point.temperature;
+                if (temp < maxIceSheetTemp)
+                {
+                    point.biome = point.coastalMountain()
+                        ? ICE_SHEET_OCEANIC_MOUNTAINS
+                        : ICE_SHEET_MOUNTAINS;
+                }
+                else if (temp < maxIceSheetTemp + 4) // TODO: Tweak numbers
+                {
+                    point.biome = point.coastalMountain()
+                        ? GLACIATED_OCEANIC_MOUNTAINS
+                        : GLACIATED_MOUNTAINS;
+                }
+                else if (temp < maxIceSheetTemp + 8) // TODO: Tweak numbers, random chance of mountains this far south not being glacially carved?
+                {
+                    point.biome = point.coastalMountain()
+                        ? GLACIALLY_CARVED_OCEANIC_MOUNTAINS
+                        : GLACIALLY_CARVED_MOUNTAINS;
+                }
+                else
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, point.coastalMountain()
+                        ? OCEANIC_MOUNTAIN_ALTITUDE_BIOMES
+                        : MOUNTAIN_ALTITUDE_BIOMES);
+                }
             }
             else if (point.land())
             {
-                point.biome = randomSeededFrom(rngSeed, areaSeed, ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                // TODO: Balance values, -18 seems like a good value for FLAT LANDS once climate is moderated
+                final float maxIceSheetTemp = -10f + 0.006f * point.rainfall;
+                final float temp = point.temperature;
+                if (temp < maxIceSheetTemp)
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, ICE_SHEET_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                }
+                else if (temp < maxIceSheetTemp + 4) // TODO: Tweak numbers
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, PALEO_ICE_SHEET_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                }
+                else if (temp < maxIceSheetTemp + 6 && point.discreteBiomeAltitude() == 2) // TODO: Tweak numbers
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, SUBGLACIAL_HIGHLANDS);
+                }
+                else
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                }
             }
             else if (point.baseOceanDepth < 3)
             {
@@ -106,39 +159,20 @@ public enum ChooseBiomes implements RegionTask
                 else if (point.biome == INVERTED_BADLANDS) point.biome = ROLLING_HILLS;
             }
 
-            // Glaciation
-            // TODO: Balance values, -18 seems like a good value for the number below once climate is moderated
+            // Special Biome Glaciation
+            // TODO: Balance values, should be similar to MOUNTAIN glaciation
             final float maxIceSheetTemp = -10f + 0.006f * rainfall;
-            // TODO: Set most lakes to be land before setting the biomes?
-            if (point.land() || point.lake())
+            if (point.land() && temperature < maxIceSheetTemp)
             {
-                if (temperature < maxIceSheetTemp)
-                {
-                    // Makes oceanic glacial mountains more common by replacing coastal highlands as well
-                    if (point.biomeAltitude >= 3 && point.distanceToOcean < 3) point.biome = point.distanceToOcean < 1 ? GLACIATED_OCEANIC_MOUNTAINS : ICE_SHEET_OCEANIC_MOUNTAINS;
-                    else if (point.mountain()) point.biome = ICE_SHEET_MOUNTAINS;
-                    else
-                    {
-                        final int biome = point.biome;
-                        if (biome == CANYONS) point.biome = ICE_SHEET_TUYAS;
-                        else if (biome == ACTIVE_SHIELD_VOLCANO) point.biome = ICE_SHEET_ACTIVE_SHIELD_VOLCANO;
-                        else if (biome == DORMANT_SHIELD_VOLCANO || biome == EXTINCT_SHIELD_VOLCANO) point.biome = ICE_SHEET_SHIELD_VOLCANO;
-                        else point.biome = ICE_SHEET;
-                    }
-                }
-                else if (temperature < maxIceSheetTemp + 0.6f && !(point.biome == MOUNTAINS || point.biome == VOLCANIC_MOUNTAINS
-                    || point.biome == OCEANIC_MOUNTAINS || point.biome == VOLCANIC_OCEANIC_MOUNTAINS || point.biome == OLD_MOUNTAINS))
-                {
-                    point.biome = getGlacialEdgeBiome(point.biome);
-                }
-                else if (temperature < maxIceSheetTemp + 3.5f)
-                {
-                    point.biome = getPeriglacialBiome(point.biome);
-                }
-                else if (temperature < maxIceSheetTemp + 6f)
-                {
-                    point.biome = getPaleoPeriglacialBiome(point.biome);
-                }
+                final int biome = point.biome;
+                if (biome == ACTIVE_SHIELD_VOLCANO) point.biome = ICE_SHEET_ACTIVE_SHIELD_VOLCANO;
+                else if (biome == DORMANT_SHIELD_VOLCANO || biome == EXTINCT_SHIELD_VOLCANO) point.biome = ICE_SHEET_SHIELD_VOLCANO;
+            }
+            else if (temperature < maxIceSheetTemp + 4f)
+            {
+                final int biome = point.biome;
+                if (biome == ACTIVE_SHIELD_VOLCANO) point.biome = GLACIATED_ACTIVE_SHIELD_VOLCANO;
+                else if (biome == DORMANT_SHIELD_VOLCANO || biome == EXTINCT_SHIELD_VOLCANO) point.biome = GLACIATED_SHIELD_VOLCANO;
             }
 
             // Karst Biomes
@@ -198,52 +232,12 @@ public enum ChooseBiomes implements RegionTask
 
     private int getGlacialEdgeBiome(int biome)
     {
-        if (biome == MOUNTAINS || biome == MOUNTAIN_LAKE || biome == OLD_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS || biome == VOLCANIC_MOUNTAINS
-            || biome == VOLCANIC_MOUNTAIN_LAKE)
+        if (biome == ICE_SHEET_MOUNTAINS)
             return GLACIATED_MOUNTAINS;
-        if (biome == OCEANIC_MOUNTAINS || biome == OCEANIC_MOUNTAIN_LAKE || biome == VOLCANIC_OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAIN_LAKE
-            || biome == ICE_SHEET_OCEANIC_MOUNTAINS)
+        if (biome == ICE_SHEET_OCEANIC_MOUNTAINS)
             return GLACIATED_OCEANIC_MOUNTAINS;
 
         return ICE_SHEET_EDGE;
-    }
-
-    // TODO: Improve/remove
-    private int getPeriglacialBiome(int biome)
-    {
-        if (biome == MOUNTAINS || biome == MOUNTAIN_LAKE || biome == OLD_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS || biome == VOLCANIC_MOUNTAINS
-            || biome == VOLCANIC_MOUNTAIN_LAKE)
-            return GLACIATED_MOUNTAINS;
-        if (biome == OCEANIC_MOUNTAINS || biome == OCEANIC_MOUNTAIN_LAKE || biome == VOLCANIC_OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAIN_LAKE
-            || biome == ICE_SHEET_OCEANIC_MOUNTAINS)
-            return GLACIATED_OCEANIC_MOUNTAINS;
-        if (biome == LOWLANDS || biome == LOW_CANYONS || biome == PLAINS)
-            return PATTERNED_KNOB_AND_KETTLE;
-        if (biome == CANYONS)
-            return TUYAS;
-        if (biome == HILLS || biome == ROLLING_HILLS || biome == BADLANDS)
-            return PATTERNED_KNOB_AND_KETTLE;
-        return biome;
-    }
-
-    private int getPaleoPeriglacialBiome(int biome)
-    {
-        if (biome == MOUNTAINS || biome == MOUNTAIN_LAKE || biome == OLD_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS || biome == VOLCANIC_MOUNTAINS
-            || biome == VOLCANIC_MOUNTAIN_LAKE)
-            return GLACIALLY_CARVED_MOUNTAINS;
-        if (biome == OCEANIC_MOUNTAINS || biome == OCEANIC_MOUNTAIN_LAKE || biome == VOLCANIC_OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAIN_LAKE
-            || biome == ICE_SHEET_OCEANIC_MOUNTAINS)
-            return GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
-        if (biome == LOWLANDS || biome == LOW_CANYONS || biome == PLAINS)
-            return KNOB_AND_KETTLE; // TODO: These shouldnt be so far south
-        if (biome == CANYONS)
-            return TUYAS;
-        if (biome == HILLS || biome == ROLLING_HILLS || biome == BADLANDS)
-            return PATTERNED_KNOB_AND_KETTLE;
-        if (biome == PLATEAU || biome == INVERTED_BADLANDS || biome == HIGHLANDS)
-            return CHANNELED_SCABLANDS;
-
-        return biome;
     }
 
     private int getTowerKarstBiome(int biome)
@@ -285,11 +279,11 @@ public enum ChooseBiomes implements RegionTask
 
     private int getBurrenBiome(int biome)
     {
-        if (biome == PLAINS || biome == CANYONS)
+        if (biome == PLAINS || biome == CANYONS || biome == KNOB_AND_KETTLE || biome == PATTERNED_KNOB_AND_KETTLE)
             return BURREN_PLAINS;
-        if (biome == BADLANDS)
+        if (biome == BADLANDS || biome == HILLS || biome == ROLLING_HILLS)
             return BURREN_BADLANDS;
-        if (biome == DRUMLINS  || biome == HILLS || biome == ROLLING_HILLS)
+        if (biome == DRUMLINS)
             return BURREN_ROCHE_MOUTONEE;
         if (biome == INVERTED_BADLANDS || biome == HIGHLANDS)
             return BURREN_BADLANDS_TALL;

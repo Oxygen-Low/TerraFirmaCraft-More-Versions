@@ -19,11 +19,11 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory NORMAL = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialBase(seed), BiomeNoise.glacialIceSurface(seed));
     public static final SurfaceBuilderFactory LAKE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialOceanicBase(seed), BiomeNoise.glacialIceSurface(seed));
-    public static final SurfaceBuilderFactory ICE_SHEET_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialMountainsBase(seed), BiomeNoise.glacialIceSurface(seed).max(BiomeNoise.glacialCirquesIceSurface(seed)));
-    public static final SurfaceBuilderFactory GLACIATED_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialMountainsBase(seed), BiomeNoise.glacialCirquesIceSurface(seed));
+    public static final SurfaceBuilderFactory ICE_SHEET_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed).addConstant(20), BiomeNoise.glacialIceSurface(seed).max(BiomeNoise.glacialCirquesIceSurface(seed).addConstant(20)));
+    public static final SurfaceBuilderFactory GLACIATED_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed).addConstant(20), BiomeNoise.glacialCirquesIceSurface(seed).addConstant(20));
     public static final SurfaceBuilderFactory OCEANIC = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialOceanicBase(seed), BiomeNoise.glacialOceanicIceSurface(seed));
-    public static final SurfaceBuilderFactory ICE_SHEET_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialMountainsBase(seed), BiomeNoise.glacialOceanicIceSurface(seed).max(BiomeNoise.glacialOceanicCirquesIceSurface(seed)));
-    public static final SurfaceBuilderFactory GLACIATED_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialMountainsBase(seed), BiomeNoise.glacialOceanicCirquesIceSurface(seed));
+    public static final SurfaceBuilderFactory ICE_SHEET_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed), BiomeNoise.glacialOceanicIceSurface(seed).max(BiomeNoise.glacialOceanicCirquesIceSurface(seed)));
+    public static final SurfaceBuilderFactory GLACIATED_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed), BiomeNoise.glacialOceanicCirquesIceSurface(seed));
     // TODO: These need special surface builders to add the basalt
     public static final SurfaceBuilderFactory ACTIVE_SHIELD_VOLCANO = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.activeShieldVolcano(seed, BiomeNoise.activeHotSpots(seed)), BiomeNoise.glacialIceSurface(seed));
     public static final SurfaceBuilderFactory DORMANT_SHIELD_VOLCANO = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.dormantShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.glacialIceSurface(seed));
