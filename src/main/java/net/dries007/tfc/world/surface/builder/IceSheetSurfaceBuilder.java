@@ -19,7 +19,8 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory NORMAL = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialBase(seed), BiomeNoise.glacialIceSurface(seed), true, false);
     public static final SurfaceBuilderFactory EDGE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialBase(seed).addConstant(1.6), BiomeNoise.glacialIceSurface(seed), true, false);
-    public static final SurfaceBuilderFactory LAKE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialOceanicBase(seed), BiomeNoise.glacialIceSurface(seed), false, false);
+    public static final SurfaceBuilderFactory EDGE_LAKE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.lake(seed), BiomeNoise.glacialIceSurface(seed), false, false);
+    public static final SurfaceBuilderFactory HIDDEN_LAKE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialOceanicBase(seed), BiomeNoise.glacialIceSurface(seed), false, false);
     public static final SurfaceBuilderFactory ICE_SHEET_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed).addConstant(39), BiomeNoise.glacialMontaneIceSurface(seed).max(BiomeNoise.glacialCirquesIceSurface(seed).addConstant(39)), false, true);
     // TODO: rework into versions with soils
     public static final SurfaceBuilderFactory GLACIATED_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed).addConstant(39), BiomeNoise.glacialCirquesIceSurface(seed).addConstant(39), false, true);
@@ -61,7 +62,6 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
         final int glacierSurfaceHeight = (int) Math.ceil(iceSurfaceNoise.noise(x, z));
 
         int iceDepth;
-        // TODO: Rivers
         if (hasMoraines && context.baseGroundwater() <= 20f)
         {
             final double moraineCrestHeight = Math.min((0.5 * (glacierSurfaceHeight + glacierBaseHeight)), glacierBaseHeight + 18);
@@ -72,9 +72,13 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
             iceDepth = 36;
         }
 
-        if ((hasStonyPeaks && startY > glacierSurfaceHeight + 3) || startY < glacierBaseHeight)
+        if (startY < glacierBaseHeight)
         {
-            MountainSurfaceBuilder.COLD.apply(seed).buildSurface(context, startY, endY);
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY);
+        }
+        else if (hasStonyPeaks && startY > glacierSurfaceHeight + 3)
+        {
+            MountainSurfaceBuilder.BARE.apply(seed);
         }
         else {
             for (int y = startY; y >= glacierBaseHeight; --y)

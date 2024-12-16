@@ -23,15 +23,6 @@ public enum IceSheetEdgeLayer implements AdjacentTransformLayer
     {
         final Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
 
-        // Add ice sheet edges, replacing the ice sheet
-//        if (isFlatIceSheet(center))
-//        {
-//            // TODO: Cleanup, move these test methods to unified locations
-//            if ((matcher.test(IceSheetEdgeLayer::isNotIceSheetOrGlaciated)))
-//            {
-//                return ICE_SHEET_EDGE;
-//            }
-//        }
         if (center == KNOB_AND_KETTLE || center == PATTERNED_GROUND)
         {
             if ((matcher.test(TFCLayers::isFlatIceSheet)))
@@ -59,6 +50,19 @@ public enum IceSheetEdgeLayer implements AdjacentTransformLayer
         if (center == ICE_SHEET_EDGE && matcher.test(i -> i == ICE_SHEET_MOUNTAINS || i == ICE_SHEET_MOUNTAINS_EDGE || i == ICE_SHEET_OCEANIC_MOUNTAINS || i == ICE_SHEET_OCEANIC))
         {
             return KNOB_AND_KETTLE;
+        }
+
+        // Lakes near edges of ice sheets
+        if (center == LAKE && matcher.test(TFCLayers::isFlatIceSheet) && !matcher.test(i -> i == ICE_SHEET_MOUNTAINS || i == ICE_SHEET_MOUNTAINS_EDGE || i == ICE_SHEET_OCEANIC_MOUNTAINS || i == ICE_SHEET_OCEANIC))
+        {
+            return SUBGLACIAL_LAKE;
+        }
+        if (center == ICE_SHEET && matcher.test(i -> i == MELTWATER_LAKE))
+        {
+            if (matcher.test(IceSheetEdgeLayer::isNotIceSheet))
+            {
+                return SUBGLACIAL_LAKE;
+            }
         }
 
         if (isFlatIceSheet(center) && matcher.test(i -> i == OCEAN || i == OCEAN_REEF || i == DEEP_OCEAN || i == DEEP_OCEAN_TRENCH || i == ICE_SHEET_SHORE))

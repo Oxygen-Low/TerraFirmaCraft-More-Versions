@@ -142,7 +142,7 @@ public final class BiomeNoise
 
     public static Noise2D glacialIceSurface(long seed)
     {
-        return BiomeNoise.hills(seed, 30, 38);
+        return BiomeNoise.hills(seed, 26, 34);
     }
 
     public static Noise2D glacialMontaneIceSurface(long seed)
