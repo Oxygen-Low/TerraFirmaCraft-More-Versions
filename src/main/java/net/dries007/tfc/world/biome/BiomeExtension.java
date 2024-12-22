@@ -39,8 +39,10 @@ public final class BiomeExtension
     private final boolean salty;
     private final boolean volcanic;
     private final boolean hasTuffCones;
+    private final boolean hasTuyas;
     private final int volcanoRarity;
     private final int tuffRingRarity;
+    private final int tuyaRarity;
     private final int volcanoBasaltHeight;
     private final boolean spawnable;
     private final boolean rivers;
@@ -52,7 +54,7 @@ public final class BiomeExtension
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, boolean hasTuffCones, int volcanoRarity, int volcanoBasaltHeight, int tuffRingRarity, boolean spawnable, boolean rivers, boolean shore, int cliffBaseHeight, boolean sandyRiverShores)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, boolean hasTuffCones, boolean hasTuyas, int volcanoRarity, int volcanoBasaltHeight, int tuffRingRarity, int tuyaRarity, boolean spawnable, boolean rivers, boolean shore, int cliffBaseHeight, boolean sandyRiverShores)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
@@ -63,9 +65,11 @@ public final class BiomeExtension
         this.salty = salty;
         this.volcanic = volcanic;
         this.hasTuffCones = hasTuffCones;
+        this.hasTuyas = hasTuyas;
         this.volcanoRarity = volcanoRarity;
         this.volcanoBasaltHeight = volcanoBasaltHeight;
         this.tuffRingRarity = tuffRingRarity;
+        this.tuyaRarity = tuyaRarity;
         this.spawnable = spawnable;
         this.rivers = rivers;
         this.shore = shore;
@@ -108,6 +112,11 @@ public final class BiomeExtension
         return hasTuffCones;
     }
 
+    public boolean hasTuyas()
+    {
+        return hasTuyas;
+    }
+
     public boolean isSpawnable()
     {
         return spawnable;
@@ -136,6 +145,11 @@ public final class BiomeExtension
     public int getTuffRingRarity()
     {
         return tuffRingRarity;
+    }
+
+    public int getTuyaRarity()
+    {
+        return tuyaRarity;
     }
 
     public int getVolcanoBasaltHeight()

@@ -162,7 +162,7 @@ public final class TFCBiomes
     // TODO: Custom ice surfaces on shield volcano
     public static final BiomeExtension ICE_SHEET_ACTIVE_SHIELD_VOLCANO = register("ice_sheet_active_shield_volcano", builder().heightmap(seed -> BiomeNoise.activeShieldVolcano(seed, BiomeNoise.activeHotSpots(seed)).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed, BiomeNoise.activeHotSpots(seed)))).surface(IceSheetSurfaceBuilder.ACTIVE_SHIELD_VOLCANO).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
     public static final BiomeExtension ICE_SHEET_SHIELD_VOLCANO = register("ice_sheet_shield_volcano", builder().heightmap(seed -> BiomeNoise.dormantShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed, BiomeNoise.hotSpotIntensity(seed)))).surface(IceSheetSurfaceBuilder.DORMANT_SHIELD_VOLCANO).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
-    public static final BiomeExtension ICE_SHEET_TUYAS = register("ice_sheet_tuyas", builder().heightmap(BiomeNoise::glacialIceSurface).surface(IceSheetSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
+    public static final BiomeExtension ICE_SHEET_TUYAS = register("ice_sheet_tuyas", builder().heightmap(BiomeNoise::glacialIceSurface).surface(IceSheetSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores().tuyas(2, 0, 35, 40, true).type(RiverBlendType.CAVE));
     public static final BiomeExtension SUBGLACIAL_LAKE = register("subglacial_lake", builder().heightmap(BiomeNoise::glacialIceSurface).surface(IceSheetSurfaceBuilder.HIDDEN_LAKE).carving(BiomeNoise::undergroundLakes).type(BiomeBlendType.LAKE).noRivers());
 
     // Ice Sheet Edge Biomes
@@ -192,7 +192,7 @@ public final class TFCBiomes
 
     // Mid-elevation biomes
     public static final BiomeExtension DRUMLINS = register("drumlins", builder().heightmap(BiomeNoise::drumlins).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores());
-    public static final BiomeExtension TUYAS = register("tuyas", builder().heightmap(BiomeNoise::drumlins).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores());
+    public static final BiomeExtension TUYAS = register("tuyas", builder().heightmap(BiomeNoise::drumlins).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores().tuyas(2, 0, 35, 40, false).type(RiverBlendType.CAVE));
 
     // Low-elevation biomes
     public static final BiomeExtension KNOB_AND_KETTLE = register("knob_and_kettle", builder().heightmap(BiomeNoise::knobAndKettle).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores());

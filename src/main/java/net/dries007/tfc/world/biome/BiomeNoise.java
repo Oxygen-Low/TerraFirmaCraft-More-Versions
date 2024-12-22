@@ -297,12 +297,15 @@ public final class BiomeNoise
             final double talusHt = talusHeightNoise.noise(x, z);
             final double talusWd = talusHt * 0.5;
             final double couleeBaseHeight = couleeShape > 0.7 ? 1
-                : couleeShape > 0.55 ? Mth.clampedMap(y, 0.63 - talusWd, 0.7, 0.5, 0.72 + talusHt)
+                : couleeShape > 0.68 ? Mth.clampedMap(y, 0.68 - talusWd, 0.7, 0.72 + talusHt, 1)
+                : couleeShape > 0.55 ? Mth.clampedMap(y, 0.63 - talusWd, 0.68, 0.5, 0.72 + talusHt)
                 : Mth.clampedMap(y, 0.49 - talusWd, 0.55, 0, 0.22 + talusHt);
 
             final double baseHeight = absY > 0.35 ? 1
-                : y > 0.2 + channelOffset ? Mth.clampedMap(y, 0.29 - talusWd, 0.35, 0.5, 0.72 + talusHt)
-                : y < -0.2 + channelOffset ? Mth.clampedMap(y, -0.29 + talusWd, -0.35, 0.5, 0.72 + talusHt)
+                : y > 0.2 + channelOffset ? Mth.clampedMap(y, 0.33, 0.35, 0.72 + talusHt, 1)
+                : y < -0.2 + channelOffset ? Mth.clampedMap(y, -0.33, -0.35, 0.72 + talusHt, 1)
+                : y > 0.2 + channelOffset ? Mth.clampedMap(y, 0.29 - talusWd, 0.33, 0.5, 0.72 + talusHt)
+                : y < -0.2 + channelOffset ? Mth.clampedMap(y, -0.29 + talusWd, -0.33, 0.5, 0.72 + talusHt)
                 : y > 0 ? Mth.clampedMap(y, 0.14 + channelOffset - talusWd, 0.2 + channelOffset, 0, 0.22 + talusHt)
                 : Mth.clampedMap(y, -0.14 + channelOffset + talusWd, -0.2 + channelOffset, 0, 0.22 + talusHt);
 
@@ -918,6 +921,15 @@ public final class BiomeNoise
     {
         final TuffRingNoise rings = new TuffRingNoise(seed);
         return (x, z) -> rings.modifyHeight(x, z, baseNoise, rarity, baseRingHeight, scaleRingHeight, seed);
+    }
+
+    /**
+     * Adds tuya volcanoes to a base noise height map
+     */
+    public static Noise2D addTuyas(long seed, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight, boolean icy)
+    {
+        final TuyaNoise tuyas = new TuyaNoise(seed);
+        return (x, z) -> tuyas.modifyHeight(x, z, baseNoise.noise(x, z), rarity, baseVolcanoHeight, scaleVolcanoHeight, icy);
     }
 
     public static BiomeNoiseSampler undergroundLakes(long seed, Noise2D heightNoise)

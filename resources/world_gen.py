@@ -354,7 +354,7 @@ def generate(rm: ResourceManager):
         rm.placed_feature(name, 'tfc:%s' % name, decorate_heightmap('ocean_floor_wg'), decorate_flat_enough(flatness=0.2))
         configured_placed_feature(rm, 'tfc:%s_patch' % name, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': 'tfc:%s' % name}, decorate_chance(36), decorate_square())
 
-
+    # Volcano Features
     rm.configured_feature('volcano_rivulet', 'tfc:rivulet', {'state': 'tfc:rock/magma/basalt'})
     rm.configured_feature('volcano_caldera', 'tfc:flood_fill_lake', {
         'overfill': True,
@@ -372,6 +372,17 @@ def generate(rm: ResourceManager):
             ('tfc:volcano_fissure', 4)
         )
     })
+
+    # Tuya volcanic features
+    rm.configured_feature('tuya_rivulet', 'tfc:rivulet', {'state': 'tfc:rock/magma/basalt'})
+    rm.configured_feature('tuya_caldera', 'tfc:flood_fill_lake', {
+        'overfill': True,
+        'replace_fluids': ['minecraft:water'],
+        'state': 'minecraft:lava'
+    })
+
+    rm.placed_feature('tuya_rivulet', 'tfc:tuya_rivulet', decorate_count(2), decorate_square(), ('tfc:tuya', {'distance': 0.7}))
+    rm.placed_feature('tuya_caldera', 'tfc:tuya_caldera', ('tfc:tuya', {'center': True}), decorate_heightmap('world_surface_wg'))
 
     rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive', 'metamorphic'])
     for ore in ('diamond', 'topaz', ''):

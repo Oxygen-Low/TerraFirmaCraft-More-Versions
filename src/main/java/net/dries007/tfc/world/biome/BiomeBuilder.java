@@ -19,6 +19,7 @@ import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 import net.dries007.tfc.world.surface.builder.TuffRingsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.TuyasSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.VolcanoesSurfaceBuilder;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
@@ -39,10 +40,12 @@ public class BiomeBuilder
     private RiverBlendType riverBlendType;
     private boolean salty;
     private boolean volcanic;
+    private boolean hasTuyas;
     private boolean hasTuffRings;
     private int volcanoFrequency;
     private int volcanoBasaltHeight;
     private int tuffRingFrequency;
+    private int tuyaRarity;
     private boolean spawnable;
     private boolean rivers;
     private boolean shore;
@@ -202,10 +205,29 @@ public class BiomeBuilder
         return this;
     }
 
+    public BiomeBuilder tuyas(int frequency, int baseHeight, int scaleHeight, int volcanoBasaltHeight, boolean icy)
+    {
+        // TODO: fix this/unique properties
+        this.hasTuyas = true;
+        this.tuyaRarity = frequency;
+        this.volcanoBasaltHeight = SEA_LEVEL_Y + volcanoBasaltHeight;
+
+        assert heightNoiseFactory != null : "volcanoes must be called after setting a heightmap";
+        assert surfaceBuilderFactory != null : "volcanoes must be called after setting a surface builder";
+
+        final LongFunction<Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
+        this.heightNoiseFactory = seed -> BiomeNoise.addTuyas(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight, icy);
+        this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
+
+        this.surfaceBuilderFactory = TuyasSurfaceBuilder.create(surfaceBuilderFactory);
+
+        return this;
+    }
+
     public BiomeExtension build(ResourceKey<Biome> key)
     {
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, hasTuffRings, volcanoFrequency, volcanoBasaltHeight, tuffRingFrequency, spawnable, rivers, shore, cliffBaseHeight, sandyRiverShores);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, hasTuffRings, hasTuyas, volcanoFrequency, volcanoBasaltHeight, tuffRingFrequency, tuyaRarity, spawnable, rivers, shore, cliffBaseHeight, sandyRiverShores);
     }
 }
