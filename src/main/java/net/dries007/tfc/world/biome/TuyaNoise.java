@@ -45,7 +45,7 @@ public final class TuyaNoise
      */
     private static float calculateIcyShape(float t)
     {
-        return t < 0.015f ? Mth.map(t, 0f, 0.015f, 0.8f, 1f)// Caldera
+        return t < 0.015f ? Mth.map(t, 0f, 0.015f, 0.8f, 1f) // Caldera
             : t < 0.125f ? Mth.map(t, 0.025f, 0.125f, 1f, 0.75f) // Shallow slope down
             : t < 0.16 ? Mth.map(t, 0.125f, 0.16f, 0.75f, 0f) // Cliff
             : Mth.clampedMap(t, 0.16f, 0.19f, 0f, 0.5f); // Ice edge
@@ -53,14 +53,16 @@ public final class TuyaNoise
 
     private final Cellular2D cellNoise;
     private final Noise2D jitterNoise;
+    private final long seed;
 
     /**
      * @param seed The level seed - important, this is used from multiple different locations (base noise, surface builder, placement/decorator), and must have the same seed.
      */
     public TuyaNoise(long seed)
     {
-        cellNoise = new Cellular2D(seed).spread(0.0033f);
-        jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.0016f, 0.0016f).spread(0.128f);
+        this.seed = seed;
+        cellNoise = new Cellular2D(seed, 0.21f).spread(0.0033f);
+        jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.016f, 0.016f).spread(0.128f);
     }
 
     public double modifyHeight(double x, double z, double baseHeight, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight, boolean icy)
@@ -70,11 +72,19 @@ public final class TuyaNoise
         {
             final float easing = Mth.clamp(TuyaNoise.calculateEasing((float) cell.f1()) + (float) jitterNoise.noise(x, z), 0, 1);
             final float shape = icy ? TuyaNoise.calculateIcyShape(1 - easing) : TuyaNoise.calculateShape(1 - easing);
-            final float volcanoAdditionalHeight = shape * scaleVolcanoHeight;
+            final float volcanoAdditionalHeight = shape * scaleVolcanoHeight + addNoise(seed, x, z);
             final float volcanoHeight = SEA_LEVEL_Y + baseVolcanoHeight + volcanoAdditionalHeight;
             return Mth.lerp(easing, baseHeight, 0.5f * (volcanoHeight + Math.max(volcanoHeight, baseHeight + 0.4f * volcanoAdditionalHeight)));
         }
         return baseHeight;
+    }
+
+    /**
+     * Perlin noise surface
+     */
+    public float addNoise(long seed, double x, double z)
+    {
+        return (float) new OpenSimplex2D(seed).octaves(2).spread(0.1).scaled(-2, 3).noise(x, z);
     }
 
     /**

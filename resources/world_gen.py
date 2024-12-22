@@ -54,6 +54,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt')
     rm.placed_feature_tag('feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure', 'tfc:pumice_patch')
+    rm.placed_feature_tag('feature/tuyas', 'tfc:tuya_rivulet', 'tfc:tuya_caldera', 'tfc:random_tuya_fissure', 'tfc:pumice_patch')
     rm.placed_feature_tag('feature/surface_flood_fill_lakes', 'tfc:flood_fill_lake')
     rm.placed_feature_tag('feature/shield_volcanoes', 'tfc:pumice_shield_volcano_patch')
 
@@ -140,7 +141,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'ice_sheet_oceanic_mountains', 'extreme_hills', barren=True)
     biome(rm, 'ice_sheet_active_shield_volcano', 'extreme_hills', barren=True)
     biome(rm, 'ice_sheet_shield_volcano', 'extreme_hills', barren=True)
-    biome(rm, 'ice_sheet_tuyas', 'extreme_hills', barren=True)
+    biome(rm, 'ice_sheet_tuyas', 'extreme_hills', barren=True, tuya_features=True)
     biome(rm, 'subglacial_lake', 'extreme_hills', barren=True)
 
     # Ice sheet edge biomes
@@ -163,7 +164,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'glacially_carved_oceanic_mountains', 'extreme_hills')
     biome(rm, 'channeled_scablands', 'extreme_hills')
     biome(rm, 'drumlins', 'plains')
-    biome(rm, 'tuyas', 'plains')
+    biome(rm, 'tuyas', 'plains', tuya_features=True)
     biome(rm, 'knob_and_kettle', 'plains')
     biome(rm, 'patterned_ground', 'plains')
     biome(rm, 'stone_circles', 'plains')
@@ -373,17 +374,6 @@ def generate(rm: ResourceManager):
         )
     })
 
-    # Tuya volcanic features
-    rm.configured_feature('tuya_rivulet', 'tfc:rivulet', {'state': 'tfc:rock/magma/basalt'})
-    rm.configured_feature('tuya_caldera', 'tfc:flood_fill_lake', {
-        'overfill': True,
-        'replace_fluids': ['minecraft:water'],
-        'state': 'minecraft:lava'
-    })
-
-    rm.placed_feature('tuya_rivulet', 'tfc:tuya_rivulet', decorate_count(2), decorate_square(), ('tfc:tuya', {'distance': 0.7}))
-    rm.placed_feature('tuya_caldera', 'tfc:tuya_caldera', ('tfc:tuya', {'center': True}), decorate_heightmap('world_surface_wg'))
-
     rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive', 'metamorphic'])
     for ore in ('diamond', 'topaz', ''):
         name = join_not_empty('_', ore, 'volcano_fissure')
@@ -403,6 +393,45 @@ def generate(rm: ResourceManager):
             } if ore != '' else None,
         })
         rm.placed_feature(name, 'tfc:' + name, ('tfc:volcano', {'center': True}), decorate_heightmap('world_surface_wg'))
+
+    # Tuya volcanic features
+    rm.configured_feature('tuya_rivulet', 'tfc:rivulet', {'state': 'tfc:rock/magma/basalt'})
+    rm.configured_feature('tuya_caldera', 'tfc:flood_fill_lake', {
+        'overfill': True,
+        'replace_fluids': ['minecraft:water'],
+        'state': 'minecraft:lava'
+    })
+
+    # higher values of distance actually restrict the features closer to the volcano center
+    rm.placed_feature('tuya_rivulet', 'tfc:tuya_rivulet', decorate_count(2), decorate_square(), ('tfc:tuya', {'distance': 0.84}))
+    rm.placed_feature('tuya_caldera', 'tfc:tuya_caldera', ('tfc:tuya', {'center': True}), decorate_heightmap('world_surface_wg'))
+
+    configured_placed_feature(rm, 'random_tuya_fissure', 'minecraft:simple_random_selector', {
+        'features': count_weighted_list(
+            ('tfc:topaz_tuya_fissure', 3),
+            ('tfc:diamond_tuya_fissure', 1),
+            ('tfc:tuya_fissure', 4)
+        )
+    })
+
+    for ore in ('diamond', 'topaz', ''):
+        name = join_not_empty('_', ore, 'tuya_fissure')
+        rm.configured_feature(name, 'tfc:fissure', {
+            'wall_state': 'tfc:rock/raw/basalt',
+            'fluid_state': 'minecraft:lava',
+            'count': 3,
+            'radius': 6,
+            'decoration': {
+                'blocks': [{
+                    'replace': ['tfc:rock/raw/%s' % rock],
+                    'with': [{'block': 'tfc:ore/%s/%s' % (ore, rock)}]
+                } for rock in rocks],
+                'radius': 3,
+                'count': 6,
+                'rarity': 3
+            } if ore != '' else None,
+        })
+        rm.placed_feature(name, 'tfc:' + name, ('tfc:tuya', {'center': True}), decorate_heightmap('world_surface_wg'))
 
     # six different variants: both filled + not, and both sapphire, emerald, and no decoration
     for ore in ('sapphire', 'emerald', ''):
@@ -1594,7 +1623,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
 }
 
 
-def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, shield_volcano_features: bool = False, reef_features: bool = False, barren: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, shield_volcano_features: bool = False, tuya_features: bool = False, reef_features: bool = False, barren: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
     soil_discs = []
     large_features = []
@@ -1674,6 +1703,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
 
     if volcano_features:
         large_features.append('#tfc:feature/volcanoes')
+
+    if tuya_features:
+        large_features.append('#tfc:feature/tuyas')
 
     if shield_volcano_features:
         large_features.append('#tfc:feature/shield_volcanoes')

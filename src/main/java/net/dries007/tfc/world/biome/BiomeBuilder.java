@@ -14,7 +14,6 @@ import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
-import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
@@ -45,7 +44,7 @@ public class BiomeBuilder
     private int volcanoFrequency;
     private int volcanoBasaltHeight;
     private int tuffRingFrequency;
-    private int tuyaRarity;
+    private int tuyaFrequency;
     private boolean spawnable;
     private boolean rivers;
     private boolean shore;
@@ -63,7 +62,10 @@ public class BiomeBuilder
         salty = false;
         volcanic = false;
         hasTuffRings = false;
+        hasTuyas = false;
         volcanoFrequency = 0;
+        tuffRingFrequency = 0;
+        tuyaFrequency = 0;
         volcanoBasaltHeight = 0;
         spawnable = false;
         rivers = true;
@@ -209,7 +211,7 @@ public class BiomeBuilder
     {
         // TODO: fix this/unique properties
         this.hasTuyas = true;
-        this.tuyaRarity = frequency;
+        this.tuyaFrequency = frequency;
         this.volcanoBasaltHeight = SEA_LEVEL_Y + volcanoBasaltHeight;
 
         assert heightNoiseFactory != null : "volcanoes must be called after setting a heightmap";
@@ -228,6 +230,6 @@ public class BiomeBuilder
     {
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, hasTuffRings, hasTuyas, volcanoFrequency, volcanoBasaltHeight, tuffRingFrequency, tuyaRarity, spawnable, rivers, shore, cliffBaseHeight, sandyRiverShores);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, hasTuffRings, hasTuyas, volcanoFrequency, volcanoBasaltHeight, tuffRingFrequency, tuyaFrequency, spawnable, rivers, shore, cliffBaseHeight, sandyRiverShores);
     }
 }

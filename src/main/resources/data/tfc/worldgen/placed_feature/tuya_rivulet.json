@@ -11,7 +11,7 @@
     },
     {
       "type": "tfc:tuya",
-      "distance": 0.7
+      "distance": 0.84
     }
   ]
 }

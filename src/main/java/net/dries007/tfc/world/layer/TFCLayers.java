@@ -205,6 +205,7 @@ public class TFCLayers
         mainLayer = IceSheetEdgeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
         mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
 
+        // 4x4 Chunk Scale
         mainLayer = ShoreLayer.INSTANCE.apply(random.nextLong(), mainLayer);
         mainLayer = MoreShoresLayer.INSTANCE.apply(random.nextLong(), mainLayer);
         mainLayer = IceSheetEdgeLayer.INSTANCE.apply(random.nextLong(), mainLayer); // TODO: Do we really want to call this twice?

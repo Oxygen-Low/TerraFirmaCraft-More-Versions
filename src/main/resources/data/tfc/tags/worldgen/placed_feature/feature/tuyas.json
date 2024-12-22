@@ -2,7 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:feature/tuyas",
-    "#tfc:feature/surface_flood_fill_lakes"
+    "tfc:tuya_rivulet",
+    "tfc:tuya_caldera",
+    "tfc:random_tuya_fissure",
+    "tfc:pumice_patch"
   ]
 }
