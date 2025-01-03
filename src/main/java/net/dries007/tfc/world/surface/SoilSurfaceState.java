@@ -157,17 +157,13 @@ public class SoilSurfaceState implements SurfaceState
     @Override
     public BlockState getState(SurfaceBuilderContext context)
     {
-        // Bias a little towards sand regions
-        // Without: pure sand < 55mm, mixed sand < 110mm. With: pure sand < 73mm, mixed sand < 126mm
-        // TODO: Above is with 9, we now have 18, and gravel (old: sand)
-
         final float rainfall = context.groundWater();
         final float temperature = Helpers.adjustAverageTemperatureByElevation(context.pos().getY(), context.averageTemperature(), context.getSeaLevel()) ;
 
-        //TODO: check this: Rain-controlled surface: <65 pure gravel, <94 mixed gravel/dirt, <124 dirt, <154 mixed dirt/grass
+        // Rain-controlled surface: <64 pure gravel, <91 mixed gravel/dirt, <118 dirt, <145 mixed dirt/grass, otherwise grass
         final int rainIndex = (int) Mth.clampedMap(rainfall, 35, 450, 3, regions.size() - 0.01f);
 
-        // TODO: Temperature-controlled surface:
+        // Temperature-controlled surface: <-17.4 pure snow, <-16.6 mixed gravel/snow <-15.7 pure gravel, <-15 mixed gravel/dirt, <14.1, <-13.2 mixed dirt/grass, otherwise grass
         // -17c = Koppen EF/ET Border
         // -12c = Koppen ET Border
         final int tempIndex = (int) Mth.clampedMap(temperature, -19, -4, 0, regions.size() - 0.01f);

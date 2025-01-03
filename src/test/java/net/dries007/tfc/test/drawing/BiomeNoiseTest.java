@@ -111,10 +111,4 @@ public class BiomeNoiseTest implements TestSetup
     {
         terrain.draw("noise_cirques", glacialCirques(seed()));
     }
-
-    @Test
-    public void testScablands()
-    {
-        terrain.draw("noise_scablands", channeledScablands(223546764L));
-    }
 }

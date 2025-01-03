@@ -207,7 +207,7 @@ public final class BiomeNoise
     public static Noise2D glacialCirques(long seed)
     {
         final double cellScale = 0.010;
-        Cellular2D cells = new Cellular2D(seed).spread(cellScale); // TODO: Readd custom jitter?
+        Cellular2D cells = new Cellular2D(seed).spread(cellScale);
         Noise2D warp = new OpenSimplex2D(seed).spread(0.02).scaled(-0.25, 0.25);
 
         Noise2D shape = glacialValleyShapeNoise(seed);
@@ -262,7 +262,6 @@ public final class BiomeNoise
         };
     }
 
-    // TODO: too high, too flat, knobs/kettles very rare
     public static Noise2D knobAndKettle(long seed)
     {
         return new OpenSimplex2D(seed).octaves(2).spread(0.03f)
@@ -274,64 +273,6 @@ public final class BiomeNoise
     {
         return new OpenSimplex2D(seed).octaves(3).spread(0.04f).scaled(SEA_LEVEL_Y - 16, SEA_LEVEL_Y + 32).stretchZ(2.5);
     }
-
-    // TODO: Detail work
-    public static Noise2D channeledScablands(long seed)
-    {
-        // 0.0025 scale
-        final Noise2D baseNoise = connectedValleyBaseNoise(seed);
-
-        // Smooth noise representing leftward/rightward skew of secondary canyon
-        final Noise2D channelOffsetNoise = new OpenSimplex2D(seed + 89183L).spread(0.008).scaled(-0.19, 0.19).clamped(-0.15, 0.15);
-
-        // Smooth noise, that when high will cause the channel to split, forming a center outcrop
-        final Noise2D channelSplitNoise = new OpenSimplex2D(seed + 883283L).octaves(2).spread(0.007).scaled(-2, 1.5).clamped(0, 0.26);
-
-        // Absolute value noise, representing "distance" to center-lines of coulees
-        final Noise2D couleeCenterLineNoise = new OpenSimplex2D(seed + 989013L).spread(0.003).abs();
-
-        // Increase height of talus piles in some locations
-        final Noise2D talusHeightNoise = new OpenSimplex2D(seed + 9890113L).spread(0.012).scaled(-0.07, 0.12).clamped(-0.03, 0.1);
-
-        final Noise2D scablandsShapeNoise = (x, z) -> {
-            final double base = baseNoise.noise(x, z);
-            final double y = base < 0 ? base + channelSplitNoise.noise(x, z) : base - channelSplitNoise.noise(x, z);
-            final double absY = Math.abs(y);
-            final double channelOffset = channelOffsetNoise.noise(x, z);
-            final double couleeCenterLine = couleeCenterLineNoise.noise(x, z);
-            final double couleeShape = Math.sqrt(y * y + 3 * couleeCenterLine * couleeCenterLine);
-            final double talusHt = talusHeightNoise.noise(x, z);
-            final double talusWd = talusHt * 0.5;
-            final double couleeBaseHeight = couleeShape > 0.7 ? 1
-                : couleeShape > 0.68 ? Mth.clampedMap(y, 0.68 - talusWd, 0.7, 0.72 + talusHt, 1)
-                : couleeShape > 0.55 ? Mth.clampedMap(y, 0.63 - talusWd, 0.68, 0.5, 0.72 + talusHt)
-                : Mth.clampedMap(y, 0.49 - talusWd, 0.55, 0, 0.22 + talusHt);
-
-            final double baseHeight = absY > 0.35 ? 1
-                : y > 0.2 + channelOffset ? Mth.clampedMap(y, 0.33, 0.35, 0.72 + talusHt, 1)
-                : y < -0.2 + channelOffset ? Mth.clampedMap(y, -0.33, -0.35, 0.72 + talusHt, 1)
-                : y > 0.2 + channelOffset ? Mth.clampedMap(y, 0.29 - talusWd, 0.33, 0.5, 0.72 + talusHt)
-                : y < -0.2 + channelOffset ? Mth.clampedMap(y, -0.29 + talusWd, -0.33, 0.5, 0.72 + talusHt)
-                : y > 0 ? Mth.clampedMap(y, 0.14 + channelOffset - talusWd, 0.2 + channelOffset, 0, 0.22 + talusHt)
-                : Mth.clampedMap(y, -0.14 + channelOffset + talusWd, -0.2 + channelOffset, 0, 0.22 + talusHt);
-
-            return Math.min(couleeBaseHeight, baseHeight);
-        };
-
-        final Noise2D potholes = new OpenSimplex2D(seed)
-            .octaves(3)
-            .spread(0.045)
-            .map(x -> {
-                x = -0.5 * Math.cos(Math.PI * x) + 0.5;
-                x = (Math.max(x, 0.1) - 0.1);
-                x = -8 * x;
-                return x;
-            });
-
-        return scablandsShapeNoise.scaled(0, 1, SEA_LEVEL_Y + 3, SEA_LEVEL_Y + 33).add(potholes);
-
-    }
-
 
     /**
      * Inspired by the bare Karst at Burren, Ireland

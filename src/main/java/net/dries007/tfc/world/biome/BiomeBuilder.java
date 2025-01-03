@@ -209,7 +209,6 @@ public class BiomeBuilder
 
     public BiomeBuilder tuyas(int frequency, int baseHeight, int scaleHeight, int volcanoBasaltHeight, boolean icy)
     {
-        // TODO: fix this/unique properties
         this.hasTuyas = true;
         this.tuyaFrequency = frequency;
         this.volcanoBasaltHeight = SEA_LEVEL_Y + volcanoBasaltHeight;

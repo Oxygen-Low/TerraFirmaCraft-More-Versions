@@ -71,7 +71,6 @@ public class Cellular2D implements Noise2D
         int xPrimed = (xr - 1) * primeX;
         int yPrimedBase = (yr - 1) * primeY;
 
-        //TODO: optimize to only check the extra ring of grid points for distance1
         for (int xi = xr - 2; xi <= xr + 2; xi++)
         {
             int yPrimed = yPrimedBase;

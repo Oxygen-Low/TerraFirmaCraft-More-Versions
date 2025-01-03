@@ -28,8 +28,6 @@ import net.dries007.tfc.world.biome.TuyaNoise;
 
 public class TuyaPlacement extends PlacementModifier
 {
-    // TODO: the features using this aren't working
-
     public static final MapCodec<TuyaPlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
         Codecs.UNIT_FLOAT.optionalFieldOf("distance", 0f).forGetter(c -> c.distance)

@@ -39,7 +39,6 @@ public class GrassyDunesSurfaceBuilder implements SurfaceBuilder
         context.setSlope(trueSlope * (1 - context.weight()));
         SurfaceState sand = SurfaceStates.SAND;
 
-        // TODO: Dune noise seems broken???
         if (startY > heightVariation && trueSlope < 5)
         {
             SurfaceState grass = SoilSurfaceState.buildSurfaceType(SoilBlockType.GRASS, true);

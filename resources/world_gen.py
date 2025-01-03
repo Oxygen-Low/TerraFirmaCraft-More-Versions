@@ -112,7 +112,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'doline_plateau', 'extreme_hills')
     biome(rm, 'cenote_plateau', 'extreme_hills')
     biome(rm, 'tower_karst_lake', 'river', lake_features=False, ocean_features='both')
-    biome(rm, 'tower_karst_bay', 'river', lake_features=False, ocean_features='both')
+    biome(rm, 'tower_karst_bay', 'beach', lake_features=False, ocean_features='both')
     biome(rm, 'extreme_doline_mountains', 'extreme_hills')
     biome(rm, 'burren_badlands', 'mesa')
     biome(rm, 'doline_rolling_hills', 'plains')
@@ -127,7 +127,6 @@ def generate(rm: ResourceManager):
     biome(rm, 'shield_volcano_shore', 'beach', ocean_features=True, shield_volcano_features=True)
     biome(rm, 'old_shield_volcano_shore', 'beach', ocean_features=True, shield_volcano_features=True)
 
-# TODO: add lake tags for fish spawning to shield volcanoes, subglacial lakes, check biome tags and stuff in general for all new biomes
     biome(rm, 'mountain_lake', 'extreme_hills')
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
     biome(rm, 'old_mountain_lake', 'extreme_hills')
@@ -138,30 +137,28 @@ def generate(rm: ResourceManager):
     # Full ice sheet biomes
     biome(rm, 'ice_sheet', 'extreme_hills', barren=True, boulders=True)
     biome(rm, 'ice_sheet_mountains', 'extreme_hills', barren=True)
-    biome(rm, 'ice_sheet_oceanic_mountains', 'extreme_hills', barren=True)
+    biome(rm, 'ice_sheet_oceanic_mountains', 'extreme_hills', barren=True, ocean_features='both')
     biome(rm, 'ice_sheet_shield_volcano', 'extreme_hills', barren=True)
     biome(rm, 'ice_sheet_tuyas', 'extreme_hills', barren=True, tuya_features=True, boulders=True)
     biome(rm, 'subglacial_lake', 'extreme_hills', barren=True)
 
     # Ice sheet edge biomes
-    # TODO: Make boulders substantially more common in many of these biomes, maybe special extra-large erratics that are also random stone types? But that could be confusing
     biome(rm, 'ice_sheet_edge', 'extreme_hills', boulders=True)
     biome(rm, 'ice_sheet_tuyas_edge', 'plains', tuya_features=True, boulders=True)
     biome(rm, 'ice_sheet_mountains_edge', 'extreme_hills')
-    biome(rm, 'ice_sheet_oceanic_mountains_edge', 'extreme_hills')
+    biome(rm, 'ice_sheet_oceanic_mountains_edge', 'extreme_hills', ocean_features='both')
     biome(rm, 'meltwater_lake', 'river')
-    biome(rm, 'ice_sheet_oceanic', 'extreme_hills', barren=True)
-    biome(rm, 'ice_sheet_shore', 'extreme_hills')
+    biome(rm, 'ice_sheet_oceanic', 'beach', barren=True)
+    biome(rm, 'ice_sheet_shore', 'beach', ocean_features='both')
 
     # Glaciated biomes
     biome(rm, 'glaciated_shield_volcano', 'extreme_hills', boulders=True)
     biome(rm, 'glaciated_mountains', 'extreme_hills')
-    biome(rm, 'glaciated_oceanic_mountains', 'extreme_hills')
+    biome(rm, 'glaciated_oceanic_mountains', 'extreme_hills', ocean_features='both')
 
     # Paleo/periglacial biomes
     biome(rm, 'glacially_carved_mountains', 'extreme_hills')
-    biome(rm, 'glacially_carved_oceanic_mountains', 'extreme_hills')
-    biome(rm, 'channeled_scablands', 'extreme_hills', boulders=True)
+    biome(rm, 'glacially_carved_oceanic_mountains', 'extreme_hills', ocean_features='both')
     biome(rm, 'drumlins', 'plains', boulders=True)
     biome(rm, 'tuyas', 'plains', tuya_features=True, boulders=True)
     biome(rm, 'knob_and_kettle', 'plains', boulders=True)
@@ -1607,6 +1604,10 @@ LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
     'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
 }
 
+ICE_SHEET_OCEANIC_CREATURES: Dict[str, Dict[str, Any]] = {
+    'penguin': spawner('tfc:penguin', min_count=2, max_count=5)
+}
+
 SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
     'penguin': spawner('tfc:penguin', min_count=2, max_count=5, weight=10),
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5, weight=10)
@@ -1691,9 +1692,11 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
             surface_decorations.append('tfc:plant/beachgrass_patch')
             surface_decorations.append('tfc:plant/sea_palm_patch')
 
+        # Not just beaches, as penguins should spawn on ice out at sea as well
+        spawners['creature'] = [entity for entity in SHORE_CREATURES.values()]
+
         if category == 'beach':
             surface_decorations.append('#tfc:feature/shore_decorations')
-            spawners['creature'] = [entity for entity in SHORE_CREATURES.values()]
         else:
             surface_decorations.append('#tfc:feature/ocean_decorations')
 
@@ -1701,6 +1704,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
         spawners['underground_water_creature'] = [entity for entity in UNDERGROUND_WATER_CREATURES.values()]
         costs['tfc:octopoteuthis'] = {'energy_budget': 0.12, 'charge': 1.0}
+
+    if ('ice_sheet' in name) and ('oceanic' in name):
+        spawners['creature'] = [entity for entity in ICE_SHEET_OCEANIC_CREATURES.values()]
 
     if category in ('river', 'lake'):
         soil_discs.append('#tfc:feature/ore_deposits')

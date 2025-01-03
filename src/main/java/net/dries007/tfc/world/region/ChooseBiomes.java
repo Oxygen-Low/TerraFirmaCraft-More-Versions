@@ -39,7 +39,6 @@ public enum ChooseBiomes implements RegionTask
     @Override
     public void apply(RegionGenerator.Context context)
     {
-        // TODO: Add channeled scabland placement
         final Region region = context.region;
         final Area blobArea = context.generator().biomeArea.get();
         final long rngSeed = context.random.nextLong();

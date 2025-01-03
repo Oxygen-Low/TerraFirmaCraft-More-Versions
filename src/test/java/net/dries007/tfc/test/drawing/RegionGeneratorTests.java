@@ -277,7 +277,6 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == KNOB_AND_KETTLE) return new Color(115, 115, 115);
         if (biome == DRUMLINS || biome == BURREN_ROCHE_MOUTONEE) return new Color(135, 165, 135);
         if (biome == TUYAS) return new Color(115, 145, 115);
-        if (biome == CHANNELED_SCABLANDS) return new Color(190, 150, 150);
         if (biome == GLACIATED_MOUNTAINS) return new Color(255, 165, 165);
         if (biome == GLACIATED_OCEANIC_MOUNTAINS) return new Color(255, 165, 255);
         if (biome == GLACIATED_SHIELD_VOLCANO) return new Color(255, 185, 125);
@@ -354,7 +353,6 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == KNOB_AND_KETTLE) return new Color(255, 195, 100);
         if (biome == DRUMLINS || biome == BURREN_ROCHE_MOUTONEE) return new Color(135, 165, 135);
         if (biome == TUYAS) return new Color(115, 145, 115);
-        if (biome == CHANNELED_SCABLANDS) return new Color(190, 150, 150);
         if (biome == GLACIATED_MOUNTAINS) return new Color(255, 165, 165);
         if (biome == GLACIATED_OCEANIC_MOUNTAINS) return new Color(255, 165, 255);
         if (biome == GLACIATED_SHIELD_VOLCANO) return new Color(255, 185, 125);
@@ -406,7 +404,7 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == HIGHLANDS || biome == SHILIN_HIGHLANDS || biome == TOWER_KARST_HIGHLANDS || biome == DOLINE_HIGHLANDS || biome == CENOTE_HIGHLANDS) return new Color(250, 120, 0);
 
         // Plateau
-        if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU || biome == BURREN_PLATEAU || biome == CHANNELED_SCABLANDS) return new Color(200, 60, 60);
+        if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU) return new Color(200, 60, 60);
 
         // Mountains
         if (biome == OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(160, 30, 160);

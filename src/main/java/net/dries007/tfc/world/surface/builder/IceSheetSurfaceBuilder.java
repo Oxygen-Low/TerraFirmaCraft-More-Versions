@@ -22,10 +22,9 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
     public static final SurfaceBuilderFactory EDGE_LAKE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.lake(seed), BiomeNoise.glacialIceSurface(seed), false, false);
     public static final SurfaceBuilderFactory HIDDEN_LAKE = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialOceanicBase(seed), BiomeNoise.glacialIceSurface(seed), false, false);
     public static final SurfaceBuilderFactory ICE_SHEET_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed).addConstant(39), BiomeNoise.glacialMontaneIceSurface(seed).max(BiomeNoise.glacialCirquesIceSurface(seed).addConstant(39)), false, true);
-    // TODO: rework into versions with soils
     public static final SurfaceBuilderFactory GLACIATED_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed).addConstant(39), BiomeNoise.glacialCirquesIceSurface(seed).addConstant(39), false, true);
     public static final SurfaceBuilderFactory OCEANIC = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialOceanicBase(seed), BiomeNoise.glacialOceanicIceSurface(seed), false, false);
-    public static final SurfaceBuilderFactory ICE_SHEET_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed), BiomeNoise.glacialOceanicIceSurface(seed).max(BiomeNoise.glacialCirquesIceSurface(seed)), false, true); // TODO: maybe change back to the oceanic ice sheet surface
+    public static final SurfaceBuilderFactory ICE_SHEET_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed), BiomeNoise.glacialOceanicIceSurface(seed).max(BiomeNoise.glacialCirquesIceSurface(seed)), false, true);
     public static final SurfaceBuilderFactory GLACIATED_OCEANIC_MOUNTAINS = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glacialCirques(seed), BiomeNoise.glacialCirquesIceSurface(seed), false, true);
     // TODO: These need special surface builders to add the basalt, if we keep moraines those should be basaltic too
     public static final SurfaceBuilderFactory ICE_SHEET_SHIELD_VOLCANO = seed -> new IceSheetSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.glacialIceSurface(seed).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true);
@@ -75,7 +74,7 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
         }
         if (hasStonyPeaks && startY > glacierSurfaceHeight + 2.5)
         {
-            MountainSurfaceBuilder.GLACIATED.apply(seed).buildSurface(context, startY, endY);
+            NormalSurfaceBuilder.ROCKY.apply(seed).buildSurface(context, startY, endY);
         }
         else if (startY < glacierBaseHeight - 1.5)
         {

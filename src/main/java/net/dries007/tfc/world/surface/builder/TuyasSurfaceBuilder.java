@@ -41,7 +41,7 @@ public class TuyasSurfaceBuilder implements SurfaceBuilder
         if (context.biome().hasTuyas())
         {
             final float easing = tuyaNoise.calculateEasing(context.pos().getX(), context.pos().getZ(), context.biome().getTuyaRarity());
-            if (1 - easing < 0.16f) // TODO: biome volcano basalt height may not be needed
+            if (1 - easing < 0.16f)
             {
                 buildVolcanicSurface(context, startY, endY, easing);
                 return;

@@ -608,10 +608,6 @@ public class TFCTags
 
     public static class Entities
     {
-        public static final TagKey<EntityType<?>> TURTLE_FRIENDS = tag("turtle_friends");
-        public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = tag("spawns_on_cold_blocks"); // if ice is a valid spawn
-        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = tag("bubble_column_immune");
-        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = tag("needs_large_fishing_bait");
         public static final TagKey<EntityType<?>> HUNTS_LAND_PREY = tag("hunts_land_prey");
         public static final TagKey<EntityType<?>> HUNTED_BY_LAND_PREDATORS = tag("hunted_by_land_predators");
         public static final TagKey<EntityType<?>> OCEAN_PREDATORS = tag("ocean_predators");
@@ -631,6 +627,10 @@ public class TFCTags
 
         /** Monsters in vanilla that we restrict to spawning underground */
         public static final TagKey<EntityType<?>> MONSTERS = tag("monsters");
+        public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = tag("spawns_on_cold_blocks"); // if ice is a valid spawn
+        public static final TagKey<EntityType<?>> TURTLE_FRIENDS = tag("turtle_friends");
+        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = tag("bubble_column_immune");
+        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = tag("needs_large_fishing_bait");
 
 
         private static TagKey<EntityType<?>> tag(String id)

@@ -30,6 +30,14 @@
     "#tfc:in_biome/top_layer_modification"
   ],
   "spawners": {
+    "creature": [
+      {
+        "type": "tfc:penguin",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 5
+      }
+    ],
     "monster": [
       {
         "type": "minecraft:spider",

@@ -120,7 +120,6 @@ public class TFCLayers
 
     public static final int GLACIALLY_CARVED_MOUNTAINS = idFor(TFCBiomes.GLACIALLY_CARVED_MOUNTAINS);
     public static final int GLACIALLY_CARVED_OCEANIC_MOUNTAINS = idFor(TFCBiomes.GLACIALLY_CARVED_OCEANIC_MOUNTAINS);
-    public static final int CHANNELED_SCABLANDS = idFor(TFCBiomes.CHANNELED_SCABLANDS);
     public static final int DRUMLINS = idFor(TFCBiomes.DRUMLINS);
     public static final int TUYAS = idFor(TFCBiomes.TUYAS);
     public static final int KNOB_AND_KETTLE = idFor(TFCBiomes.KNOB_AND_KETTLE);
@@ -295,7 +294,7 @@ public class TFCLayers
     public static boolean safeMeltwaterLakeBorder(int value)
     {
         return (value != ICE_SHEET_MOUNTAINS && value != ICE_SHEET_MOUNTAINS_EDGE && value != ICE_SHEET_OCEANIC_MOUNTAINS
-            && value != ICE_SHEET_OCEANIC_MOUNTAINS_EDGE && value != CHANNELED_SCABLANDS && value != DRUMLINS && value != TUYAS
+            && value != ICE_SHEET_OCEANIC_MOUNTAINS_EDGE && value != DRUMLINS && value != TUYAS
             && value != ICE_SHEET_SHIELD_VOLCANO && value != ICE_SHEET_SHORE && value != GLACIATED_SHIELD_VOLCANO
             && value != GLACIATED_MOUNTAINS && value != GLACIATED_OCEANIC_MOUNTAINS && value != GLACIALLY_CARVED_MOUNTAINS
             && value != GLACIALLY_CARVED_OCEANIC_MOUNTAINS && value != BADLANDS && value != PLATEAU && value != INVERTED_BADLANDS
