@@ -530,7 +530,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(SEA_BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, Tags.Blocks.GRAVELS, Tags.Blocks.SANDS);
         tag(HALOPHYTE_PLANTABLE_ON).addTag(BlockTags.DIRT);
         tag(CREEPING_STONE_PLANTABLE_ON).addTags(Tags.Blocks.STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
-        tag(CREEPING_PLANT_NOT_PLANTABLE_ON).add(Blocks.PACKED_ICE, Blocks.SNOW_BLOCK, Blocks.BLUE_ICE, Blocks.POWDER_SNOW);
+        tag(CREEPING_PLANT_NOT_PLANTABLE_ON).add(Blocks.PACKED_ICE, Blocks.SNOW_BLOCK, Blocks.BLUE_ICE, TFCBlocks.SEA_ICE.get(), Blocks.POWDER_SNOW);
 
         tag(RABBIT_RAIDABLE)
             .add(Blocks.CARROTS)
@@ -587,7 +587,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(POWDER_SNOW_REPLACEABLE).add(
             Blocks.SNOW_BLOCK,
             Blocks.PACKED_ICE,
-            Blocks.BLUE_ICE);
+            Blocks.PACKED_ICE,
+            TFCBlocks.SEA_ICE.get());
         tag(TIDE_POOL_BLOCKS).add(
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.CLAM),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MOLLUSK),

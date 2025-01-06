@@ -280,7 +280,7 @@ public final class BiomeNoise
     // Polygonal incisions 1 block deep, mimics patterned ground caused by permafrost
     public static Noise2D patternedGround(long seed)
     {
-        Cellular2D cells = new Cellular2D(seed).spread(0.05);
+        Cellular2D cells = new Cellular2D(seed, 0.25f).spread(0.05);
         return (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
 
@@ -291,10 +291,11 @@ public final class BiomeNoise
         };
     }
 
+    // Raised edge forms of patterned ground also form
     public static Noise2D invertedPatternedGround(long seed)
     {
         final Noise2D base = BiomeNoise.hills(seed, -4, 3);
-        Cellular2D cells = new Cellular2D(seed).spread(0.05);
+        Cellular2D cells = new Cellular2D(seed, 0.25f).spread(0.05);
 
         return (x, z) -> {
             final double height = base.noise(x, z);
@@ -313,16 +314,30 @@ public final class BiomeNoise
         };
     }
 
+    // Simple f2 - f1 cellular noise
+    public static Noise2D seaIceNoise(long seed)
+    {
+        final Cellular2D cells = new Cellular2D(seed, 0.21f).spread(0.03);
+        return (x, z) -> {
+            Cellular2D.Cell cell = cells.cell(x, z);
+
+            final double f1 = cell.f1();
+            final double f2 = cell.f2();
+
+            return f2 - f1;
+        };
+    }
+
     // Ring-shaped protrusions 1 block high, based on those found in the Svalbard Archipelago and other polar climates
     public static Noise2D stoneCircles(long seed)
     {
-        Cellular2D cells = new Cellular2D(seed, 0.26f).spread(0.11);
+        Cellular2D cells = new Cellular2D(seed, 0.26f).spread(0.09);
         return (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
 
             final double f1 = cell.f1();
 
-            return f1 > 0.07 && f1 < 0.15 ? 1 : 0;
+            return f1 > 0.06 && f1 < 0.13 ? 1 : 0;
         };
     }
 

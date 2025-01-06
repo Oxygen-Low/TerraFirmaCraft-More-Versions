@@ -19,6 +19,8 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.world.biome.BiomeNoise;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 
 public class OceanSurfaceBuilder implements SurfaceBuilder
@@ -56,6 +58,7 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
     {
         final BlockState packedIce = Blocks.PACKED_ICE.defaultBlockState();
         final BlockState snow = Blocks.SNOW_BLOCK.defaultBlockState();
+        final BlockState seaIce = TFCBlocks.SEA_ICE.get().defaultBlockState();
 
         final int seaLevel = context.getSeaLevel();
         final int x = context.pos().getX();
@@ -123,6 +126,38 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
                     {
                         context.setBlockState(y, packedIce);
                     }
+                }
+            }
+        }
+        else
+        {
+            final boolean placeIce;
+            final double iceStart = 1.5;
+            final double solidIceStart = -0.5;
+
+            // Skip sampling the cellular noise if cold enough for solid ice/too warm for ice
+            if (maxAnnualTemperature < solidIceStart)
+            {
+                placeIce = true;
+            }
+            else if (maxAnnualTemperature > iceStart)
+            {
+                placeIce = false;
+            }
+            else
+            {
+                final double patternedNoise = BiomeNoise.seaIceNoise(context.getSeed()).noise(x, z);
+                final double tempFactor = Mth.clampedMap(maxAnnualTemperature, iceStart, solidIceStart, 0.3, 0.04);
+                placeIce = patternedNoise > tempFactor;
+            }
+
+            if (placeIce)
+            {
+                final int y = seaLevel - 1;
+                final BlockState state = context.getBlockState(y);
+                if (state.getBlock() == TFCBlocks.SALT_WATER.get() || state.getBlock() == Blocks.WATER)
+                {
+                    context.setBlockState(y, seaIce);
                 }
             }
         }

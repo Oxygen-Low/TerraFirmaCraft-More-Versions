@@ -74,14 +74,6 @@ public enum IceSheetEdgeLayer implements AdjacentTransformLayer
             return ICE_SHEET_OCEANIC;
         }
 
-        if (center == ICE_SHEET_SHORE)
-        {
-            if (!matcher.test(i -> i == ICE_SHEET_OCEANIC))
-            {
-                return SHORE;
-            }
-        }
-
         // Glaciated mountains should have glacially carved edges to avoid cirque glaciers turning to stone near borders with lower biomes
         if (isNotIceSheetOrGlaciated(center))
         {
