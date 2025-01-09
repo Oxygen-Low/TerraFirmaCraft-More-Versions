@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.surface.builder;
 
 
-import net.dries007.tfc.world.surface.SoilSurfaceState;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
@@ -22,7 +21,8 @@ public class DuneSurfaceBuilder implements SurfaceBuilder
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         context.setSlope(context.getSlope() * (1 - context.weight()));
-        SurfaceState sand = SurfaceStates.SAND;
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, sand, sand, sand, sand, sand);
+        final SurfaceState sand = SurfaceStates.SAND;
+        final SurfaceState surfaceSand = SurfaceStates.SNOWY_SAND;
+        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, surfaceSand, sand, sand, sand, sand);
     }
 }

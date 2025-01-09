@@ -22,6 +22,9 @@ import net.dries007.tfc.util.Helpers;
 
 public final class SurfaceStates
 {
+    /**
+     * Simple surface states that may be used by climate sensitive states
+     */
     public static final SurfaceState RAW = context -> context.getRock().raw().defaultBlockState();
     public static final SurfaceState COBBLE = context -> context.getRock().cobble().defaultBlockState();
     public static final SurfaceState GRAVEL = context -> context.getRock().gravel().defaultBlockState();
@@ -47,9 +50,14 @@ public final class SurfaceStates
     public static final SurfaceState BLUE_ICE = context -> Blocks.BLUE_ICE.defaultBlockState();
     public static final SurfaceState SNOW = context -> Blocks.SNOW_BLOCK.defaultBlockState();
 
-    public static final SurfaceState COARSE_SANDY_LOAM = SoilSurfaceState.soil(SoilBlockType.COARSE_DIRT, SoilBlockType.Variant.SANDY_LOAM);
-    public static final SurfaceState DRY_MUD = SoilSurfaceState.buildDryDirt(SoilBlockType.CRACKED_EARTH);
-    public static final SurfaceState SALT_MUD = SoilSurfaceState.buildDryDirt(SoilBlockType.SALTED_EARTH);
+    public static final SurfaceState COARSE_SANDY_LOAM_BASE = SoilSurfaceState.soil(SoilBlockType.COARSE_DIRT, SoilBlockType.Variant.SANDY_LOAM);
+    public static final SurfaceState DRY_MUD_BASE = SoilSurfaceState.buildDryDirt(SoilBlockType.CRACKED_EARTH);
+    public static final SurfaceState SALT_BASE = SoilSurfaceState.buildDryDirt(SoilBlockType.SALTED_EARTH);
+
+    public static final SurfaceState RIVER_SAND = context -> context.getSeaLevelRock().sand().defaultBlockState();
+    public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();
+    public static final SurfaceState SHORE_SANDSTONE = context -> context.getBottomRock().sandstone().defaultBlockState();
+    public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.SANDY_LOAM).get().defaultBlockState();
 
     /**
      * Default surface builders, Climate sensitive
@@ -65,10 +73,22 @@ public final class SurfaceStates
 
     public static final SurfaceState MUD = SoilSurfaceState.buildSurfaceType(SoilBlockType.MUD, SurfaceStates.GRAVEL);
 
-    public static final SurfaceState RIVER_SAND = context -> context.getSeaLevelRock().sand().defaultBlockState();
-    public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();
-    public static final SurfaceState SHORE_SANDSTONE = context -> context.getBottomRock().sandstone().defaultBlockState();
-    public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.SANDY_LOAM).get().defaultBlockState();
+    /**
+     * Snowy surface builders - used when a SurfaceState should be replaced by snow blocks in the appropriate climate
+     */
+    public static final SurfaceState SNOWY_RAW = SoilSurfaceState.buildSnowableSurface(SNOW, RAW);
+    public static final SurfaceState SNOWY_COBBLE = SoilSurfaceState.buildSnowableSurface(SNOW, COBBLE);
+    public static final SurfaceState SNOWY_GRAVEL = SoilSurfaceState.buildSnowableSurface(SNOW, GRAVEL);
+    public static final SurfaceState SNOWY_SAND = SoilSurfaceState.buildSnowableSurface(SNOW, SAND);
+    public static final SurfaceState SNOWY_SANDSTONE = SoilSurfaceState.buildSnowableSurface(SNOW, SANDSTONE);
+
+    public static final SurfaceState SNOWY_MORAINE = SoilSurfaceState.buildSnowableSurface(SNOW, MORAINE);
+    public static final SurfaceState SNOWY_BASALT = SoilSurfaceState.buildSnowableSurface(SNOW, BASALT);
+    public static final SurfaceState SNOWY_BASALT_COBBLE = SoilSurfaceState.buildSnowableSurface(SNOW, BASALT_COBBLE);
+    public static final SurfaceState SNOWY_BASALT_GRAVEL = SoilSurfaceState.buildSnowableSurface(SNOW, BASALT_GRAVEL);
+    public static final SurfaceState SNOWY_BASALT_MORAINE = SoilSurfaceState.buildSnowableSurface(SNOW, BASALT_MORAINE);
+    public static final SurfaceState SNOWY_SAND_AND_GRAVEL = SoilSurfaceState.buildSnowableSurface(SNOW, SAND_AND_GRAVEL);
+
 
     public static final SurfaceState RARE_SHORE_SAND = new SurfaceState()
     {

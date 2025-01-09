@@ -173,17 +173,17 @@ public final class BiomeNoise
         return hills(seed, -12, -2);
     }
 
-    public static Noise2D glacialIceSurface(long seed)
+    public static Noise2D iceSheetBaseLevel(long seed)
     {
         return BiomeNoise.hills(seed, 23, 38);
     }
 
-    public static Noise2D glacialMontaneIceSurface(long seed)
+    public static Noise2D montaneIceSheetBaseLevel(long seed)
     {
         return BiomeNoise.hills(seed, 40, 48);
     }
 
-    public static Noise2D glacialOceanicIceSurface(long seed)
+    public static Noise2D oceanicIceSheetBaseLevel(long seed)
     {
         return BiomeNoise.hills(seed, 18, 26);
     }
@@ -241,7 +241,7 @@ public final class BiomeNoise
 
         // Cliffs in valleys
         final Noise2D cliffScale = new OpenSimplex2D(seed + 785267L).spread(0.01).scaled(-12, 15).clamped(0, 10);
-        final Noise2D cliffStartHeight = glacialOceanicIceSurface(seed).addConstant(-8);
+        final Noise2D cliffStartHeight = oceanicIceSheetBaseLevel(seed).addConstant(-8);
 
         final Noise2D cirques = (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
@@ -318,13 +318,14 @@ public final class BiomeNoise
     public static Noise2D seaIceNoise(long seed)
     {
         final Cellular2D cells = new Cellular2D(seed, 0.21f).spread(0.03);
+        final Noise2D wiggle = new OpenSimplex2D(seed).scaled(-0.04, 0.04).spread(0.12);
         return (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
 
             final double f1 = cell.f1();
             final double f2 = cell.f2();
 
-            return f2 - f1;
+            return f2 - f1 + wiggle.noise(x, z);
         };
     }
 
@@ -858,7 +859,7 @@ public final class BiomeNoise
         return volcano.add(surface);
     }
 
-    // Surface for Ice Sheet Shield Volcanos
+    // Surface for Ice Sheet Shield Volcanoes - Heights added to iceSheetBaseLevel for smooth transition to ice sheet biomes
     public static Noise2D shieldVolcanoIceSheetSurface(long seed, Noise2D hotspot)
     {
         final double edgeElev = 0;
@@ -866,20 +867,24 @@ public final class BiomeNoise
 
         return hotspot.map(y ->
             y < 0.9 ? Mth.map(y, 0.0, 0.9, edgeElev, calderaCenterElev) : calderaCenterElev) // Interior of crater
-            .add(glacialIceSurface(seed));
+            .add(iceSheetBaseLevel(seed));
     }
 
-    // Surface for Glaciated Shield Volcanos
+    // Surface for Glaciated Shield Volcanoes
     public static Noise2D shieldVolcanoGlacierSurface(long seed, Noise2D hotspot)
     {
-        final double edgeElev = -50;
-        final double mtnBaseElev = 0;
-        final double calderaCenterElev = 51;
+        final Noise2D base = new OpenSimplex2D(seed).octaves(3).spread(0.05f).scaled(-5, 5);
+        final double lowElev = SEA_LEVEL_Y - 60;
+        final double edgeElev = SEA_LEVEL_Y + 75;
+        final double calderaRimElev = SEA_LEVEL_Y + 92;
+        final double calderaCenterElev = SEA_LEVEL_Y + 98;
 
         return hotspot.map(y ->
-            y < 0.55 ? edgeElev
-                : y < 0.9 ? Mth.map(y, 0.55, 0.9, mtnBaseElev, calderaCenterElev) : calderaCenterElev) // Interior of crater
-            .add(glacialIceSurface(seed));
+            y < 0.40 ? lowElev
+                : y < 0.58 ? Mth.map(y, 0.40, 0.58, lowElev, edgeElev) // Crater edge to base
+                : y < 0.72 ? Mth.map(y, 0.58, 0.72, edgeElev, calderaRimElev) // Crater edge to base
+                : y < 0.9 ? Mth.map(y, 0.72, 0.9, calderaRimElev, calderaCenterElev) : calderaCenterElev) // Interior of crater
+            .add(base);
     }
 
     // Shield volcanoes with some erosion, no recent lava flows, large calderas with open sides

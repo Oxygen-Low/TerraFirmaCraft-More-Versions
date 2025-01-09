@@ -15,10 +15,12 @@ import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
-public class IceSheetShieldVoclanoSurfaceBuilder implements SurfaceBuilder
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
+
+public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory ICE_SHEET = seed -> new IceSheetShieldVoclanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.glacialIceSurface(seed).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true);
-    public static final SurfaceBuilderFactory GLACIATED = seed -> new IceSheetShieldVoclanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.glacialIceSurface(seed).max(BiomeNoise.shieldVolcanoGlacierSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true);
+    public static final SurfaceBuilderFactory ICE_SHEET = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.iceSheetBaseLevel(seed).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true, SEA_LEVEL_Y);
+    public static final SurfaceBuilderFactory GLACIATED = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.iceSheetBaseLevel(seed).max(BiomeNoise.shieldVolcanoGlacierSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true, SEA_LEVEL_Y + 30);
 
 
     private final long seed;
@@ -26,14 +28,16 @@ public class IceSheetShieldVoclanoSurfaceBuilder implements SurfaceBuilder
     private final Noise2D baseNoise;
     private final boolean hasMoraines;
     private final boolean hasStonyPeaks;
+    private final int minFreezingHeight;
 
-    IceSheetShieldVoclanoSurfaceBuilder(long seed, Noise2D baseNoise, Noise2D iceSurfaceNoise, boolean hasMoraines, boolean hasStonyPeaks)
+    IceSheetShieldVolcanoSurfaceBuilder(long seed, Noise2D baseNoise, Noise2D iceSurfaceNoise, boolean hasMoraines, boolean hasStonyPeaks, int minFreezingHeight)
     {
         this.baseNoise = baseNoise;
         this.iceSurfaceNoise = iceSurfaceNoise;
         this.seed = seed;
         this.hasMoraines = hasMoraines;
         this.hasStonyPeaks = hasStonyPeaks;
+        this.minFreezingHeight = minFreezingHeight;
     }
 
     @Override
@@ -46,6 +50,7 @@ public class IceSheetShieldVoclanoSurfaceBuilder implements SurfaceBuilder
         final SurfaceState snowState = SurfaceStates.SNOW;
         final SurfaceState iceState = SurfaceStates.PACKED_ICE;
         final SurfaceState blueIceState = SurfaceStates.BLUE_ICE;
+        SurfaceState moraineTopState = SurfaceStates.SNOWY_BASALT_MORAINE;
         final SurfaceState moraineState = SurfaceStates.BASALT_MORAINE;
         final SurfaceState basaltState = SurfaceStates.BASALT;
 
@@ -63,11 +68,7 @@ public class IceSheetShieldVoclanoSurfaceBuilder implements SurfaceBuilder
         {
             iceDepth = 35;
         }
-        if (hasStonyPeaks && startY > glacierSurfaceHeight + 2.5)
-        {
-            ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed).buildSurface(context, startY, endY);
-        }
-        else if (startY < glacierBaseHeight - 1.5)
+        if (startY < minFreezingHeight || (hasStonyPeaks && startY > glacierSurfaceHeight + 2.5) || (startY < glacierBaseHeight - 1.5))
         {
             ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed).buildSurface(context, startY, endY);
         }
@@ -126,7 +127,9 @@ public class IceSheetShieldVoclanoSurfaceBuilder implements SurfaceBuilder
                     {
                         // Subsurface layers
                         surfaceDepth--;
-                        context.setBlockState(y, moraineState);
+                        context.setBlockState(y, moraineTopState);
+                        // After first layer, stop placing snowy moraine
+                        moraineTopState = moraineState;
                     }
                     else
                     {

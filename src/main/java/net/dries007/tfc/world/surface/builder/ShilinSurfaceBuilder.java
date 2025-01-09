@@ -8,7 +8,6 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
-import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
@@ -28,11 +27,11 @@ public class ShilinSurfaceBuilder implements SurfaceBuilder
         final double val = ridges.noise(context.pos().getX(), context.pos().getZ());
         if (val > 0.18)
         {
-            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
+            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SNOWY_RAW, SurfaceStates.RAW, SurfaceStates.RAW);
         }
         else if (val > 0.09)
         {
-            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL);
+            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SNOWY_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL);
         }
         else
         {

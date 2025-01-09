@@ -75,23 +75,23 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
             else if (flowValue < 0.50)
             {
                 if (noiseValue > 0)
-                    buildSurface(context, startY, endY, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT, SurfaceStates.BASALT_GRAVEL);
+                    buildSurface(context, startY, endY, SurfaceStates.SNOWY_BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT, SurfaceStates.BASALT_GRAVEL);
                 else
                     buildSurface(context, startY, endY, top, mid, bot, underwater);
             }
             else if (flowValue < 0.75)
             {
                 if (noiseValue > 0)
-                    buildSurface(context, startY, endY, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT, SurfaceStates.BASALT_GRAVEL);
+                    buildSurface(context, startY, endY, SurfaceStates.SNOWY_BASALT_GRAVEL, SurfaceStates.BASALT_GRAVEL, SurfaceStates.BASALT, SurfaceStates.BASALT_GRAVEL);
                 else
-                    buildSurface(context, startY, endY, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT, SurfaceStates.BASALT_COBBLE);
+                    buildSurface(context, startY, endY, SurfaceStates.SNOWY_BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT, SurfaceStates.BASALT_COBBLE);
             }
             else
             {
                 if (noiseValue > -0.6)
-                    buildSurface(context, startY, endY, SurfaceStates.BASALT, SurfaceStates.BASALT, SurfaceStates.BASALT, SurfaceStates.BASALT_COBBLE);
+                    buildSurface(context, startY, endY, SurfaceStates.SNOWY_BASALT, SurfaceStates.BASALT, SurfaceStates.BASALT, SurfaceStates.BASALT_COBBLE);
                 else
-                    buildSurface(context, startY, endY, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT, SurfaceStates.BASALT_COBBLE);
+                    buildSurface(context, startY, endY, SurfaceStates.SNOWY_BASALT_COBBLE, SurfaceStates.BASALT_COBBLE, SurfaceStates.BASALT, SurfaceStates.BASALT_COBBLE);
             }
         }
     }

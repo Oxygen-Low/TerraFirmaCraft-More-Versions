@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.world.surface.builder;
 
-import net.minecraft.world.level.block.Blocks;
-
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -27,11 +25,11 @@ public class StoneCirclesSurfaceBuilder implements SurfaceBuilder
 
         if (edges.noise(context.pos().getX(), context.pos().getZ()) * context.weight() <= 0.60)
         {
-            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SAND_AND_GRAVEL, SurfaceStates.SAND_AND_GRAVEL, SurfaceStates.GRAVEL);
+            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SNOWY_SAND_AND_GRAVEL, SurfaceStates.SAND_AND_GRAVEL, SurfaceStates.GRAVEL);
         }
         else
         {
-            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.COBBLE, SurfaceStates.MORAINE, SurfaceStates.GRAVEL);
+            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SNOWY_COBBLE, SurfaceStates.MORAINE, SurfaceStates.GRAVEL);
         }
     }
 }

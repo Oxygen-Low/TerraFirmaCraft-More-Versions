@@ -29,7 +29,7 @@ public class BurrenSurfaceBuilder implements SurfaceBuilder
         }
         else
         {
-            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.RAW, SurfaceStates.RAW, SurfaceStates.RAW);
+            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SNOWY_RAW, SurfaceStates.RAW, SurfaceStates.RAW);
         }
     }
 }

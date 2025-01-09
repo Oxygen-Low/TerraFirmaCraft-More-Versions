@@ -24,6 +24,31 @@ public class SoilSurfaceState implements SurfaceState
 {
     public static final Noise2D PATCH_NOISE = new OpenSimplex2D(18273952837592L).octaves(2).spread(0.04f);
 
+    public static SurfaceState buildSnowableSurface(SurfaceState snow, SurfaceState typical)
+    {
+        final ImmutableList<SurfaceState> regions = ImmutableList.of(
+            snow,
+            snow,
+            transition(snow, typical),
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical,
+            typical
+        );
+        return new SoilSurfaceState(regions);
+    }
+
     public static SurfaceState buildSurfaceType(SoilBlockType type, SurfaceState dry)
     {
         final ImmutableList<SurfaceState> regions = ImmutableList.of(
@@ -31,9 +56,9 @@ public class SoilSurfaceState implements SurfaceState
             SurfaceStates.SNOW,
             transition(SurfaceStates.SNOW, dry),
             dry,
-            transition(dry, SurfaceStates.COARSE_SANDY_LOAM),
-            SurfaceStates.COARSE_SANDY_LOAM,
-            transition(SurfaceStates.COARSE_SANDY_LOAM, soil(type, SoilBlockType.Variant.SANDY_LOAM)),
+            transition(dry, SurfaceStates.COARSE_SANDY_LOAM_BASE),
+            SurfaceStates.COARSE_SANDY_LOAM_BASE,
+            transition(SurfaceStates.COARSE_SANDY_LOAM_BASE, soil(type, SoilBlockType.Variant.SANDY_LOAM)),
             soil(type, SoilBlockType.Variant.SANDY_LOAM),
             soil(type, SoilBlockType.Variant.SANDY_LOAM),
             blobTransition(soil(type, SoilBlockType.Variant.SANDY_LOAM), soil(type, SoilBlockType.Variant.LOAM)),
@@ -56,9 +81,9 @@ public class SoilSurfaceState implements SurfaceState
             blobTransition(SurfaceStates.PACKED_ICE, dry),
             dry,
             dry,
-            transition(dry, SurfaceStates.COARSE_SANDY_LOAM),
-            SurfaceStates.COARSE_SANDY_LOAM,
-            transition(SurfaceStates.COARSE_SANDY_LOAM, soil(type, SoilBlockType.Variant.SANDY_LOAM)),
+            transition(dry, SurfaceStates.COARSE_SANDY_LOAM_BASE),
+            SurfaceStates.COARSE_SANDY_LOAM_BASE,
+            transition(SurfaceStates.COARSE_SANDY_LOAM_BASE, soil(type, SoilBlockType.Variant.SANDY_LOAM)),
             soil(type, SoilBlockType.Variant.SANDY_LOAM),
             soil(type, SoilBlockType.Variant.SANDY_LOAM),
             blobTransition(soil(type, SoilBlockType.Variant.SANDY_LOAM), soil(type, SoilBlockType.Variant.LOAM)),

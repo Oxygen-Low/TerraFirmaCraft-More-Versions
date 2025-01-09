@@ -270,6 +270,14 @@ def generate(rm: ResourceManager):
         })
         rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(-64, 63, bias='uniform'))
 
+    # Lava in stone, only present in volcanic biomes
+    rm.configured_feature('lava_spring', 'tfc:spring', {
+        'state': utils.block_state('minecraft:lava[falling=true]'),
+        'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
+    })
+    rm.placed_feature('lava_spring', 'tfc:lava_spring', decorate_count(30), decorate_square(), decorate_range(-64, 63, bias='biased_to_bottom'))
+
+
     # Above ground springs
 
     # Water in stone, not present at ice sheet temperatures or extremely dry biomes
@@ -488,6 +496,7 @@ def generate(rm: ResourceManager):
             })
 
     igneous_rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive'])
+    # TODO: Need to stop lava hot springs generating on top of sea ice. As a temporary measure, I added a climate restriction
     configured_placed_feature(rm, 'lava_hot_spring', 'tfc:hot_spring', {
         'fluid_state': 'minecraft:lava',
         'radius': 10,
@@ -499,7 +508,7 @@ def generate(rm: ResourceManager):
                 {'block': 'tfc:rock/hardened/%s' % rock, 'weight': 2}
             ]
         } for rock in igneous_rocks]
-    }, decorate_chance(20), decorate_square())
+    }, decorate_chance(20), decorate_square(), decorate_climate(min_temp=-14))
 
     rm.configured_feature('random_empty_hot_spring', 'minecraft:simple_random_selector', {
         'features': count_weighted_list(
@@ -1607,10 +1616,12 @@ LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 ICE_SHEET_OCEANIC_CREATURES: Dict[str, Dict[str, Any]] = {
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1, weight=1),
     'penguin': spawner('tfc:penguin', min_count=2, max_count=5)
 }
 
 SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1, weight=1),
     'penguin': spawner('tfc:penguin', min_count=2, max_count=5, weight=10),
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5, weight=10)
 }
