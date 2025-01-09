@@ -61,7 +61,7 @@ public enum IceSheetEdgeLayer implements AdjacentTransformLayer
         {
             return SUBGLACIAL_LAKE;
         }
-        if (center == ICE_SHEET && matcher.test(i -> i == MELTWATER_LAKE))
+        if (isFlatIceSheet(center) && matcher.test(i -> i == MELTWATER_LAKE))
         {
             if (matcher.test(IceSheetEdgeLayer::isNotIceSheet))
             {

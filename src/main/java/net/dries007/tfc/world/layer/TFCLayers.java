@@ -290,6 +290,7 @@ public class TFCLayers
             && value != GLACIALLY_CARVED_OCEANIC_MOUNTAINS);
     }
 
+    // TODO: Use or lose
     // Only checks biomes that are expected to be near meltwater lakes
     public static boolean safeMeltwaterLakeBorder(int value)
     {

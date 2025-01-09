@@ -45,20 +45,14 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        int surfaceDepth = -1;
-        int surfaceY = 0;
         final int x = context.pos().getX();
         final int z = context.pos().getZ();
-        final SurfaceState snowState = SurfaceStates.SNOW;
-        final SurfaceState iceState = SurfaceStates.PACKED_ICE;
-        final SurfaceState blueIceState = SurfaceStates.BLUE_ICE;
-        SurfaceState moraineTopState = SurfaceStates.SNOWY_MORAINE;
-        final SurfaceState moraineState = SurfaceStates.MORAINE;
 
         final int glacierBaseHeight = (int) Math.ceil(baseNoise.noise(x, z));
         final int glacierSurfaceHeight = (int) Math.ceil(iceSurfaceNoise.noise(x, z));
 
         int iceDepth;
+
         // Base Groundwater check allows for exposed ice near where rivers cut into ice sheet
         if (hasMoraines && context.baseGroundwater() <= 20f)
         {
@@ -69,6 +63,7 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
         {
             iceDepth = 35;
         }
+
         if (hasStonyPeaks && startY > glacierSurfaceHeight + 2.5)
         {
             NormalSurfaceBuilder.ROCKY.apply(seed).buildSurface(context, startY, endY);
@@ -78,6 +73,15 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
             NormalSurfaceBuilder.INSTANCE.apply(seed).buildSurface(context, startY, endY);
         }
         else {
+            int surfaceDepth = -1;
+            int surfaceY;
+
+            final SurfaceState snowState = SurfaceStates.SNOW;
+            final SurfaceState iceState = SurfaceStates.PACKED_ICE;
+            final SurfaceState blueIceState = SurfaceStates.BLUE_ICE;
+            final SurfaceState moraineTopState = SurfaceStates.SNOWY_MORAINE;
+            final SurfaceState moraineState = SurfaceStates.MORAINE;
+
             for (int y = startY; y >= glacierBaseHeight - 2; --y)
             {
                 final BlockState stateAt = context.getBlockState(y);
@@ -119,22 +123,18 @@ public class IceSheetSurfaceBuilder implements SurfaceBuilder
                         {
                             context.setBlockState(y, snowState);
                         }
-                        surfaceDepth = 36;
+                        surfaceDepth = 1;
                     }
                     else if (iceDepth > 0 && y > glacierBaseHeight)
                     {
                         // Subsurface layers
                         iceDepth--;
-                        surfaceDepth--;
                         context.setBlockState(y, y < glacierSurfaceHeight - 16 ? blueIceState : iceState);
                     }
-                    else if (surfaceDepth > 0)
+                    else
                     {
                         // Subsurface layers
-                        surfaceDepth--;
-                        context.setBlockState(y, moraineTopState);
-                        // After first layer, stop placing snowy moraine
-                        moraineTopState = moraineState;
+                        context.setBlockState(y, y == startY ? moraineTopState : moraineState);
                     }
                 }
             }

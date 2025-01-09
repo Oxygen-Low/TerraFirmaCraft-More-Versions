@@ -43,16 +43,8 @@ public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        int surfaceDepth = -1;
-        int surfaceY = 0;
         final int x = context.pos().getX();
         final int z = context.pos().getZ();
-        final SurfaceState snowState = SurfaceStates.SNOW;
-        final SurfaceState iceState = SurfaceStates.PACKED_ICE;
-        final SurfaceState blueIceState = SurfaceStates.BLUE_ICE;
-        SurfaceState moraineTopState = SurfaceStates.SNOWY_BASALT_MORAINE;
-        final SurfaceState moraineState = SurfaceStates.BASALT_MORAINE;
-        final SurfaceState basaltState = SurfaceStates.BASALT;
 
         final int glacierBaseHeight = (int) Math.ceil(baseNoise.noise(x, z));
         final int glacierSurfaceHeight = (int) Math.ceil(iceSurfaceNoise.noise(x, z));
@@ -68,11 +60,22 @@ public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
         {
             iceDepth = 35;
         }
+
         if (startY < minFreezingHeight || (hasStonyPeaks && startY > glacierSurfaceHeight + 2.5) || (startY < glacierBaseHeight - 1.5))
         {
             ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed).buildSurface(context, startY, endY);
         }
         else {
+            int surfaceDepth = -1;
+            int surfaceY = 0;
+
+            final SurfaceState snowState = SurfaceStates.SNOW;
+            final SurfaceState iceState = SurfaceStates.PACKED_ICE;
+            final SurfaceState blueIceState = SurfaceStates.BLUE_ICE;
+            final SurfaceState moraineTopState = SurfaceStates.SNOWY_BASALT_MORAINE;
+            final SurfaceState moraineState = SurfaceStates.BASALT_MORAINE;
+            final SurfaceState basaltState = SurfaceStates.BASALT;
+
             for (int y = startY; y >= glacierBaseHeight - 22; --y)
             {
                 final BlockState stateAt = context.getBlockState(y);
@@ -114,27 +117,22 @@ public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
                         {
                             context.setBlockState(y, snowState);
                         }
-                        surfaceDepth = 36;
+                        surfaceDepth = 1;
                     }
                     else if (iceDepth > 0 && y > glacierBaseHeight)
                     {
                         // Subsurface layers
                         iceDepth--;
-                        surfaceDepth--;
                         context.setBlockState(y, y < glacierSurfaceHeight - 16 ? blueIceState : iceState);
                     }
                     else if (y > glacierBaseHeight)
                     {
                         // Subsurface layers
-                        surfaceDepth--;
-                        context.setBlockState(y, moraineTopState);
-                        // After first layer, stop placing snowy moraine
-                        moraineTopState = moraineState;
+                        context.setBlockState(y, y == startY ? moraineTopState : moraineState);
                     }
                     else
                     {
                         // Subsurface layers
-                        surfaceDepth--;
                         context.setBlockState(y, basaltState);
                     }
                 }
