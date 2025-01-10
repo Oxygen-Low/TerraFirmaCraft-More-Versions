@@ -24,7 +24,7 @@ public enum ChooseBiomes implements RegionTask
     private static final int[][] ICE_SHEET_ALTITUDE_BIOMES = {
         {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS}, // Low
         {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS, ICE_SHEET, ICE_SHEET_TUYAS}, // Mid
-        {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS, ICE_SHEET_MOUNTAINS, ICE_SHEET_TUYAS}, // High
+        {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS, ICE_SHEET_TUYAS, ICE_SHEET_MOUNTAINS, ICE_SHEET_MOUNTAINS}, // High
     };
     private static final int[][] PALEO_ICE_SHEET_ALTITUDE_BIOMES = {
         {PATTERNED_GROUND, INVERTED_PATTERNED_GROUND, KNOB_AND_KETTLE, KNOB_AND_KETTLE, KNOB_AND_KETTLE, DRUMLINS, TUYAS, LOWLANDS, LOWLANDS}, // Low
@@ -102,7 +102,13 @@ public enum ChooseBiomes implements RegionTask
                 final float temp = point.temperature;
                 if (temp < maxIceSheetTemp)
                 {
-                    point.biome = randomSeededFrom(rngSeed, areaSeed, ICE_SHEET_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                    int biome = randomSeededFrom(rngSeed, areaSeed, ICE_SHEET_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+
+                    if (point.distanceToOcean < 3 && isFlatIceSheet(biome))
+                    {
+                        biome = ICE_SHEET_OCEANIC;
+                    }
+                    point.biome = biome;
                 }
                 else if (temp < maxIceSheetTemp + 1)
                 {
@@ -243,16 +249,6 @@ public enum ChooseBiomes implements RegionTask
         if (age == 1)
             return ACTIVE_SHIELD_VOLCANO;
         return PLAINS;
-    }
-
-    private int getGlacialEdgeBiome(int biome)
-    {
-        if (biome == ICE_SHEET_MOUNTAINS)
-            return GLACIATED_MOUNTAINS;
-        if (biome == ICE_SHEET_OCEANIC_MOUNTAINS)
-            return GLACIATED_OCEANIC_MOUNTAINS;
-
-        return ICE_SHEET_EDGE;
     }
 
     private int getTowerKarstBiome(int biome)

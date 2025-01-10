@@ -134,7 +134,7 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
                     // Reached surface. Place top state and switch to subsurface layers
                     if (y < context.getSeaLevel() - 1)
                     {
-                        context.setBlockState(y, SurfaceStates.GRAVEL);
+                        context.setBlockState(y, SurfaceStates.SAND);
                     }
                     else
                     {

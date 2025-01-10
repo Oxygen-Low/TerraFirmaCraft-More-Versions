@@ -20,7 +20,7 @@ public class PatternedGroundSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
+        final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.INSTANCE;
         final Noise2D edges = BiomeNoise.patternedGround(context.getSeed());
 
         if (edges.noise(context.pos().getX(), context.pos().getZ()) * context.weight() >= -0.60)

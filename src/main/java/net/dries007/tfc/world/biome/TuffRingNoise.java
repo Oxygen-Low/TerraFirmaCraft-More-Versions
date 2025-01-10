@@ -53,7 +53,7 @@ public final class TuffRingNoise
         jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.032f, 0.032f).spread(0.064f);
     }
 
-    public double modifyHeight(double x, double z, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight, long seed)
+    public double modifyHeight(double x, double z, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleHeight, long seed)
     {
         final Cellular2D.Cell cell = sampleCell(x, z, rarity);
         final double baseHeight = baseNoise.noise(x, z);
@@ -62,7 +62,7 @@ public final class TuffRingNoise
             final float f1 = (float) cell.f1();
             final float easing = Mth.clamp(TuffRingNoise.calculateEasing(f1) + (float) jitterNoise.noise(x, z), 0, 1);
             final float shape = TuffRingNoise.calculateShape(1 - easing);
-            final float ringAdditionalHeight = shape * scaleVolcanoHeight + (shape > 0.5 ? addNoise(seed, x, z) : 0f);
+            final float ringAdditionalHeight = shape * scaleHeight + (shape > 0.5 ? addNoise(seed, x, z) : 0f);
             final float ringHeight = SEA_LEVEL_Y + baseVolcanoHeight + ringAdditionalHeight;
             //Linearly scales between baseHeight and the max of baseHeight and ringHeight near the edges of cells
             return Mth.lerp(50 * Mth.clamp(cell.f2() - f1, 0, 0.02), baseHeight, Math.max(ringHeight, baseHeight));
@@ -76,7 +76,7 @@ public final class TuffRingNoise
     }
 
     /**
-     * Calculate the closeness value to a volcano, in the range [0, 1]. 1 = Center of a volcano, 0 = Nowhere near.
+     * Calculate the closeness value to a tuff ring center, in the range [0, 1]. 1 = Center, 0 = Nowhere near.
      */
     public float calculateEasing(int x, int z, int rarity)
     {
@@ -89,7 +89,7 @@ public final class TuffRingNoise
     }
 
     /**
-     * Calculate the center of the nearest volcano, if one exists, to the given x, z, at the given y.
+     * Calculate the center of the nearest tuff ring center, if one exists, to the given x, z, at the given y.
      */
     @Nullable
     public BlockPos calculateCenter(int x, int y, int z, int rarity)
@@ -103,8 +103,8 @@ public final class TuffRingNoise
     }
 
     /**
-     * Sample the nearest volcano cell to a given position.
-     * Returns {@code null} if the cell was excluded due to a rarity condition, or if the cell was too close to adjacent cells (possibly causing overlapping volcanoes)
+     * Sample the nearest tuff ring cell to a given position.
+     * Returns {@code null} if the cell was excluded due to a rarity condition, or if the cell was too close to adjacent cells (possibly causing overlapping tuff rings)
      */
     @Nullable
     private Cellular2D.Cell sampleCell(double x, double z, int rarity)

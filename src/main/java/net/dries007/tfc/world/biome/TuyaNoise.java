@@ -29,8 +29,8 @@ public final class TuyaNoise
     }
 
     /**
-     * @param t The unscaled square distance from the volcano, roughly in [0, 1.2]
-     * @return A noise function determining the volcano's height at any given position, in the range [0, 1]
+     * @param t The unscaled square distance from the tuya, roughly in [0, 1.2]
+     * @return A noise function determining the tuya's height at any given position, in the range [0, 1]
      */
     private static float calculateShape(float t)
     {
@@ -40,8 +40,8 @@ public final class TuyaNoise
     }
 
     /**
-     * @param t The unscaled square distance from the volcano, roughly in [0, 1.2]
-     * @return A noise function determining the volcano's height at any given position, in the range [0, 1]
+     * @param t The unscaled square distance from the tuya, roughly in [0, 1.2]
+     * @return A noise function determining the tuya's height at any given position, in the range [0, 1]
      */
     private static float calculateIcyShape(float t)
     {
@@ -65,16 +65,16 @@ public final class TuyaNoise
         jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.016f, 0.016f).spread(0.128f);
     }
 
-    public double modifyHeight(double x, double z, double baseHeight, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight, boolean icy)
+    public double modifyHeight(double x, double z, double baseHeight, int rarity, int baseVolcanoHeight, int scaleHeight, boolean icy)
     {
         final Cellular2D.Cell cell = sampleCell(x, z, rarity);
         if (cell != null)
         {
             final float easing = Mth.clamp(TuyaNoise.calculateEasing((float) cell.f1()) + (float) jitterNoise.noise(x, z), 0, 1);
             final float shape = icy ? TuyaNoise.calculateIcyShape(1 - easing) : TuyaNoise.calculateShape(1 - easing);
-            final float volcanoAdditionalHeight = shape * scaleVolcanoHeight + addNoise(seed, x, z);
-            final float volcanoHeight = SEA_LEVEL_Y + baseVolcanoHeight + volcanoAdditionalHeight;
-            return Mth.lerp(easing, baseHeight, 0.5f * (volcanoHeight + Math.max(volcanoHeight, baseHeight + 0.4f * volcanoAdditionalHeight)));
+            final float additionalHeight = shape * scaleHeight + addNoise(seed, x, z);
+            final float tuyaHeight = SEA_LEVEL_Y + baseVolcanoHeight + additionalHeight;
+            return Mth.lerp(easing, baseHeight, 0.5f * (tuyaHeight + Math.max(tuyaHeight, baseHeight + 0.4f * additionalHeight)));
         }
         return baseHeight;
     }
@@ -88,7 +88,7 @@ public final class TuyaNoise
     }
 
     /**
-     * Calculate the closeness value to a volcano, in the range [0, 1]. 1 = Center of a volcano, 0 = Nowhere near.
+     * Calculate the closeness value to a tuya, in the range [0, 1]. 1 = Center of a tuya, 0 = Nowhere near.
      */
     public float calculateEasing(int x, int z, int rarity)
     {
@@ -101,7 +101,7 @@ public final class TuyaNoise
     }
 
     /**
-     * Calculate the center of the nearest volcano, if one exists, to the given x, z, at the given y.
+     * Calculate the center of the nearest tuya, if one exists, to the given x, z, at the given y.
      */
     @Nullable
     public BlockPos calculateCenter(int x, int y, int z, int rarity)
@@ -115,8 +115,8 @@ public final class TuyaNoise
     }
 
     /**
-     * Sample the nearest volcano cell to a given position.
-     * Returns {@code null} if the cell was excluded due to a rarity condition, or if the cell was too close to adjacent cells (possibly causing overlapping volcanoes)
+     * Sample the nearest tuya cell to a given position.
+     * Returns {@code null} if the cell was excluded due to a rarity condition, or if the cell was too close to adjacent cells (possibly causing overlapping tuyas)
      */
     @Nullable
     private Cellular2D.Cell sampleCell(double x, double z, int rarity)

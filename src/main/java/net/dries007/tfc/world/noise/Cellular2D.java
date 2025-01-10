@@ -14,7 +14,6 @@ import it.unimi.dsi.fastutil.HashCommon;
  */
 public class Cellular2D implements Noise2D
 {
-    // Verify that making this a private, local variable hasn't screwed anything up?
     private final double jitter;
     private final int seed;
     private double frequency;

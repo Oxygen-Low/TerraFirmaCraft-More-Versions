@@ -37,7 +37,7 @@ public class TuffRingsSurfaceBuilder implements SurfaceBuilder
             final float easing = tuffRingNoise.calculateEasing(context.pos().getX(), context.pos().getZ(), context.biome().getTuffRingRarity());
             if (easing > 0.6f)
             {
-                if (startY < 66)
+                if (startY < context.getSeaLevel() + 3)
                 {
                     buildTuffSurface(context, startY, endY, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.TUFF, SurfaceStates.TUFF_GRAVEL);
                 }
