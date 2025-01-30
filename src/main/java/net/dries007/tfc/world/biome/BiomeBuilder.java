@@ -188,7 +188,7 @@ public class BiomeBuilder
         assert surfaceBuilderFactory != null : "volcanoes must be called after setting a surface builder";
 
         final Function<Seed, Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
-        this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight);
+        this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight, additive);
 
         this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
 

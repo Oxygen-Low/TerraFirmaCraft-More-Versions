@@ -8,6 +8,7 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.TuffRingNoise;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
@@ -23,7 +24,7 @@ public class TuffRingsSurfaceBuilder implements SurfaceBuilder
     private final SurfaceBuilder parent;
     private final TuffRingNoise tuffRingNoise;
 
-    public TuffRingsSurfaceBuilder(SurfaceBuilder parent, long seed)
+    public TuffRingsSurfaceBuilder(SurfaceBuilder parent, Seed seed)
     {
         this.parent = parent;
         this.tuffRingNoise = new TuffRingNoise(seed);

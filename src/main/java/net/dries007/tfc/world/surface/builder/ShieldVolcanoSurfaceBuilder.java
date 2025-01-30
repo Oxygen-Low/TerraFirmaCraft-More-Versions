@@ -9,6 +9,7 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -24,9 +25,9 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
 
     private final boolean hasLavaFlows;
     private final boolean sandy;
-    private final long seed;
+    private final Seed seed;
 
-    ShieldVolcanoSurfaceBuilder(long seed, boolean hasLavaFlows, boolean sandy)
+    ShieldVolcanoSurfaceBuilder(Seed seed, boolean hasLavaFlows, boolean sandy)
     {
         this.hasLavaFlows = hasLavaFlows;
         this.sandy = sandy;
@@ -36,7 +37,7 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final Noise2D noise = new OpenSimplex2D(seed).octaves(2).spread(0.25);
+        final Noise2D noise = new OpenSimplex2D(seed.seed()).octaves(2).spread(0.25);
 
         final int x = context.pos().getX();
         final int z = context.pos().getZ();
@@ -67,7 +68,7 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
         else
         {
             final double noiseValue = noise.noise(x, z);
-            final Noise2D lavaFlows = BiomeNoise.lavaFlow(seed);
+            final Noise2D lavaFlows = BiomeNoise.lavaFlow(seed.seed());
             final double flowValue = lavaFlows.noise(x, z);
 
             if (flowValue < 0.40)

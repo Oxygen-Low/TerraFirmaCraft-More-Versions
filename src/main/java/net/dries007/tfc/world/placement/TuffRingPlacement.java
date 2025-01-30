@@ -6,43 +6,19 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.stream.Stream;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.placement.PlacementContext;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-import net.dries007.tfc.world.Codecs;
-import net.dries007.tfc.world.biome.BiomeExtension;
-import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.TuffRingNoise;
 
-public class TuffRingPlacement extends PlacementModifier
+public class TuffRingPlacement extends CenterOrDistanceToPlacement<TuffRingNoise>
 {
-    public static final MapCodec<TuffRingPlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
-        Codecs.UNIT_FLOAT.optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
-    ).apply(instance, TuffRingPlacement::new));
-
-    private final boolean center;
-    private final float distance;
-
-    private final ThreadLocal<LocalContext> localContext;
+    public static final MapCodec<TuffRingPlacement> CODEC = codec(TuffRingPlacement::new);
 
     public TuffRingPlacement(boolean center, float distance)
     {
-        this.center = center;
-        this.distance = distance;
-        this.localContext = ThreadLocal.withInitial(() -> null);
+        super(center, distance);
     }
 
     @Override
@@ -52,49 +28,8 @@ public class TuffRingPlacement extends PlacementModifier
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
+    protected TuffRingNoise createContext(Seed seed)
     {
-        final WorldGenLevel level = context.getLevel();
-        final long seed = level.getSeed();
-
-        LocalContext local = localContext.get();
-        if (local == null || local.seed != seed)
-        {
-            local = new LocalContext(seed, new TuffRingNoise(seed));
-            localContext.set(local);
-        }
-
-        final Biome biome = level.getBiome(pos).value();
-        final BiomeExtension variants = TFCBiomes.getExtensionOrThrow(level, biome);
-        if (variants.hasTuffRings())
-        {
-            if (center)
-            {
-                final BlockPos center = local.tuffRingNoise.calculateCenter(pos.getX(), pos.getY(), pos.getZ(), variants.getTuffRingRarity());
-                if (center != null)
-                {
-                    if (level instanceof WorldGenRegion generating && !ensureCanWrite(generating, center))
-                    {
-                        return Stream.empty();
-                    }
-                    return Stream.of(center);
-                }
-            }
-            else if (local.tuffRingNoise.calculateEasing(pos.getX(), pos.getZ(), variants.getTuffRingRarity()) > this.distance)
-            {
-                return Stream.of(pos);
-            }
-        }
-        return Stream.empty();
+        return new TuffRingNoise(seed);
     }
-
-    private boolean ensureCanWrite(WorldGenRegion level, BlockPos pos)
-    {
-        final int xSection = SectionPos.blockToSectionCoord(pos.getX());
-        final int zSection = SectionPos.blockToSectionCoord(pos.getZ());
-        final ChunkPos chunkpos = level.getCenter();
-        return chunkpos.x == xSection && chunkpos.z == zSection;
-    }
-
-    record LocalContext(long seed, TuffRingNoise tuffRingNoise) {}
 }

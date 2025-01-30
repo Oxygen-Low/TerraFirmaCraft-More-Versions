@@ -10,13 +10,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
-public final class TuyaNoise
+public final class TuyaNoise implements CenterOrDistanceNoise
 {
     private static float calculateEasing(float f1)
     {
@@ -53,16 +54,16 @@ public final class TuyaNoise
 
     private final Cellular2D cellNoise;
     private final Noise2D jitterNoise;
-    private final long seed;
+    private final Seed seed;
 
     /**
      * @param seed The level seed - important, this is used from multiple different locations (base noise, surface builder, placement/decorator), and must have the same seed.
      */
-    public TuyaNoise(long seed)
+    public TuyaNoise(Seed seed)
     {
         this.seed = seed;
-        cellNoise = new Cellular2D(seed, 0.21f).spread(0.0033f);
-        jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.016f, 0.016f).spread(0.128f);
+        cellNoise = new Cellular2D(seed.seed(), 0.21f).spread(0.0033f);
+        jitterNoise = new OpenSimplex2D(seed.seed() + 1234123L).octaves(2).scaled(-0.016f, 0.016f).spread(0.128f);
     }
 
     public double modifyHeight(double x, double z, double baseHeight, int rarity, int baseVolcanoHeight, int scaleHeight, boolean icy)
@@ -72,7 +73,7 @@ public final class TuyaNoise
         {
             final float easing = Mth.clamp(TuyaNoise.calculateEasing((float) cell.f1()) + (float) jitterNoise.noise(x, z), 0, 1);
             final float shape = icy ? TuyaNoise.calculateIcyShape(1 - easing) : TuyaNoise.calculateShape(1 - easing);
-            final float additionalHeight = shape * scaleHeight + addNoise(seed, x, z);
+            final float additionalHeight = shape * scaleHeight + addNoise(seed.seed(), x, z);
             final float tuyaHeight = SEA_LEVEL_Y + baseVolcanoHeight + additionalHeight;
             return Mth.lerp(easing, baseHeight, 0.5f * (tuyaHeight + Math.max(tuyaHeight, baseHeight + 0.4f * additionalHeight)));
         }
@@ -85,6 +86,18 @@ public final class TuyaNoise
     public float addNoise(long seed, double x, double z)
     {
         return (float) new OpenSimplex2D(seed).octaves(2).spread(0.1).scaled(-2, 3).noise(x, z);
+    }
+
+    @Override
+    public boolean isValidBiome(BiomeExtension biome)
+    {
+        return biome.hasTuyas();
+    }
+
+    @Override
+    public int getRarity(BiomeExtension biome)
+    {
+        return biome.getTuyaRarity();
     }
 
     /**

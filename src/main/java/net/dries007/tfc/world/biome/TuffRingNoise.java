@@ -10,13 +10,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
-public final class TuffRingNoise
+public final class TuffRingNoise implements CenterOrDistanceNoise
 {
     private static float calculateEasing(float f1)
     {
@@ -47,10 +48,10 @@ public final class TuffRingNoise
     /**
      * @param seed The level seed - important, this is used from multiple different locations (base noise, surface builder, placement/decorator), and must have the same seed.
      */
-    public TuffRingNoise(long seed)
+    public TuffRingNoise(Seed seed)
     {
-        cellNoise = new Cellular2D(seed).spread(0.003f);
-        jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.032f, 0.032f).spread(0.064f);
+        cellNoise = new Cellular2D(seed.seed()).spread(0.003f);
+        jitterNoise = new OpenSimplex2D(seed.seed() + 1234123L).octaves(2).scaled(-0.032f, 0.032f).spread(0.064f);
     }
 
     public double modifyHeight(double x, double z, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleHeight, long seed)
@@ -115,5 +116,17 @@ public final class TuffRingNoise
             return cell;
         }
         return null;
+    }
+
+    @Override
+    public boolean isValidBiome(BiomeExtension biome)
+    {
+        return biome.hasTuffRings();
+    }
+
+    @Override
+    public int getRarity(BiomeExtension biome)
+    {
+        return biome.getTuffRingRarity();
     }
 }

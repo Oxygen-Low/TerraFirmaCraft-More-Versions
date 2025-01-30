@@ -8,6 +8,7 @@ package net.dries007.tfc.world.region;
 
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
@@ -20,13 +21,13 @@ public enum AddHotspots implements RegionTask
     public void apply(RegionGenerator.Context context)
     {
         final Region region = context.region;
-        final long seed = context.generator().levelSeed();
+        final Seed seed = context.generator().seed();
         final double threshold = 0.65;
         final double expansionThreshold = 0.15;
 
-        final Noise2D hotspotAge = BiomeNoise.hotSpotAge(seed).spread(128);
-        final Noise2D hotspotIntensity = BiomeNoise.hotSpotIntensity(seed).spread(128);
-        final Cellular2D plateRegions = BiomeNoise.plateRegions(seed).spread(128);
+        final Noise2D hotspotAge = BiomeNoise.hotSpotAge(seed.seed()).spread(128);
+        final Noise2D hotspotIntensity = BiomeNoise.hotSpotIntensity(seed.seed()).spread(128);
+        final Cellular2D plateRegions = BiomeNoise.plateRegions(seed.seed()).spread(128);
 
         final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
 
@@ -52,9 +53,9 @@ public enum AddHotspots implements RegionTask
         {
             final int index = queue.dequeueInt();
             final byte lastAge = region.atIndex(index).hotSpotAge;
-            final Noise2D intensityNoise = (lastAge == 1 ? BiomeNoise.activeHotSpots(seed)
-                : lastAge == 2 ? BiomeNoise.dormantHotSpots(seed)
-                : lastAge == 3 ? BiomeNoise.extinctHotSpots(seed) : BiomeNoise.ancientHotSpots(seed)).spread(128);
+            final Noise2D intensityNoise = (lastAge == 1 ? BiomeNoise.activeHotSpots(seed.seed())
+                : lastAge == 2 ? BiomeNoise.dormantHotSpots(seed.seed())
+                : lastAge == 3 ? BiomeNoise.extinctHotSpots(seed.seed()) : BiomeNoise.ancientHotSpots(seed.seed())).spread(128);
 
             for (int dx = -1; dx <= 1; dx++)
             {

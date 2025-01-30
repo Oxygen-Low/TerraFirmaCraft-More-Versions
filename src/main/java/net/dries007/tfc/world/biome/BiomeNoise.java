@@ -1138,16 +1138,16 @@ public final class BiomeNoise
     /**
      * Adds volcanoes to a base noise height map
      */
-    public static Noise2D addTuffRings(long seed, Noise2D baseNoise, int rarity, int baseRingHeight, int scaleRingHeight)
+    public static Noise2D addTuffRings(Seed seed, Noise2D baseNoise, int rarity, int baseRingHeight, int scaleRingHeight)
     {
         final TuffRingNoise rings = new TuffRingNoise(seed);
-        return (x, z) -> rings.modifyHeight(x, z, baseNoise, rarity, baseRingHeight, scaleRingHeight, seed);
+        return (x, z) -> rings.modifyHeight(x, z, baseNoise, rarity, baseRingHeight, scaleRingHeight, seed.seed());
     }
 
     /**
      * Adds tuya volcanoes to a base noise height map
      */
-    public static Noise2D addTuyas(long seed, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight, boolean icy)
+    public static Noise2D addTuyas(Seed seed, Noise2D baseNoise, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight, boolean icy)
     {
         final TuyaNoise tuyas = new TuyaNoise(seed);
         return (x, z) -> tuyas.modifyHeight(x, z, baseNoise.noise(x, z), rarity, baseVolcanoHeight, scaleVolcanoHeight, icy);

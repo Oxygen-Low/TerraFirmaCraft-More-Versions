@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.surface.builder;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -15,13 +16,18 @@ public class StoneCirclesSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory INSTANCE = StoneCirclesSurfaceBuilder::new;
 
-    public StoneCirclesSurfaceBuilder(long seed) {}
+    private final Seed seed;
+
+    public StoneCirclesSurfaceBuilder(Seed seed)
+    {
+        this.seed = seed;
+    }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
-        final Noise2D edges = BiomeNoise.stoneCircles(context.getSeed());
+        final Noise2D edges = BiomeNoise.stoneCircles(seed.seed());
 
         if (edges.noise(context.pos().getX(), context.pos().getZ()) * context.weight() <= 0.60)
         {

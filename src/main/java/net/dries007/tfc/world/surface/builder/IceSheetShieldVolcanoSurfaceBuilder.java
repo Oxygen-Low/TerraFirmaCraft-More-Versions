@@ -9,6 +9,7 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -19,18 +20,18 @@ import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory ICE_SHEET = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.iceSheetSurfaceHeight(seed).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true, SEA_LEVEL_Y);
-    public static final SurfaceBuilderFactory GLACIATED = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed, BiomeNoise.hotSpotIntensity(seed)), BiomeNoise.iceSheetSurfaceHeight(seed).max(BiomeNoise.shieldVolcanoGlacierSurface(seed, BiomeNoise.hotSpotIntensity(seed))), false, true, SEA_LEVEL_Y + 30);
+    public static final SurfaceBuilderFactory ICE_SHEET = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed.seed(), BiomeNoise.hotSpotIntensity(seed.seed())), BiomeNoise.iceSheetSurfaceHeight(seed.seed()).max(BiomeNoise.shieldVolcanoIceSheetSurface(seed.seed(), BiomeNoise.hotSpotIntensity(seed.seed()))), false, true, SEA_LEVEL_Y);
+    public static final SurfaceBuilderFactory GLACIATED = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed.seed(), BiomeNoise.hotSpotIntensity(seed.seed())), BiomeNoise.iceSheetSurfaceHeight(seed.seed()).max(BiomeNoise.shieldVolcanoGlacierSurface(seed.seed(), BiomeNoise.hotSpotIntensity(seed.seed()))), false, true, SEA_LEVEL_Y + 30);
 
 
-    private final long seed;
+    private final Seed seed;
     private final Noise2D iceSurfaceNoise;
     private final Noise2D baseNoise;
     private final boolean hasMoraines;
     private final boolean hasStonyPeaks;
     private final int minFreezingHeight;
 
-    IceSheetShieldVolcanoSurfaceBuilder(long seed, Noise2D baseNoise, Noise2D iceSurfaceNoise, boolean hasMoraines, boolean hasStonyPeaks, int minFreezingHeight)
+    IceSheetShieldVolcanoSurfaceBuilder(Seed seed, Noise2D baseNoise, Noise2D iceSurfaceNoise, boolean hasMoraines, boolean hasStonyPeaks, int minFreezingHeight)
     {
         this.baseNoise = baseNoise;
         this.iceSurfaceNoise = iceSurfaceNoise;
