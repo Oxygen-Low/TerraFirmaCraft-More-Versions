@@ -6,29 +6,28 @@
 
 package net.dries007.tfc.world.surface.builder;
 
-import java.util.Random;
 
+import java.util.Random;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SoilSurfaceState;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
-import net.dries007.tfc.world.surface.SurfaceStates;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
+import static net.dries007.tfc.world.surface.SurfaceStates.*;
 
 public class GrassyDunesSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory INSTANCE = seed -> new GrassyDunesSurfaceBuilder(seed);
+    public static final SurfaceBuilderFactory INSTANCE = GrassyDunesSurfaceBuilder::new;
 
     private final Noise2D grassHeightVariationNoise;
 
-    public GrassyDunesSurfaceBuilder(long seed)
+    public GrassyDunesSurfaceBuilder(Seed seed)
     {
-        final Random random = new Random(seed);
-
-        grassHeightVariationNoise = new OpenSimplex2D(random.nextLong()).octaves(2).scaled(SEA_LEVEL_Y + 8, SEA_LEVEL_Y + 14).spread(0.08f);
+        grassHeightVariationNoise = new OpenSimplex2D(seed.next()).octaves(2).scaled(SEA_LEVEL_Y + 8, SEA_LEVEL_Y + 14).spread(0.08f);
     }
 
     @Override
@@ -36,16 +35,16 @@ public class GrassyDunesSurfaceBuilder implements SurfaceBuilder
     {
         final double heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
         final double trueSlope = context.getSlope();
+
         context.setSlope(trueSlope * (1 - context.weight()));
-        final SurfaceState sand = SurfaceStates.SAND;
 
         if (startY > heightVariation && trueSlope < 5)
         {
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_SAND, sand, sand, sand, sand);
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, TOP_GRASS_TO_SAND, SAND, SAND, SAND, SAND);
         }
         else
         {
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.SNOWY_SAND, sand, sand, sand, sand);
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SNOWY_SAND, SAND, SAND, SAND, SAND);
         }
     }
 }

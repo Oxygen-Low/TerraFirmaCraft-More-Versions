@@ -14,13 +14,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.BlockColumn;
 import net.minecraft.world.level.levelgen.SurfaceSystem;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.biome.BiomeNoise;
-import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 
 public class OceanSurfaceBuilder implements SurfaceBuilder
@@ -35,13 +34,13 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
      * {@link net.minecraft.data.worldgen.NoiseData} for values
      * {@link SurfaceSystem}'s constructor for the specific noises used
      */
-    public OceanSurfaceBuilder(long seed)
+    public OceanSurfaceBuilder(Seed seed)
     {
-        final RandomSource generator = new XoroshiroRandomSource(seed);
+        final RandomSource random = seed.fork();
 
-        this.icebergPillarNoise = NormalNoise.create(generator.fork(), new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D, 1.0D));
-        this.icebergPillarRoofNoise = NormalNoise.create(generator.fork(), new NormalNoise.NoiseParameters(-3, 1.0D));
-        this.icebergSurfaceNoise = NormalNoise.create(generator.fork(), new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D));
+        this.icebergPillarNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D, 1.0D));
+        this.icebergPillarRoofNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-3, 1.0D));
+        this.icebergSurfaceNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D));
     }
 
     @Override
@@ -146,7 +145,7 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
             }
             else
             {
-                final double patternedNoise = BiomeNoise.seaIceNoise(context.getSeed()).noise(x, z);
+                final double patternedNoise = BiomeNoise.seaIceNoise(seed).noise(x, z);
                 final double tempFactor = Mth.clampedMap(maxAnnualTemperature, iceStart, solidIceStart, 0.3, 0.04);
                 placeIce = patternedNoise > tempFactor;
             }

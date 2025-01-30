@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
 import net.dries007.tfc.test.TestSetup;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
@@ -77,7 +78,7 @@ public class RegionGeneratorTests implements TestSetup
         Arrays.fill(taskData, -1);
 
         final Settings settings = BuiltinWorldPreset.defaultSettings();
-        final RegionGenerator generator = new RegionGenerator(settings, new XoroshiroRandomSource(seed), seed);
+        final RegionGenerator generator = new RegionGenerator(settings, Seed.of(seed));
 
         for (int dx = 0; dx < size; dx++)
             for (int dz = 0; dz < size; dz++)
