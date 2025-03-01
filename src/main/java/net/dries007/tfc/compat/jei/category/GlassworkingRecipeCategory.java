@@ -26,7 +26,6 @@ import net.dries007.tfc.common.blocks.PouredGlassBlock;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
-import net.dries007.tfc.util.Helpers;
 
 /**
  * Only supports up to 6 operations... because JEI panels aren't resizable as far as I can tell.
@@ -60,7 +59,8 @@ public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingR
         {
             var slot = builder.addSlot(RecipeIngredientRole.CATALYST, idx < 3 ? 6 : 90, 25 * ((idx % 3) + 1))
                 .setBackground(this.slot, -1, -1);
-            for (Holder<Item> item : operation.getItems()) {
+            for (Holder<Item> item : operation.getItems())
+            {
                 slot.addItemStack(item.value().getDefaultInstance());
             }
 
