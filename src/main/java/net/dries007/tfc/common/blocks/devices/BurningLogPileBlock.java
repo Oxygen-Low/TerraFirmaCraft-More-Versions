@@ -44,6 +44,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockExtension, 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
+
     public static void lightLogPile(Level level, BlockPos pos)
     {
         if (level.getBlockEntity(pos) instanceof LogPileBlockEntity pile)

@@ -127,24 +127,18 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (!player.isShiftKeyDown())
+        if (!player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof LogPileBlockEntity logPile)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
-                if (!level.isClientSide)
-                {
-                    if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
-                    {
-                        insertAndPushUp(stack, state, level, pos, logPile, false);
-                    }
-                    else if (stack.isEmpty())
-                    {
-                        extractFromTop(level, pos, player, false);
-                    }
-                }
-            });
+            if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
+            {
+                insertAndPushUp(stack, state, level, pos, logPile, false);
+            }
+            else if (stack.isEmpty())
+            {
+                extractFromTop(level, pos, player, false);
+            }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
@@ -154,26 +148,21 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         {
             extractFromTop(level, pos.above(), player, all);
         }
-        else
+        else if (level.getBlockEntity(pos) instanceof LogPileBlockEntity logPile)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
-                if (!level.isClientSide)
+            for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
+            {
+                ItemStack slotStack = logPile.getInventory().getStackInSlot(i);
+                if (!slotStack.isEmpty())
                 {
-                    for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
+                    ItemHandlerHelper.giveItemToPlayer(player, slotStack.split(1));
+                    logPile.setAndUpdateSlots(-1);
+                    if (!all)
                     {
-                        ItemStack slotStack = logPile.getInventory().getStackInSlot(i);
-                        if (!slotStack.isEmpty())
-                        {
-                            ItemHandlerHelper.giveItemToPlayer(player, slotStack.split(1));
-                            logPile.setAndUpdateSlots(-1);
-                            if (!all)
-                            {
-                                break;
-                            }
-                        }
+                        break;
                     }
                 }
-            });
+            }
         }
     }
 
@@ -183,32 +172,27 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         {
             return;
         }
-        if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == LogPileBlockEntity.SLOTS && !stack.isEmpty())
+        final BlockPos abovePos = pos.above();
+        if (level.getBlockState(abovePos).isAir() && logPile.logCount() == LogPileBlockEntity.SLOTS && !stack.isEmpty())
         {
-            level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(HORIZONTAL_AXIS, state.getValue(HORIZONTAL_AXIS)));
-            if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
+            level.setBlockAndUpdate(abovePos, TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(HORIZONTAL_AXIS, state.getValue(HORIZONTAL_AXIS)));
+            if (level.getBlockEntity(abovePos) instanceof LogPileBlockEntity pileAbove)
             {
-                BlockState stateAbove = level.getBlockState(pos.above());
-                if (dumbInsert(stack, stateAbove, level, pos.above(), pileAbove, all))
+                BlockState stateAbove = level.getBlockState(abovePos);
+                if (dumbInsert(stack, stateAbove, level, abovePos, pileAbove, all))
                 {
                     return;
                 }
                 else
                 {
-                    level.removeBlock(pos.above(), false);
+                    level.removeBlock(abovePos, false);
                 }
             }
         }
-        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock && logPile.logCount() == LogPileBlockEntity.SLOTS)
+        if (level.getBlockState(abovePos).getBlock() instanceof LogPileBlock && logPile.logCount() == LogPileBlockEntity.SLOTS && level.getBlockEntity(abovePos) instanceof LogPileBlockEntity pileAbove)
         {
-            level.getBlockEntity(pos.above(), TFCBlockEntities.LOG_PILE.get()).ifPresent(
-                pileAbove -> {
-                    BlockState stateAbove = level.getBlockState(pos.above());
-
-                    LogPileBlock.insertAndPushUp(stack, stateAbove, level, pos.above(), pileAbove, all);
-                }
-            );
-
+            BlockState stateAbove = level.getBlockState(abovePos);
+            LogPileBlock.insertAndPushUp(stack, stateAbove, level, abovePos, pileAbove, all);
         }
     }
 
@@ -220,7 +204,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
             insertStack = Helpers.insertAllSlots(logPile.getInventory(), insertStack);
             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
             {
-                Helpers.playPlaceSound(level, pos, SoundType.WOOD);
+                Helpers.playPlaceSound(null, level, pos, SoundType.WOOD);
                 stack.setCount(insertStack.getCount()); // modify original stack
                 logPile.setAndUpdateSlots(-1);
                 return true;
@@ -228,7 +212,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         }
         else if (Helpers.insertOne(logPile, stack))
         {
-            Helpers.playPlaceSound(level, pos, state);
+            Helpers.playPlaceSound(null, level, pos, state);
             stack.shrink(1);
             logPile.setAndUpdateSlots(-1);
             return true;

@@ -249,15 +249,14 @@ public final class InteractionManager
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
-
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
                         .map(logPileBlockEntity -> {
                             if (!level.isClientSide())
                             {
                                 LogPileBlock.insertAndPushUp(stack, stateClicked, level, posClicked, logPileBlockEntity, true);
-                                return InteractionResult.SUCCESS;
+                                return InteractionResult.sidedSuccess(level.isClientSide);
                             }
-                            return InteractionResult.SUCCESS;
+                            return InteractionResult.sidedSuccess(level.isClientSide);
                         }).orElse(InteractionResult.PASS);
                 }
                 else if (level.getBlockState(relativePos.below()).isFaceSturdy(level, relativePos.below(), Direction.UP))
