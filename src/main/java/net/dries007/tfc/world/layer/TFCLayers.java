@@ -42,6 +42,7 @@ public class TFCLayers
     public static final int HIGHLANDS = idFor(TFCBiomes.HIGHLANDS);
     public static final int BADLANDS = idFor(TFCBiomes.BADLANDS);
     public static final int PLATEAU = idFor(TFCBiomes.PLATEAU);
+    public static final int PLATEAU_WIDE = idFor(TFCBiomes.PLATEAU_WIDE);
     public static final int OLD_MOUNTAINS = idFor(TFCBiomes.OLD_MOUNTAINS);
     public static final int MOUNTAINS = idFor(TFCBiomes.MOUNTAINS);
     public static final int VOLCANIC_MOUNTAINS = idFor(TFCBiomes.VOLCANIC_MOUNTAINS);

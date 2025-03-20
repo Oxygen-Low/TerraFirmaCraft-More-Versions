@@ -60,11 +60,11 @@ def generate(rm: ResourceManager):
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
-    biome(rm, 'inverted_badlands', 'mesa', lake_features=False)
     biome(rm, 'canyons', 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
     biome(rm, 'low_canyons', 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
     biome(rm, 'plains', 'plains')
     biome(rm, 'plateau', 'extreme_hills', boulders=True, hot_spring_features='empty')
+    biome(rm, 'plateau_wide', 'extreme_hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'hills', 'plains')
     biome(rm, 'rolling_hills', 'plains', boulders=True)
     biome(rm, 'highlands', 'plains', boulders=True, hot_spring_features='empty')

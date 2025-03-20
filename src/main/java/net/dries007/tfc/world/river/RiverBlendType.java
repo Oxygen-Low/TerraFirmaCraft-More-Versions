@@ -13,9 +13,13 @@ import net.dries007.tfc.world.Seed;
 public enum RiverBlendType
 {
     NONE(seed -> RiverNoiseSampler.NONE),
+    BANKED(RiverNoise::banked),
+    TALL_BANKED(RiverNoise::tallBanked),
+    FLOODPLAIN(RiverNoise::floodplain),
     WIDE(RiverNoise::wide),
     CANYON(RiverNoise::canyon),
     TALL_CANYON(RiverNoise::tallCanyon),
+    TALUS(RiverNoise::talus),
     TERRACES(RiverNoise::terraces),
     CAVE(RiverNoise::cave);
 
