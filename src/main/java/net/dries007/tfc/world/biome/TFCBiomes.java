@@ -8,7 +8,6 @@ package net.dries007.tfc.world.biome;
 
 import java.util.Objects;
 
-import net.dries007.tfc.world.surface.builder.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -24,6 +23,23 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.river.RiverBlendType;
+import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.BurrenSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.DuneSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.FlatsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.GrassyDunesSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.IceSheetShieldVolcanoSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.IceSheetSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.LowlandsSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.NormalSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.OceanSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.PatternedGroundSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.RiverSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.RockyPlateauSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.ShieldVolcanoSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.ShilinSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.StoneCirclesSurfaceBuilder;
 
 import static net.dries007.tfc.world.biome.BiomeBuilder.*;
 
