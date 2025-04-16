@@ -183,6 +183,17 @@ public interface CraftingRecipes extends Recipes
 
         // todo: pass over new recipes from 1.21, are there any we need to nuke / replace easily?
 
+        recipe("small")
+            .input(TFCBlocks.HARDENED_CLAY)
+            .input(FluidContentIngredient.of(Fluids.WATER, 100))
+            .shapeless(Items.CLAY_BALL, 4);
+
+        for (int n = 1; n <= 8; n++)
+            recipe("" + n)
+                .input(TFCBlocks.HARDENED_CLAY, n)
+                .input(FluidContentIngredient.of(Fluids.WATER, 1000))
+                .shapeless(Items.CLAY, n * 4);
+
         TFCItems.GEMS.forEach((gem, item) -> recipe()
             .damageInputs()
             .input(TFCItems.SANDPAPER)
@@ -865,9 +876,9 @@ public interface CraftingRecipes extends Recipes
             .input(Tags.Items.GRAVELS, 4)
             .shapeless(TFCBlocks.AGGREGATE);
         recipe()
-            .input('S', Items.SCAFFOLDING)
+            .input('S', Items.STICK)
             .input('L', TFCTags.Items.LUMBER)
-            .pattern("L L", " S ", "L L")
+            .pattern("LLL", "S S", "S S")
             .shaped(TFCBlocks.BARREL_RACK);
         recipe()
             .input('L', TFCTags.Items.LUMBER)
@@ -1049,7 +1060,7 @@ public interface CraftingRecipes extends Recipes
             .input(Items.PAPER)
             .input(TFCItems.POWDERS.get(Powder.FLUX))
             .input(TFCItems.GLUE)
-            .input(TFCTags.Items.VOLCANIC_SAND)
+            .input(Tags.Items.SANDS)
             .input(TFCTags.Items.GEM_POWDERS)
             .shapeless(TFCItems.SANDPAPER);
         recipe()

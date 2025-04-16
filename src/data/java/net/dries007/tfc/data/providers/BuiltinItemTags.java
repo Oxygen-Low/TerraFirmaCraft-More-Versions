@@ -106,6 +106,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
         tag(Tags.Items.STRINGS).add(TFCItems.WOOL_YARN);
         tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
+        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
 
         // ===== TFC Tags ===== //
 
@@ -210,7 +211,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Items.PAPER,
             TFCItems.JUTE_FIBER,
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS),
-            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DEAD_GRASS),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE));
 
@@ -423,6 +423,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.LOG), tannin::contains)
             .addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.WOOD), tannin::contains);
 
+        tag(ItemTags.LOGS_THAT_BURN).add(TFCItems.STICK_BUNDLE);
         tag(FIREPIT_KINDLING)
             .addTags(ItemTags.LEAVES, BOOKS)
             .add(TFCItems.STRAW, Items.PAPER);

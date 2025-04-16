@@ -47,6 +47,7 @@ class Vein(NamedTuple):
     project: bool | None  # Project to surface
     project_offset: bool | None  # Project offset
     near_lava: bool | None
+    simple_blocks: bool
 
     @staticmethod
     def new(
@@ -68,6 +69,7 @@ class Vein(NamedTuple):
         deep_indicator: tuple[int, int] = (1, 0),  # Pair of (rarity, count) for underground indicators
         project: str | bool = None,  # Projects to surface. Either True or 'offset'
         near_lava: bool | None = None,
+        simple_blocks: bool = False,
     ):
         assert 0 < density < 1
         assert isinstance(rocks, tuple), 'Forgot the trailing comma in a single element tuple: %s' % repr(rocks)
@@ -75,7 +77,7 @@ class Vein(NamedTuple):
         assert project is None or project is True or project == 'offset'
 
         underground_rarity, underground_count = deep_indicator
-        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava)
+        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava, simple_blocks)
 
     def config(self) -> dict[str, Any]:
         cfg = {
@@ -374,8 +376,8 @@ ORE_VEINS: dict[str, Vein] = {
     'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
 
     # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
-    'lignite': Vein.new('lignite', 160, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),
-    'bituminous_coal': Vein.new('bituminous_coal', 210, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset'),
+    'lignite': Vein.new('lignite', 160, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset', simple_blocks=True),
+    'bituminous_coal': Vein.new('bituminous_coal', 210, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset', simple_blocks=True),
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins, or in tuff near the surface
     'sulfur': Vein.new('sulfur', 4, 18, -64, -45, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5, near_lava=True),
@@ -392,7 +394,7 @@ ORE_VEINS: dict[str, Vein] = {
     'sylvite': Vein.new('sylvite', 60, 35, 40, 100, 0.35, ('shale', 'claystone', 'chert'), vein_type='disc', height=5),
     'borax': Vein.new('borax', 40, 23, 40, 100, 0.2, ('claystone', 'limestone', 'shale'), vein_type='disc', height=3),
     'gypsum': Vein.new('gypsum', 70, 25, 40, 100, 0.3, ('sedimentary',), vein_type='disc', height=5),
-    'halite': Vein.new('halite', 110, 35, -45, -12, 0.85, ('sedimentary',), vein_type='disc', height=4, project='offset'),
+    'halite': Vein.new('halite', 110, 35, -45, -12, 0.85, ('sedimentary',), vein_type='disc', height=4, project='offset', simple_blocks=True),
 
     # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
     'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.12, ('limestone', 'marble')),
@@ -438,7 +440,7 @@ KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
-MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
+MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar', 'beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
@@ -511,6 +513,7 @@ PLANTS: dict[str, Plant] = {
     'star_grass': Plant(False, 5, 40, 50, 260, 'grass_water', False),
     'timothy_grass': Plant(False, -16.4, 17.5, 289, 500, 'short_grass', False),
     'raddia_grass': Plant(False, 19.3, 40, 330, 500, 'short_grass', False),
+    'red_oat_grass': Plant(False, 15.8, 40, 90, 500, 'short_grass', False),
 
     'allium': Plant(False, -5.7, 1.4, 150, 400, 'standard'),
     'anthurium': Plant(False, 13.9, 40, 290, 500, 'standard'),
@@ -607,22 +610,55 @@ PLANTS: dict[str, Plant] = {
     'purple_water_lily': Plant(False, 9.5, 40, 0, 500, 'floating_fresh'),
     'water_taro': Plant(False, 13.9, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -0.4, 22.9, 0, 75, 'dry'),
+
+    'bear_grass': Plant(False, -2.2, -13, 380, 500, 'tall_plant'),
+    'edelweiss': Plant(False, -9.4, 5, 200, 450, 'standard'),
+    'elegant_sunburst_lichen': Plant(False, -33, -11.5, 0, 225, 'creeping'),
+    'kinnikinnick': Plant(False, -18.4, -13, 210, 500, 'standard'),
+    'moss_campion': Plant(False, -30, -7.6, 0, 210, 'dry'),
+    'ramunda': Plant(False, -13, -0.4, 0, 190, 'standard'),
+    'shawiash': Plant(False, -16.6, -2.2, 250, 500, 'standard'),
+    'yellow_saxifrage': Plant(False, -16.6, -4, 160, 500, 'standard'),
+
+    'prickly_pear': Plant(False, -4, 21.2, 55, 155, 'cactus'),
+    'prickly_pear_purple': Plant(False, 8.6, 14., 40, 140, 'cactus'),
+
+    'azalea': Plant(False, -4, 15.8, 420, 500, 'tall_plant'),
+    'bird_nest_fern': Plant(False, 17.6, 40, 260, 500, 'perched_epiphyte'),
+    'buttercup': Plant(False, -9.4, 15.8, 200, 400, 'standard'),
+    'cornflower': Plant(False, -15.7, 2.5, 135, 310, 'standard'),
+    'dry_grass': Plant(False, -13, 40, 35, 95, 'dry'),
+    'fan_palm': Plant(False, 23., 40, 270, 420, 'tall_plant'),
+    'mountain_hullwort': Plant(False, 15.8, 40, 270, 500, 'tall_plant'),
+    'palash': Plant(False, 15.8, 24.8, 190, 500, 'tall_plant'),
+    'penwortel': Plant(False, 12.2, 24.8, 135, 380, 'standard'),
+    'qantu': Plant(False, 10.4, 23., 200, 350, 'standard'),
+    'ramirezella': Plant(False, 17.6, 40, 210, 430, 'epiphyte'),
+    'silken_pincushion_cactus': Plant(False, 17.6, 40, 0, 170, 'standard'),
+    'silver_bromeliad': Plant(False, 21.2, 28.4, 25, 110, 'perched_epiphyte'),
+    'sunflower': Plant(False, 8.6, 17.6, 100, 205, 'standard'),
+    'tank_bromeliad': Plant(False, 17.6, 26.6, 320, 500, 'perched_epiphyte'),
 }
 
 FLOWERPOT_CROSS_PLANTS = {
     'allium': 'allium_0',
     'anthurium': 'anthurium_0',
     'athyrium_fern': 'single',
+    'bear_grass': 'potted',
     'black_orchid': 'black_orchid_0',
     'blood_lily': 'blood_lily_0',
     'blue_orchid': 'blue_orchid_0',
     'blue_ginger': 'blue_ginger_0',
+    'buttercup': 'potted',
     'butterfly_milkweed': 'potted',
     'calendula': 'calendula_0',
     'canna': 'canna_0',
+    'cornflower': 'cornflower_0',
     'dandelion': 'dandelion_0',
     'dead_bush': 'dead_bush0',
     'desert_flame': 'desert_flame_0',
+    'dry_grass': 'short_dry_grass',
+    'edelweiss': 'edelweiss_0',
     'field_horsetail': 'potted',
     'foxglove': 'item',
     'goldenrod': 'goldenrod_0',
@@ -642,7 +678,10 @@ FLOWERPOT_CROSS_PLANTS = {
     'perovskia': 'perovskia_0',
     'poppy': 'poppy_0',
     'primrose': 'primrose',
+    'prickly_pear': 'potted',
+    'prickly_pear_purple': 'potted',
     'pulsatilla': 'pulsatilla_0',
+    'ramunda': 'ramunda_0',
     'rose': 'classic',
     'sacred_datura': 'sacred_datura_0',
     'sagebrush': 'sagebrush_0',
@@ -662,11 +701,13 @@ FLOWERPOT_CROSS_PLANTS = {
     'tulip_pink': 'tulip_pink_0',
     'tulip_red': 'tulip_red_0',
     'tulip_white': 'tulip_white_0',
+    'yellow_saxifrage': 'potted',
     'yucca': 'potted'
 }
 
-MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo')
+MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo', 'moss_campion', 'shawiash', 'kinnikinnick')
 
+# Single block, cross model, just say how many stages
 SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'allium': 6,
     'anthurium': 2,
@@ -676,6 +717,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'blue_orchid': 3,
     'butterfly_milkweed': 6,
     'desert_flame': 2,
+    'edelweiss': 3,
     'heliconia': 3,
     'houstonia': 3,
     'goldenrod': 5,
@@ -690,6 +732,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'poppy': 5,
     'primrose': 3,
     'pulsatilla': 6,
+    'ramunda': 2,
     'sacred_datura': 6,  # different
     'saguaro_fruit': 2,
     'silver_spurflower': 3,
@@ -699,6 +742,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'yucca': 4
 }
 
+# Any single-block plant, just generates blockstates and dynamic models
 # Blooming, Seeding, Dying, Dormant, Sprouting, Budding
 SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'allium': [0, 1, 2, 3, 4, 5],
@@ -709,27 +753,36 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'blue_orchid': [0, 1, 2, 2, 2, 2],
     'butterfly_milkweed': [0, 1, 2, 3, 4, 5],
     'calendula': [0, 1, 2, 3, 4, 5],
+    'cornflower': [0, 1, 1, 1, 1, 2],
     'dandelion': [0, 1, 2, 2, 3, 3],
     'desert_flame': [0, 0, 1, 1, 1, 0],
+    'edelweiss': [0, 1, 1, 1, 1, 2],
     'heather': [0, 0, 1, 1, 1, 0],
     'heliconia': [0, 0, 1, 1, 1, 2],
     'houstonia': [0, 0, 1, 1, 1, 2],
     'goldenrod': [0, 0, 1, 2, 3, 4],
     'grape_hyacinth': [0, 1, 2, 2, 2, 3],
-    'kangaroo_paw': [0, 1, 1, 1, 1, 1, 1],  # tinted
+    'kangaroo_paw': [0, 1, 1, 1, 1, 1],  # tinted
     'labrador_tea': [0, 1, 2, 3, 4, 5],
     'lily_of_the_valley': [0, 1, 2, 3, 4, 5],
+    'kinnikinnick': [0, 1, 2, 3, 4, 4],
     'meads_milkweed': [0, 1, 2, 3, 4, 5,],
+    'moss_campion': [0, 1, 1, 1, 2, 3],
     'nasturtium': [0, 1, 1, 2, 3, 4],
     'oxeye_daisy': [0, 1, 2, 3, 4, 5],
+    'penwortel': [0, 1, 1, 1, 1, 1],
     'perovskia': [0, 1, 2, 3, 4, 5],
     'poppy': [0, 1, 1, 1, 2, 3],
     'primrose': [0, 1, 1, 2, 2, 2],
     'pulsatilla': [0, 1, 2, 3, 4, 5],
+    'qantu': [0, 1, 1, 1, 1, 1],
+    'ramunda': [0, 1, 1, 1, 1, 1],
     'sacred_datura': [0, 1, 2, 3, 4, 5],
     'saguaro_fruit': [0, 1, 1, 1, 1, 1],
+    'shawiash': [0, 1, 2, 3, 4, 4],
     'silver_spurflower': [0, 1, 1, 1, 1, 2],
     'strelitzia': [0, 1, 2, 3, 4, 5],
+    'tank_bromeliad': [0, 1, 1, 1, 1, 1],
     'tropical_milkweed': [0, 1, 1, 1, 2, 3],
     'yucca': [0, 1, 2, 2, 2, 3]
 }
@@ -738,6 +791,7 @@ MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry
 SEAGRASS = ('star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail')
 
 SEAWEED = ('sago', 'gutweed', 'laminaria', 'milfoil')
+DROPS_MORE_FOR_AGE = ('buttercup', 'yellow_saxifrage', 'maiden_pink', 'silken_pincushion_cactus')
 
 VESSEL_TYPES = {
     'blue': 'a',
@@ -774,9 +828,9 @@ SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blowpipe')
 GLASS_TYPES = ('silica', 'hematitic', 'olivine', 'volcanic')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
-FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh', 'bone')
+FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'humus', 'rotten_flesh', 'bone')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo', 'flame_vine', 'cycad')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
 # todo: bush hydration / groundwater separation and proper ranges
