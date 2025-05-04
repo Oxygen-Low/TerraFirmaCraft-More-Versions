@@ -75,11 +75,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.BRICKS)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CRACKED_BRICKS)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_BRICKS)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CHISELED)
             .add(Blocks.BRICKS)
             .add(TFCBlocks.FIRE_BRICKS);
         tag(BlockTags.WOODEN_BUTTONS).add(TFCBlocks.WOODS, Wood.BlockType.BUTTON);
         tag(BlockTags.STONE_BUTTONS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.BUTTON);
         tag(BlockTags.WOODEN_DOORS).add(TFCBlocks.WOODS, Wood.BlockType.DOOR);
+        tag(BlockTags.DOORS).add(TFCBlocks.FIREPROOF_DOOR);
         tag(BlockTags.WOODEN_STAIRS).add(TFCBlocks.WOODS, Wood.BlockType.STAIRS);
         tag(BlockTags.WOODEN_SLABS).add(TFCBlocks.WOODS, Wood.BlockType.SLAB);
         tag(BlockTags.WOODEN_FENCES)
@@ -106,7 +108,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.FRUIT_TREE_LEAVES);
         // Includes wooden trapdoors
         tag(BlockTags.TRAPDOORS).add(TFCBlocks.METALS, Metal.BlockType.TRAPDOOR);
-        tag(BlockTags.DIRT).addTags(GRASS, DIRT, MUD);
+        tag(BlockTags.DIRT).addTags(GRASS, DIRT, COARSE_DIRT, MUD);
         tag(BlockTags.FLOWER_POTS).add(TFCBlocks.POTTED_PLANTS);
         tag(BlockTags.ICE).add(
             TFCBlocks.SEA_ICE,
@@ -125,7 +127,15 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.DEAD_CROPS)
             .add(TFCBlocks.WILD_CROPS);
         // todo: other crops?
-        // todo: add vines to climable tag?
+        tag(BlockTags.CLIMBABLE).add(
+            TFCBlocks.PLANTS.get(Plant.JUNGLE_VINES).get(),
+            TFCBlocks.PLANTS.get(Plant.HANGING_VINES).get(),
+            TFCBlocks.PLANTS.get(Plant.HANGING_VINES_PLANT).get(),
+            TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS).get(),
+            TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS_PLANT).get(),
+            TFCBlocks.PLANTS.get(Plant.LIANA).get(),
+            TFCBlocks.PLANTS.get(Plant.LIANA_PLANT).get()
+        );
         tag(BlockTags.FENCE_GATES).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
         tag(BlockTags.BASE_STONE_OVERWORLD)
             .addTags(STONES_RAW, STONES_HARDENED);
@@ -201,6 +211,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add2(TFCBlocks.ORES)
             .add3(TFCBlocks.GRADED_ORES)
             .add(TFCBlocks.SMALL_ORES)
+            .add(TFCBlocks.HALITE)
+            .add(TFCBlocks.LIGNITE)
+            .add(TFCBlocks.BITUMINOUS_COAL)
             .addOnly2(TFCBlocks.ROCK_BLOCKS, k -> k != Rock.BlockType.GRAVEL)
             .addAll2(TFCBlocks.ROCK_DECORATIONS)
             .add(TFCBlocks.ROCK_ANVILS)
@@ -214,6 +227,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .addAll(TFCBlocks.ALABASTER_POLISHED_DECORATIONS)
             .add(TFCBlocks.GROUNDCOVER)
             .add(TFCBlocks.GLAZED_LARGE_VESSELS)
+            .add(TFCBlocks.FIRE_BRICK_SHELF)
+            .add(TFCBlocks.FIREPROOF_DOOR)
+            .add(TFCBlocks.FIREBOX)
             .add(
                 TFCBlocks.ICICLE,
                 TFCBlocks.SEA_ICE,
@@ -261,7 +277,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.FIRE_CLAY_BLOCK,
                 TFCBlocks.CHARCOAL_PILE,
                 TFCBlocks.CHARCOAL_FORGE,
-                TFCBlocks.SMOOTH_MUD_BRICKS
+                TFCBlocks.SMOOTH_MUD_BRICKS,
+                TFCBlocks.HARDENED_CLAY
             );
         // Sword Efficient in vanilla is 'mines faster with sword', so we don't include anything extra in there,
         // since again, we typically want to refer to sharp tools instead
@@ -280,7 +297,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add2(pivot(TFCBlocks.GRADED_ORES, Ore.GARNIERITE))
             .add(TFCBlocks.ORES, Ore.CINNABAR)
             .add(TFCBlocks.ORES, Ore.CRYOLITE)
-            .add(TFCBlocks.ORES, Ore.HALITE)
             .add(TFCBlocks.ORES, Ore.LAPIS_LAZULI)
             .add(TFCBlocks.ORES, Ore.OPAL);
         // Needs Stone Tool is ~ Copper, which is every TFC pickaxe, so we don't bother here
@@ -325,12 +341,17 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 tag(oreBlockTagOf(ore, Ore.Grade.NORMAL)).add(ores, Ore.Grade.NORMAL);
                 tag(oreBlockTagOf(ore, Ore.Grade.RICH)).add(ores, Ore.Grade.RICH);
             }
-            else
+            else if (ore.hasBlock())
             {
                 tag(Tags.Blocks.ORES).addTag(oreBlockTagOf(ore, null));
                 tag(oreBlockTagOf(ore, null)).add(TFCBlocks.ORES, ore);
             }
         }
+        tag(Tags.Blocks.ORES).add(
+            TFCBlocks.HALITE,
+            TFCBlocks.LIGNITE,
+            TFCBlocks.BITUMINOUS_COAL
+        );
 
         // Unless there's incentive, I don't know why we would add other workstations here - also why doesn't this just use the vanilla tag?
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).addTag(WORKBENCHES);
@@ -367,6 +388,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL)
             .add(TFCBlocks.SAND)
             .add2(TFCBlocks.ORE_DEPOSITS)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.MUD))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT))
             .add(
                 TFCBlocks.WHITE_KAOLIN_CLAY,
                 TFCBlocks.PINK_KAOLIN_CLAY,
@@ -395,8 +418,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(STONES_LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
+        tag(SMOKES_IN_RAIN).add(TFCBlocks.MAGMA_BLOCKS).add(Blocks.MAGMA_BLOCK);
         tag(INSULATION)
-            .addTags(Tags.Blocks.STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES)
+            .addTags(Tags.Blocks.STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES, Tags.Blocks.SANDSTONE_BLOCKS)
             .add(Blocks.BRICKS)
             .add(TFCBlocks.FIRE_BRICKS);
 
@@ -417,7 +441,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(CHARCOAL_FORGE_INSULATION).addTag(INSULATION);
         tag(CHARCOAL_FORGE_INVISIBLE).add(TFCBlocks.CRUCIBLE);
         tag(BLOOMERY_INSULATION).addTag(INSULATION);
-        tag(BLAST_FURNACE_INSULATION).add(TFCBlocks.FIRE_BRICKS);
+        tag(BLAST_FURNACE_INSULATION).add(TFCBlocks.REINFORCED_FIRE_BRICKS);
+        tag(HEAT_INSULATION).add(TFCBlocks.FIRE_BRICKS).add(Blocks.BRICKS).add(Blocks.BRICK_STAIRS).add(Blocks.BRICK_SLAB).add(Blocks.TINTED_GLASS).add(TFCBlocks.FIREPROOF_DOOR);
+        tag(HEAT_PASSABLE)
+            .add(TFCBlocks.METALS, Metal.BlockType.GRATE)
+            .add(TFCBlocks.METALS, Metal.BlockType.EXPOSED_GRATE)
+            .add(TFCBlocks.METALS, Metal.BlockType.OXIDIZED_GRATE)
+            .add(TFCBlocks.METALS, Metal.BlockType.WEATHERED_GRATE);
         tag(SCRAPING_SURFACE).addTag(BlockTags.LOGS);
         tag(GLASS_POURING_TABLE).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
         tag(GLASS_BASIN_BLOCKS).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
@@ -432,6 +462,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT),
             TFCBlocks.PLANTS.get(Plant.GIANT_KELP_FLOWER));
         tag(KELP_BRANCH).add(TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT));
+        tag(BAMBOO).add(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO)).add(Blocks.BAMBOO);
+        tag(BAMBOO_SAPLING).add(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO_SAPLING)).add(Blocks.BAMBOO_SAPLING);
+        tag(BlockTags.BAMBOO_PLANTABLE_ON).add(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO_SAPLING), TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO));
         tag(LIVING_SPREADING_BUSHES)
             .add(TFCBlocks.SPREADING_BUSHES)
             .add(TFCBlocks.SPREADING_CANES);
@@ -441,7 +474,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(THORNY_BUSHES).add(
             TFCBlocks.SPREADING_BUSHES.get(FruitBlocks.SpreadingBush.RASPBERRY),
             TFCBlocks.SPREADING_BUSHES.get(FruitBlocks.SpreadingBush.BLACKBERRY));
-        tag(POWDERKEG_CANNOT_BREAK).add(Blocks.BEDROCK); // todo: this shouldn't be necessary, these blocks should already be explosion proof?
+        tag(POWDERKEG_CANNOT_BREAK).add(Blocks.BEDROCK); // unfortunately bedrock is breakable via large enough explosions so this is necessary
         tag(POWDERKEG_CAN_BREAK).addTags(BlockTags.DIRT, Tags.Blocks.STONES, Tags.Blocks.ORES, Tags.Blocks.GRAVELS);
         tag(CAN_BE_SNOW_PILED)
             .addTags(FALLEN_LEAVES, STONES_LOOSE)
@@ -474,6 +507,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         tag(PROSPECTABLE).addTags(Tags.Blocks.ORES);
 
+        tag(COARSE_DIRT)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT));
         tag(DIRT)
             .add(Blocks.DIRT)
             .add(TFCBlocks.SOIL.get(SoilBlockType.DIRT))
@@ -507,12 +542,15 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(WILD_CROP_GROWS_ON).addTag(BlockTags.DIRT);
         tag(SPREADING_FRUIT_GROWS_ON).addTags(BlockTags.DIRT, FARMLANDS, Tags.Blocks.GRAVELS);
         tag(BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, FARMLANDS);
+        tag(DRY_PLANT_PLANTABLE_ON).addTags(BlockTags.SAND, Tags.Blocks.SANDS, Tags.Blocks.GRAVELS, COARSE_DIRT, BUSH_PLANTABLE_ON).add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
+        tag(EPIPHYTE_PLANTABLE_ON).addTags(BlockTags.LOGS, STONES_RAW, STONES_HARDENED).add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
         tag(GRASS_PLANTABLE_ON)
             .addTags(BlockTags.DIRT, FARMLANDS, CLAYS)
             .add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
         tag(SEA_BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, Tags.Blocks.GRAVELS, Tags.Blocks.SANDS);
         tag(HALOPHYTE_PLANTABLE_ON).addTag(BlockTags.DIRT);
         tag(CREEPING_STONE_PLANTABLE_ON).addTags(Tags.Blocks.STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
+        tag(CREEPING_PLANT_NOT_PLANTABLE_ON).add(Blocks.PACKED_ICE, Blocks.SNOW_BLOCK, Blocks.BLUE_ICE, TFCBlocks.SEA_ICE.get(), Blocks.POWDER_SNOW);
 
         tag(RABBIT_RAIDABLE)
             .add(Blocks.CARROTS)
@@ -566,6 +604,11 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER),
             TFCBlocks.PLANTS.get(Plant.CORDGRASS));
         tag(SINGLE_BLOCK_REPLACEABLE); // todo
+        tag(POWDER_SNOW_REPLACEABLE).add(
+            Blocks.SNOW_BLOCK,
+            Blocks.PACKED_ICE,
+            Blocks.PACKED_ICE,
+            TFCBlocks.SEA_ICE.get());
         tag(TIDE_POOL_BLOCKS).add(
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.CLAM),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MOLLUSK),
@@ -575,6 +618,12 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(KAOLIN_CLAY_REPLACEABLE)
             .addTags(DIRT, Tags.Blocks.GRAVELS)
             .add(Blocks.SNOW_BLOCK);
+        tag(SEA_STACK_ROCKS).add(
+            TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.HARDENED),
+            TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.HARDENED),
+            TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.HARDENED),
+            TFCBlocks.ROCK_BLOCKS.get(Rock.RHYOLITE).get(Rock.BlockType.HARDENED)
+        );
     }
 
     @Override
@@ -624,7 +673,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             return add(Arrays.stream(blocks));
         }
 
-        /** Adds every TFC-added block matching the given predicate */
+        /**
+         * Adds every TFC-added block matching the given predicate
+         */
         BlockTagAppender addEveryTFC(Predicate<Block> predicate)
         {
             return add(TFCBlocks.BLOCKS.getEntries().stream().filter(e -> predicate.test(e.get())));
@@ -673,7 +724,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         <T, V extends IdHolder<? extends Block>> BlockTagAppender addOnly(Map<T, V> blocks, Predicate<T> key)
         {
-            blocks.forEach((k, v) -> { if (key.test(k)) add(v); });
+            blocks.forEach((k, v) -> {if (key.test(k)) add(v);});
             return this;
         }
 

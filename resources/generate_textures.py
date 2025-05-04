@@ -216,8 +216,8 @@ def create_bookshelf(wood: str):
     filled = Image.open(templates + 'chiseled_bookshelf_occupied.png').convert('RGBA')
     empty.paste(planks, mask=mask)
     filled.paste(planks, mask=mask)
-    empty.save(path + 'block/wood/planks/%s_bookshelf_empty.png' % wood)
-    filled.save(path + 'block/wood/planks/%s_bookshelf_occupied.png' % wood)
+    empty.save(path + 'block/wood/bookshelf/%s_empty.png' % wood)
+    filled.save(path + 'block/wood/bookshelf/%s_occupied.png' % wood)
 
 def create_sign(wood: str):
     log = Image.open(path + 'block/wood/log/%s' % wood + '.png').convert('RGBA')
@@ -321,7 +321,7 @@ def main():
         if wood != 'palm':
             create_boat_texture(wood)
         for metal, metal_data in METALS.items():
-            if 'utility' in metal_data.types:
+            if 'all' == metal_data.type:
                 create_hanging_sign(wood, metal)
 
     for rock, data in ROCKS.items():
@@ -338,9 +338,9 @@ def main():
         overlay_image(templates + 'mangrove_roots_top', path + 'block/mud/%s' % soil, path + 'block/mud/%s_roots_top' % soil)
 
     for metal, metal_data in METALS.items():
-        if 'utility' in metal_data.types:
+        if 'all' == metal_data.type:
             overlay_image(path + 'block/metal/smooth/%s' % metal, path + 'block/empty', path + 'block/metal/chain/%s' % metal, templates + 'chain_mask')
-        if 'utility' in metal_data.types:
+        if 'all' == metal_data.type:
             smooth_color = get_metal_colors('smooth/%s' % metal)
             create_hanging_sign_chains_item(metal, smooth_color)
 

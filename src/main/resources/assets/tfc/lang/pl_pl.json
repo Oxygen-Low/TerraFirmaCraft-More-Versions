@@ -515,6 +515,8 @@
   "config.jade.plugin_tfc.water_wheel": "Koło wodne",
   "config.jade.plugin_tfc.windmill": "Wiatrak",
   "config.jade.plugin_tfc.hot_poured_glass": "Ciepłe wylane szkło",
+  "config.jade.plugin_tfc.shelf": "Shelf",
+  "config.jade.plugin_tfc.placed_item": "Placed Item",
   "config.jade.plugin_tfc.animal": "Zwierze",
   "config.jade.plugin_tfc.frog": "Żaba",
   "config.jade.plugin_tfc.horse": "Koś",
