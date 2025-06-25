@@ -282,6 +282,10 @@ public interface CraftingRecipes extends Recipes
                     .input('J', TFCItems.JUTE_FIBER)
                     .pattern("JHJ", "SSS")
                     .shaped(items.get(Metal.ItemType.HORSE_ARMOR));
+                recipe()
+                    .input('B', blocks.get(Metal.BlockType.BARS))
+                    .pattern(" B ", "B B", " B ")
+                    .shaped(blocks.get(Metal.BlockType.GRATE));
             }
         }
 
@@ -901,6 +905,20 @@ public interface CraftingRecipes extends Recipes
             .input('B', TFCTags.Items.DOUBLE_SHEETS_ANY_BRONZE)
             .pattern("BBB", "B B", "BBB")
             .shaped(TFCBlocks.BLOOMERY);
+        recipe()
+            .input('S', TFCTags.Items.DOUBLE_SHEETS_ANY_BRONZE)
+            .input('G', ingredientOf(Metal.CAST_IRON, Metal.ItemType.INGOT))
+            .pattern("SGS", "GSG", "SGS")
+            .shaped(TFCBlocks.FIREBOX);
+        recipe()
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.SHEET))
+            .pattern("SS ", "SS ", "SS ")
+            .shaped(TFCBlocks.FIREPROOF_DOOR, 2);
+        recipe()
+            .input('L', TFCItems.FIRE_BRICK)
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.ROD))
+            .pattern("LLL", "L L", "S S")
+            .shaped(TFCBlocks.FIRE_BRICK_SHELF, 4);
         recipe().useTool(TFCTags.Items.TOOLS_KNIFE, Items.BONE, TFCItems.BONE_NEEDLE);
         recipe().bricksWithMortar(Items.BRICK, Items.BRICKS, 4);
         replace("cake")

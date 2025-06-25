@@ -39,7 +39,10 @@ public class FireboxScreen extends BlockEntityScreen<FireboxBlockEntity, Firebox
             graphics.blitSprite(THERMOMETER_INDICATOR, leftPos + 8, topPos + 76 - temperature, 15, 5);
             final long left = blockEntity.getTimeLeft();
             if (left == -1 || blockEntity.getHeatingCount() == 0)
+            {
+                graphics.drawString(font, Component.translatable("tfc.tooltip.firebox.no_heat"), leftPos + 20, topPos + 95, 0x404040, false);
                 return;
+            }
             if (left > 0)
             {
                 graphics.drawString(font, Component.translatable("tfc.tooltip.firebox.time_to_heat", blockEntity.getHeatingCount(), Calendars.CLIENT.getTimeDelta(left)), leftPos + 20, topPos + 95, 0x404040, false);

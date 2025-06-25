@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.FireboxBlock;
@@ -88,7 +88,7 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
                 box.markForSync();
             }
         }
-        if (box.temperature == 0 || box.heatingCount < 4)
+        if (box.temperature == 0 || box.heatingCount < 4 || Math.abs(box.temperature - box.burnTemperature) > 40)
             box.heatingTimestamp = Calendars.SERVER.getTicks();
         if (box.getTimeLeft() <= 0)
             performHeating(level, box, box.operableBlocks);
@@ -191,7 +191,7 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
 
     private static boolean isValidExterior(Level level, BlockPos.MutableBlockPos cursor, BlockState state, Direction direction)
     {
-        return (Helpers.isBlock(state, TFCTags.Blocks.HEAT_INSULATION) || (Helpers.isBlock(state, TFCTags.Blocks.HEAT_PASSABLE) && direction == Direction.UP)) && (state.isFaceSturdy(level, cursor, direction.getOpposite()) || state.getBlock() instanceof DoorBlock);
+        return Helpers.isBlock(state, TFCTags.Blocks.HEAT_INSULATION) && (state.isFaceSturdy(level, cursor, direction.getOpposite()) || state.getBlock() instanceof DoorBlock);
     }
 
     public static final int SLOTS = 16;
@@ -228,7 +228,7 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
      */
     public int getTotalHeatableBlocks()
     {
-        return temperature > 700 ? 128 : 64;
+        return temperature >= Heat.BRIGHT_RED.getMin() ? 128 : 64;
     }
 
     public int getTimeToHeat()
@@ -236,7 +236,7 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
         final int maxBlocks = getTotalHeatableBlocks();
         final int hour = ICalendar.CALENDAR_TICKS_IN_HOUR;
 
-        return (int) Math.max(3 * hour, ((3 * hour) + Mth.clampedMap(heatingCount, 0, maxBlocks, 0, hour * 24) - Mth.clampedMap(temperature, 700, Heat.maxVisibleTemperature(), 0, hour * 4)));
+        return (int) Math.max(3 * hour, ((3 * hour) + Mth.clampedMap(heatingCount, 0, maxBlocks, 0, hour * 24) - Mth.clampedMap(temperature, 700, Heat.maxVisibleTemperature(), 0, hour * 6)));
     }
 
     public long getTimeLeft()

@@ -1437,6 +1437,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/steel_pump', text_contents='In order to operate the pump, you will also need a $(l:mechanics/crankshaft)Crankshaft$(), and a source of $(l:mechanics/mechanical_power)Mechanical Power$():$(br)$(li)The pump must be connected on the $(bold)bottom$() to a pipe.'),
             text('$(li)On the narrow side, the pump must be adjacent to the business end of a $(l:mechanics/crankshaft)Crankshaft$().$(li)The pump can reach up to $(bold)16$() blocks. The end of the pipe must be $(bold)submerged$() in the target fluid, and adjacent to a source fluid block.$(li)If the crankshaft is active, fluid will be brought up and appear on the wide end of the $(thing)Pump$().$(li)The pump can fill an enclosed area up to $(bold)32$() blocks with source blocks.'),
         )),
+        entry('kilns', 'Kilns', 'tfc:firebox', pages=(
+            text('The $(thing)Kiln$() is a structure used for smelting large amounts of items within a player-defined area. The Kiln is constructed from a $(thing)Firebox$(), at least one $(thing)Grate$(), and fireproof materials.'),
+            crafting('tfc:crafting/firebox', 'tfc:crafting/metal/grate/cast_iron'),
+            text('The $(thing)Firebox$() interface has a temperature indicator and 16 slots. These slots are all used for fuel. Any fuel may be used. In an open space, the Firebox will not heat anything. Below Bright Red, it can heat 64 blocks, and above that 128. The time a firebox takes to heat a volume is proportional to the number of blocks and the temperature it is seeking to reach.'),
+            text('Fireboxes heat starting with the block above them. Firebox heat can pass through non-occluding blocks, as well as Grates. Therefore, it is recommended to place a grate on top of your firebox to allow heat to pass up into your structure, and provide maintenance access from below.'),
+            text('The exterior of a Kiln must be made of fireproof blocks. These include Bricks, Fire Bricks, Tinted Glass, and Fireproof Doors. If the structure is broken during heating, then the heating will be lost and must start over once the seal is re-made. The timer will also restart if the temperature increases or decreases from the initial setpoint.'),
+            crafting('tfc:crafting/fireproof_door', text_contents='The Fireproof Door may be made from Cast Iron Sheets.')
+        ))
     ))
 
     book.build()

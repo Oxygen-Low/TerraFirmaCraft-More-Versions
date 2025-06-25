@@ -1312,6 +1312,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.sewing.select_recipe': 'Select Recipe',
     'tfc.tooltip.firebox.time_to_heat': 'Heating %s blocks in %s',
     'tfc.tooltip.firebox.heated': 'Heated %s blocks',
+    'tfc.tooltip.firebox.no_heat': 'No heatable area detected',
 
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
