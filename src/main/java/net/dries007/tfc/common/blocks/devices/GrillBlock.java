@@ -129,6 +129,7 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                     {
                         TFCDamageTypes.grill(player, 1f);
                         Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
                     }
                     if (!state.getValue(LIT) && !state.getValue(LIT) && grill.getAsh() > 0)
                     {

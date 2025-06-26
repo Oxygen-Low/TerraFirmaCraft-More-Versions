@@ -20,6 +20,20 @@ def match_tag_1_21_plus(tag: str) -> Json:
         'predicate': {'items': tag}
     }
 
+def silk_touch() -> Json:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {
+            'predicates': {
+                'minecraft:enchantments': [{
+                    'enchantments': 'minecraft:silk_touch',
+                    'levels': {'min': 1}
+                }]
+            }
+
+        }
+    }
+
 STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'name': 'minecraft:stick',
     'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.2)],
@@ -28,7 +42,7 @@ STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'name': 'minecraft:stick',
     'conditions': [loot_tables.random_chance(0.05)],
     'functions': [loot_tables.set_count(1, 2)]
-}, conditions=[loot_tables.inverted(loot_tables.any_of(match_tag_1_21_plus(TAG_SHEARS), loot_tables.silk_touch()))])
+}, conditions=[loot_tables.inverted(loot_tables.any_of(match_tag_1_21_plus(TAG_SHEARS), silk_touch()))])
 
 
 def copy_block_entity(*components: str):
@@ -1700,13 +1714,15 @@ def generate(rm: ResourceManager):
         else:
             block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
+
         block.with_block_loot(
             when_sheared('tfc:wood/leaves/%s' % wood),
             {
                 'name': 'tfc:wood/sapling/%s' % wood,
                 'conditions': ['minecraft:survives_explosion', loot_tables.random_chance(TREE_SAPLING_DROP_CHANCES[wood])]
             },
-            STICKS_WHEN_NOT_SHEARED)
+            STICKS_WHEN_NOT_SHEARED
+        )
 
         # Sapling
         block = rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood).with_lang(lang('%s %s', wood, 'propagule' if wood == 'mangrove' else 'seed' if wood == 'palm' else 'sapling'))
@@ -2481,17 +2497,16 @@ def door_blockstate(base: str) -> JsonObject:
     }
 
 def when_silk_touch(item: str):
-    return {'name': item, 'conditions': [loot_tables.silk_touch()]}
+    return {'name': item, 'conditions': [silk_touch()]}
 
 
 def when_sheared(item: str):
     return {'name': item, 'conditions': [loot_tables.any_of(
         match_tag_1_21_plus(TAG_SHEARS),
-        loot_tables.silk_touch()
+        silk_touch()
     )]}
 
 
 def override(model: str, name: str, value: float = 1.0):
     return {'predicate': {name: value}, 'model': model}
-
 

@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "tfc:advanced_shaped_crafting",
   "key": {
     "L": {
       "tag": "tfc:maple_logs"
@@ -13,6 +12,13 @@
     "LS",
     "L "
   ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
   "result": {
     "count": 8,
     "id": "tfc:wood/support/maple"

@@ -1,6 +1,6 @@
 {
   "ingredient": {
-    "tag": "tfc:molds"
+    "tag": "tfc:unfired_molds"
   },
   "size": "normal",
   "weight": "medium"

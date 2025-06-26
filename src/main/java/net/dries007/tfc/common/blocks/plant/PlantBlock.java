@@ -208,7 +208,7 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
-        if (random.nextInt(20) == 0 && Helpers.isBlock(state, BlockTags.FLOWERS) && Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.SPRING)
+        if (random.nextInt(400) == 0 && Helpers.isBlock(state, BlockTags.FLOWERS) && Calendars.CLIENT.getCalendarMonthOfYear().getSeason() == Season.SPRING)
         {
             final Butterfly but = Butterfly.getRandomButterfly(ClimateRenderCache.INSTANCE.getTemperature(), ClimateRenderCache.INSTANCE.getAverageGroundwater(), random);
             if (but != null)

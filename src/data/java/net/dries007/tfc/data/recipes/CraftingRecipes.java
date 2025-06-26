@@ -519,6 +519,7 @@ public interface CraftingRecipes extends Recipes
                 .input('L', logsTagOf(Registries.ITEM, wood))
                 .input('S', TFCTags.Items.TOOLS_SAW)
                 .pattern("LS", "L ")
+                .damageInputs()
                 .shaped(TFCItems.SUPPORTS.get(wood), 8);
             recipe()
                 .input('L', lumber)
