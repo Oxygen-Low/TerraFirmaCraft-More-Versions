@@ -7,21 +7,26 @@
 package net.dries007.tfc.world.feature.plant;
 
 import com.mojang.serialization.Codec;
+import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.blocks.plant.CreepingPlantBlock;
+import net.dries007.tfc.common.blocks.plant.CreepingWaterPlantBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 
-public class CreepingPlantFeature extends Feature<CreepingPlantConfig>
+public class CreepingOceanPlantFeature extends Feature<CreepingPlantConfig>
 {
-    public CreepingPlantFeature(Codec<CreepingPlantConfig> codec)
+    public CreepingOceanPlantFeature(Codec<CreepingPlantConfig> codec)
     {
         super(codec);
     }
@@ -47,13 +52,14 @@ public class CreepingPlantFeature extends Feature<CreepingPlantConfig>
                     if (x * x + z + z < radius * radius && context.random().nextFloat() < context.config().integrity())
                     {
                         cursor.setWithOffset(pos, x, y, z);
-                        // TODO: The tide height check should not be hard-coded, should be a part of the config
-                        if (EnvironmentHelpers.isWorldgenReplaceable(level, cursor) && cursor.getY() > 2.5 + maxTideHeight.noise(cursor.getX(), cursor.getZ()))
+                        if (EnvironmentHelpers.isWorldgenReplaceable(level, cursor) && cursor.getY() <= maxTideHeight.noise(cursor.getX(), cursor.getZ()))
                         {
-                            final BlockState newState = CreepingPlantBlock.updateStateFromSides(level, cursor, state);
+                            final BlockState newState = CreepingWaterPlantBlock.updateStateFromSides(level, cursor, state);
                             if (!newState.isAir())
                             {
-                                setBlock(level, cursor, newState);
+                                final Fluid fluidAt = level.getFluidState(cursor).getType();
+                                final BlockState waterloggedState = FluidHelpers.fillWithFluid(newState, fluidAt);
+                                setBlock(level, cursor, Objects.requireNonNullElse(waterloggedState, newState));
                             }
                         }
                     }

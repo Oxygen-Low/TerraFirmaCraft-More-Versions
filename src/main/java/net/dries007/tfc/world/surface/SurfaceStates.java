@@ -7,6 +7,8 @@
 package net.dries007.tfc.world.surface;
 
 import java.util.function.Supplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +21,10 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.Seed;
+import net.dries007.tfc.world.biome.BiomeNoise;
+import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 public final class SurfaceStates
 {
@@ -28,6 +34,7 @@ public final class SurfaceStates
     public static final SurfaceState RAW = context -> context.getRock().raw().defaultBlockState();
     public static final SurfaceState COBBLE = context -> context.getRock().cobble().defaultBlockState();
     public static final SurfaceState GRAVEL = context -> context.getRock().gravel().defaultBlockState();
+    public static final SurfaceState SECOND_GRAVEL = context -> context.getApproxSecondRock().gravel().defaultBlockState();
     public static final SurfaceState SAND = context -> context.getRock().sand().defaultBlockState();
     public static final SurfaceState SANDSTONE = context -> context.getRock().sandstone().defaultBlockState();
 
@@ -102,6 +109,13 @@ public final class SurfaceStates
     public static final SurfaceState SNOWY_BASALT_MORAINE = SoilSurfaceState.buildSnowableSurface(SNOW, BASALT_MORAINE);
     public static final SurfaceState SNOWY_SAND_AND_GRAVEL = SoilSurfaceState.buildSnowableSurface(SNOW, SAND_AND_GRAVEL);
 
+    /**
+     * Shore surface builders - used for beaches
+     */
+
+    /**
+     * Selected rarely by the shore sand SurfaceState, this defaults to white sand unless certain climatic requirements are met
+     */
     public static final SurfaceState RARE_SHORE_SAND = new SurfaceState()
     {
         private final Supplier<Block> pinkSand = TFCBlocks.SAND.get(SandBlockType.PINK);
@@ -128,6 +142,46 @@ public final class SurfaceStates
             {
                 return whiteSand.get().defaultBlockState();
             }
+        }
+    };
+
+    /**
+     * Selects between three common sand types or the rare type based on absolute-value noise map
+     */
+    public static final SurfaceState SHORE_SAND = new SurfaceState()
+    {
+        private final Supplier<Block> redSand = TFCBlocks.SAND.get(SandBlockType.RED);
+        private final Supplier<Block> brownSand = TFCBlocks.SAND.get(SandBlockType.BROWN);
+        private final Supplier<Block> yellowSand = TFCBlocks.SAND.get(SandBlockType.YELLOW);
+
+        @Override
+        public BlockState getState(SurfaceBuilderContext context)
+        {
+            final BlockPos pos = context.pos();
+            final int x = pos.getX();
+            final int z = pos.getZ();
+            final float variantNoiseValue = (float) sandVariantNoise().noise(x, z);
+            if (variantNoiseValue > 0.55) return RARE_SHORE_SAND.getState(context);
+            else if (variantNoiseValue > 0.2) return yellowSand.get().defaultBlockState();
+            else if (variantNoiseValue > 0.1) return brownSand.get().defaultBlockState();
+            else return redSand.get().defaultBlockState();
+        }
+    };
+
+    /**
+     * Selects between placing shore sands or gravel, with gravel more common in cold climates and sand more common in warm climates
+     */
+    public static final SurfaceState SHORE_SURFACE = new SurfaceState()
+    {
+        @Override
+        public BlockState getState(SurfaceBuilderContext context)
+        {
+            final BlockPos pos = context.pos();
+            final int x = pos.getX();
+            final int z = pos.getZ();
+            final float variantNoiseValue = (float) sandGravelBeachNoise().noise(x, z);
+            final double gravelCutoff = Mth.clampedMap(context.averageTemperature(), -15, 25, -0.7, 0.7);
+            return (variantNoiseValue > gravelCutoff ? SECOND_GRAVEL : SHORE_SAND).getState(context);
         }
     };
 
@@ -160,7 +214,54 @@ public final class SurfaceStates
         }
     };
 
+    public static final SurfaceState SHORE_SANDSTONE = new SurfaceState()
+    {
+        private final Supplier<Block> redSandstone = TFCBlocks.SANDSTONE.get(SandBlockType.RED).get(SandstoneBlockType.RAW);
+        private final Supplier<Block> brownSandstone = TFCBlocks.SANDSTONE.get(SandBlockType.BROWN).get(SandstoneBlockType.RAW);
+        private final Supplier<Block> yellowSandstone = TFCBlocks.SANDSTONE.get(SandBlockType.YELLOW).get(SandstoneBlockType.RAW);
+
+        @Override
+        public BlockState getState(SurfaceBuilderContext context)
+        {
+            final BlockPos pos = context.pos();
+            final int x = pos.getX();
+            final int z = pos.getZ();
+            final float variantNoiseValue = (float) sandVariantNoise().noise(x, z);
+            if (variantNoiseValue > 0.8) return RARE_SHORE_SANDSTONE.getState(context);
+            else if (variantNoiseValue > 0.4) return yellowSandstone.get().defaultBlockState();
+            else if (variantNoiseValue > 0.2) return redSandstone.get().defaultBlockState();
+            else return brownSandstone.get().defaultBlockState();
+        }
+    };
+
+    public static final SurfaceState SHORE_UNDERLAYER = new SurfaceState()
+    {
+        @Override
+        public BlockState getState(SurfaceBuilderContext context)
+        {
+            final BlockPos pos = context.pos();
+            final int x = pos.getX();
+            final int z = pos.getZ();
+            final float variantNoiseValue = (float) sandGravelBeachNoise().noise(x, z);
+            final double gravelCutoff = Mth.clampedMap(context.averageTemperature(), -15, 25, -0.7, 0.7);
+            return (variantNoiseValue > gravelCutoff ? RAW : SHORE_SANDSTONE).getState(context);
+        }
+    };
+
+    public static final SurfaceState TOP_GRASS_TO_SHORE_SAND = SoilSurfaceState.buildSurfaceType(SoilBlockType.GRASS, SurfaceStates.SHORE_SAND);
+    public static final SurfaceState MID_DIRT_TO_SHORE_SAND = SoilSurfaceState.buildMidType(SoilBlockType.DIRT, SurfaceStates.SHORE_SAND);
+
     public static final SurfaceState WATER = context -> context.salty() ?
         TFCFluids.SALT_WATER.createSourceBlock() :
         Fluids.WATER.defaultFluidState().createLegacyBlock();
+
+    public static Noise2D sandVariantNoise()
+    {
+        return new OpenSimplex2D(36263276L).octaves(5).spread(0.0003f).abs();
+    }
+
+    public static Noise2D sandGravelBeachNoise()
+    {
+        return new OpenSimplex2D(124154L).octaves(3).spread(0.00002f);
+    }
 }

@@ -52,7 +52,6 @@ public class TFCLayers
     public static final int SHORE = idFor(TFCBiomes.SHORE);
     public static final int TIDAL_FLATS = idFor(TFCBiomes.TIDAL_FLATS);
     public static final int SEA_STACKS = idFor(TFCBiomes.SEA_STACKS);
-    public static final int SEA_STUMPS = idFor(TFCBiomes.SEA_STUMPS);
     public static final int TERRACE_UPPER = idFor(TFCBiomes.TERRACE_UPPER);
     public static final int TERRACE_LOWER = idFor(TFCBiomes.TERRACE_LOWER);
     public static final int SETBACK_CLIFFS = idFor(TFCBiomes.SETBACK_CLIFFS);

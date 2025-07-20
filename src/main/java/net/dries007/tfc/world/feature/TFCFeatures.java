@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
@@ -38,6 +37,7 @@ import net.dries007.tfc.world.feature.plant.BananaFeature;
 import net.dries007.tfc.world.feature.plant.BlockWithFluidFeature;
 import net.dries007.tfc.world.feature.plant.BranchingCactusFeature;
 import net.dries007.tfc.world.feature.plant.ColumnPlantConfig;
+import net.dries007.tfc.world.feature.plant.CreepingOceanPlantFeature;
 import net.dries007.tfc.world.feature.plant.CreepingPlantConfig;
 import net.dries007.tfc.world.feature.plant.CreepingPlantFeature;
 import net.dries007.tfc.world.feature.plant.EmergentPlantFeature;
@@ -113,6 +113,7 @@ public class TFCFeatures
     public static final Id<SpreadingBushFeature> SPREADING_BUSH = register("spreading_bush", SpreadingBushFeature::new, SpreadingBushFeature.CODEC);
     public static final Id<BlockWithFluidFeature> BLOCK_WITH_FLUID = register("block_with_fluid", BlockWithFluidFeature::new, SimpleBlockConfiguration.CODEC);
     public static final Id<BranchingCactusFeature> BRANCHING_CACTUS = register("branching_cactus", BranchingCactusFeature::new, BranchingCactusFeature.CODEC);
+    public static final Id<CreepingOceanPlantFeature> CREEPING_OCEAN_PLANT = register("creeping_ocean_plant", CreepingOceanPlantFeature::new, CreepingPlantConfig.CODEC);
 
     public static final Id<TFCCoralClawFeature> CORAL_CLAW = register("coral_claw", TFCCoralClawFeature::new, NoneFeatureConfiguration.CODEC);
     public static final Id<TFCCoralMushroomFeature> CORAL_MUSHROOM = register("coral_mushroom", TFCCoralMushroomFeature::new, NoneFeatureConfiguration.CODEC);

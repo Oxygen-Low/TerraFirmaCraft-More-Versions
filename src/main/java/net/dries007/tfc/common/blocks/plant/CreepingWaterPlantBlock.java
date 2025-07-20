@@ -44,6 +44,31 @@ public abstract class CreepingWaterPlantBlock extends CreepingPlantBlock impleme
             @Override
             public boolean canCreepOn(LevelReader level, BlockPos pos, BlockState state, Direction direction)
             {
+                return Helpers.isBlock(state, TFCTags.Blocks.ANEMONE_PLANTABLE_ON) && super.canCreepOn(level, pos, state, direction);
+            }
+
+        };
+    }
+
+    public static CreepingWaterPlantBlock createRock(RegistryPlant plant, FluidProperty fluid, ExtendedProperties properties)
+    {
+        return new CreepingWaterPlantBlock(properties)
+        {
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public FluidProperty getFluidProperty()
+            {
+                return fluid;
+            }
+
+            @Override
+            public boolean canCreepOn(LevelReader level, BlockPos pos, BlockState state, Direction direction)
+            {
                 return Helpers.isBlock(state, TFCTags.Blocks.CREEPING_STONE_PLANTABLE_ON) && super.canCreepOn(level, pos, state, direction);
             }
 

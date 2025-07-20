@@ -417,6 +417,7 @@ public final class ShoreNoise
             private double stackNoiseValue;
             private double sandHeight;
             private double landWeight;
+            private double tideLevel;
 
             private int x, z;
 
@@ -427,7 +428,10 @@ public final class ShoreNoise
                 this.z = z;
                 this.landWeight = landWeight;
 
-                this.sandHeight = ShoreNoise.simpleBeach(seed, x, z, heightIn, landWeight, oceanWeight);
+                this.tideLevel = BiomeNoise.shoreTideLevelNoise(seed).noise(x, z);
+                final double typicalBeachSandHeight = ShoreNoise.simpleBeach(tideLevel, heightIn, landWeight, oceanWeight);
+                // High-tide variants of this biome should completely swallow this beach
+                this.sandHeight = Mth.clampedMap(thisWeight, 0.5, 0.8, typicalBeachSandHeight, Math.min(typicalBeachSandHeight, tideLevel - 1));
 
                 final double f2MinusF1 = f2MinusF1Noise.noise(x, z);
 
@@ -443,15 +447,15 @@ public final class ShoreNoise
                 if (yIn <= sandHeight) return 0;
 
                 final double overhangHeight = SEA_LEVEL_Y + 14;
-                final double stackBaseHeight = SEA_LEVEL_Y + 1;
+                final double stackBaseHeight = tideLevel + 1;
 
                 double y = yIn - stackBaseHeight;
 
                 final double cliffNoiseModifier = 0.04 * Math.abs(cliffNoise.noise(x, y, z));
                 final double stackMinWidth = 0.06 + cliffNoiseModifier;
                 final double stackMaxWidth = 0.18 + cliffNoiseModifier;
-                final double cliffBorderTopWeight = 0.32 + cliffNoiseModifier;
-                final double cliffBorderBaseWeight = 0.36 + cliffNoiseModifier;
+                final double cliffBorderTopWeight = 0.22 + cliffNoiseModifier;
+                final double cliffBorderBaseWeight = 0.26 + cliffNoiseModifier;
 
                 final double height = overhangHeight - stackBaseHeight;
 
@@ -607,8 +611,8 @@ public final class ShoreNoise
     {
 
         // Basic heights that the shore height will approach at edges with other biomes
-        final double simpleShoreLandHeight = tideLevel + 3;
-        final double simpleShoreSelfHeight = tideLevel - 1;
+        final double simpleShoreLandHeight = tideLevel + 2;
+        final double simpleShoreSelfHeight = tideLevel - 2;
         final double simpleShoreOceanHeight = tideLevel - 4;
 
         if (oceanWeight > 0.10)

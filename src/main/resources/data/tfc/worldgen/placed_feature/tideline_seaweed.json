@@ -1,10 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/moss_campion",
+  "feature": "tfc:tideline_seaweed",
   "placement": [
     {
       "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "heightmap": "OCEAN_FLOOR_WG"
     },
     {
       "type": "block_predicate_filter",
@@ -15,12 +15,11 @@
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "would_survive",
+        "type": "tfc:would_survive_with_fluid",
         "state": {
-          "Name": "tfc:plant/moss_campion",
+          "Name": "tfc:groundcover/seaweed",
           "Properties": {
-            "age": "1",
-            "stage": "1"
+            "fluid": "empty"
           }
         }
       }
@@ -28,7 +27,7 @@
     {
       "type": "tfc:intertidal",
       "min_elevation": 1,
-      "max_elevation": 512
+      "max_elevation": 1
     }
   ]
 }

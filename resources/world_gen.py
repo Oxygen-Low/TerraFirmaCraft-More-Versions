@@ -85,13 +85,12 @@ def generate(rm: ResourceManager):
     biome(rm, 'shore', 'beach', ocean_features=True)
     biome(rm, 'tidal_flats', 'beach', ocean_features=True)
     biome(rm, 'sea_stacks', 'beach', ocean_features='both')
-    biome(rm, 'sea_stumps', 'beach', ocean_features='both')
     biome(rm, 'terrace_upper', 'beach', ocean_features='both')
     biome(rm, 'terrace_lower', 'beach', ocean_features='both')
     biome(rm, 'setback_cliffs', 'beach', ocean_features='both')
     biome(rm, 'coastal_dunes', 'beach', ocean_features=True)
     biome(rm, 'rocky_shores', 'beach', ocean_features=True)
-    biome(rm, 'embayments', 'beach', ocean_features=True)
+    biome(rm, 'embayments', 'beach', ocean_features='both')
     biome(rm, 'salt_flats', 'plains', barren=True)
     biome(rm, 'mud_flats', 'plains', barren=True)
     biome(rm, 'dune_sea', 'plains', barren=True)
@@ -791,14 +790,14 @@ def generate(rm: ResourceManager):
     })
     rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_water=300, min_temp=0), decorate_biome())
 
-    # Plants - Auto-Generated from Spreadsheet
+    # Plants - Auto-Generated from Spreadsheet 7/19/25
     configured_plant_patch_feature(rm, ('plant', 'allium'), plant_config('tfc:plant/allium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 1.4, 150, 400, -1, 1, False, 2, 3, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'anthurium'), plant_config('tfc:plant/anthurium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(14., 40, 290, 500, -0.6, 0.6, False, 3, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'arrowhead'), plant_config('tfc:plant/arrowhead[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 23., 180, 500, -1, 0.4, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'artists_conk'), plant_config('tfc:plant/artists_conk[age=1,stage=1,facing=north]', 6, 5, epiphyte_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-14.4, 18.6, 150, 450, -1, 1, False, 3, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'azalea'), plant_config('tfc:plant/azalea[age=1,stage=1,part=lower]', 1, 8, 20, tall_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-4, 15.8, 420, 500, -1, 1, False, 2, 3, 80, 320))
     configured_plant_patch_feature(rm, ('plant', 'badderlocks'), plant_config('tfc:plant/badderlocks[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, tall_water_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_climate_121(-13, 5, 150, 500, -1, 1, False, 0, 4, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'barrel_cactus'), plant_config('tfc:plant/barrel_cactus[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(6.8, 19.4, 0, 85, -1, 1, False, 1, 4, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'barrel_cactus'), plant_config('tfc:plant/barrel_cactus[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(6.8, 19.4, 0, 85, -1, 1, False, 1, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'bear_grass'), plant_config('tfc:plant/bear_grass[age=1,stage=1,part=lower]', 1, 15, 25, tall_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-16.6, -0.4, 340, 500, -1, 1, False, 0, 2, 85, 320))
     configured_plant_patch_feature(rm, ('plant', 'bird_nest_fern'), plant_config('tfc:plant/bird_nest_fern[age=1,stage=1]', 6, 15, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(17.6, 40, 260, 500, -0.45, 0.45, False, 1, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'black_orchid'), plant_config('tfc:plant/black_orchid[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(15.8, 40, 290, 410, -0.55, 0.55, False, 2, 3, -64, 320))
@@ -810,12 +809,12 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'calendula'), plant_config('tfc:plant/calendula[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(6.8, 23., 130, 400, -1, -0.1, False, 0, 2, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'cattail'), plant_config('tfc:plant/cattail[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-11.2, 23., 150, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'cordgrass'), plant_config('tfc:plant/cordgrass[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_climate_121(-15.7, 2.5, 150, 500, -1, 1, False, 0, 3, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'coontail'), plant_config('tfc:plant/coontail[age=1,stage=1,fluid=empty]', 1, 15, 100, water_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(5, 19.4, 250, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'cornflower'), plant_config('tfc:plant/cornflower[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-15.7, 2.5, 135, 310, -1, 0.4, False, 0, 2, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'coontail'), plant_config('tfc:plant/coontail[age=1,stage=1,fluid=empty]', 1, 15, 100, water_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(5, 19.4, 250, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'dandelion'), plant_config('tfc:plant/dandelion[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-16.6, 40, 120, 500, -1, 0.75, False, 0, 2, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'dead_bush'), plant_config('tfc:plant/dead_bush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-7.6, 40, 0, 120, -1, 1, False, 1, 4, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'dead_bush'), plant_config('tfc:plant/dead_bush[age=1,stage=1]', 1, 15, 10, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-7.6, 40, 0, 120, -1, 1, False, 1, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'desert_flame'), plant_config('tfc:plant/desert_flame[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(3.2, 21.2, 40, 170, -1, 1, False, 1, 4, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'dry_grass'), plant_config('tfc:plant/dry_grass[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-13, 40, 35, 95, -1, 1, False, 2, 4, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'dry_grass'), plant_config('tfc:plant/dry_grass[age=1,stage=1]', 1, 15, 10, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-13, 40, 35, 95, -1, 1, False, 2, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'duckweed'), plant_config('tfc:plant/duckweed[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 19.4, 0, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'edelweiss'), plant_config('tfc:plant/edelweiss[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-16.6, 3.2, 200, 450, -0.4, 0.4, False, 2, 3, 95, 320))
     configured_plant_patch_feature(rm, ('plant', 'eel_grass'), plant_config('tfc:plant/eel_grass[age=1,stage=1,fluid=empty]', 1, 15, 100, water_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(8.6, 40, 200, 500, -1, 1, False, 0, 4, -64, 320))
@@ -840,7 +839,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'lilac'), plant_config('tfc:plant/lilac[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, limit_density=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 8.6, 150, 430, -0.85, 0.55, False, 1, 1, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'lotus'), plant_config('tfc:plant/lotus[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-0.4, 19.4, 0, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'maiden_pink'), plant_config('tfc:plant/maiden_pink[age=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(2.5, 22.6, 100, 350, -0.75, 0.25, False, 0, 1, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'moss_campion'), plant_config('tfc:plant/moss_campion[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-30, -7.6, 0, 210, -1, 1, False, 0, 2, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'moss_campion'), plant_config('tfc:plant/moss_campion[age=1,stage=1]', 1, 15, 10, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-30, -7.6, 0, 210, -1, 1, False, 0, 2, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'marigold'), plant_config('tfc:plant/marigold[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-4, 19.4, 50, 390, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'meads_milkweed'), plant_config('tfc:plant/meads_milkweed[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 5, 130, 380, -0.25, 0.3, False, 0, 1, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'milfoil'), plant_config('tfc:plant/milfoil[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_climate_121(-9.4, 23., 250, 500, -1, 1, False, 0, 4, -64, 320))
@@ -854,20 +853,20 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'pickerelweed'), plant_config('tfc:plant/pickerelweed[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-9.4, 17.6, 200, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'pistia'), plant_config('tfc:plant/pistia[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(8.6, 26.6, 0, 400, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'poppy'), plant_config('tfc:plant/poppy[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-7.6, 15.8, 150, 330, -0.1, 0.8, False, 0, 1, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'prickly_pear'), plant_config('tfc:plant/prickly_pear[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-4, 21.2, 55, 155, -0.4, 0.7, False, 1, 3, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'prickly_pear_purple'), plant_config('tfc:plant/prickly_pear_purple[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(8.6, 14., 40, 140, -0.4, 0.7, False, 1, 3, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'prickly_pear'), plant_config('tfc:plant/prickly_pear[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-4, 21.2, 55, 155, -0.4, 0.7, False, 1, 3, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'prickly_pear_purple'), plant_config('tfc:plant/prickly_pear_purple[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(8.6, 14., 40, 140, -0.4, 0.7, False, 1, 3, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'primrose'), plant_config('tfc:plant/primrose[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-4, 14., 120, 360, -0.4, 0.5, False, 1, 3, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'pulsatilla'), plant_config('tfc:plant/pulsatilla[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 5, 50, 200, -0.7, 0.35, False, 0, 1, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'qantu'), plant_config('tfc:plant/qantu[age=1,stage=1]', 1, 8, 20), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(10.4, 23., 200, 350, -1, 1, False, 0, 2, 90, 320))
     configured_plant_patch_feature(rm, ('plant', 'ramirezella'), plant_config('tfc:plant/ramirezella[age=1,stage=1,facing=north]', 6, 5, epiphyte_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(17.6, 40, 210, 430, -0.45, 0.45, False, 2, 4, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'ramunda'), plant_config('tfc:plant/ramunda[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-18.4, -0.4, 0, 190, -0.25, 0.5, False, 0, 1, 90, 320))
+    configured_plant_patch_feature(rm, ('plant', 'ramunda'), plant_config('tfc:plant/ramunda[age=1,stage=1]', 1, 15, 10, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-18.4, -0.4, 0, 190, -0.25, 0.5, False, 0, 1, 90, 320))
     configured_plant_patch_feature(rm, ('plant', 'red_sealing_wax_palm'), plant_config('tfc:plant/red_sealing_wax_palm[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True, limit_density=True), decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(19.4, 40, 280, 500, 0.6, 1, True, 2, 3, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'sacred_datura'), plant_config('tfc:plant/sacred_datura[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(6.8, 19.4, 75, 200, -1, 0.5, False, 0, 1, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'sagebrush'), plant_config('tfc:plant/sagebrush[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 15.8, 0, 130, -1, 1, False, 0, 1, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'sagebrush'), plant_config('tfc:plant/sagebrush[age=1,stage=1]', 1, 15, 10, above_tide_plant=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-5.8, 15.8, 0, 130, -1, 1, False, 0, 1, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'sago'), plant_config('tfc:plant/sago[age=1,stage=1,fluid=empty]', 1, 10, 10, water_plant=True), decorate_chance(4), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_climate_121(-13, 19.4, 200, 500, -1, 1, False, 0, 4, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'sapphire_tower'), plant_config('tfc:plant/sapphire_tower[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True, limit_density=True), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(12.2, 23., 75, 250, -1, 0.3, False, 1, 1, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'sea_lavender'), plant_config('tfc:plant/sea_lavender[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_climate_121(-5.7, 13.9, 230, 500, -0.2, 1, False, 0, 4, -64, 320))
-    configured_plant_patch_feature(rm, ('plant', 'sea_palm'), plant_config('tfc:plant/sea_palm[age=1]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-12.4, 13.6, 50, 500, -1, 1, False, 2, 3, -64, 320))
+    configured_plant_patch_feature(rm, ('plant', 'sea_palm'), plant_config('tfc:plant/sea_palm[age=1]', 1, 10, 10, above_tide_plant=True), decorate_chance(15), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-12.4, 13.6, 50, 500, -1, 1, False, 2, 3, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'shawiash'), plant_config('tfc:plant/shawiash[age=1,stage=1]', 3, 10, 30), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(-16.6, -2.2, 250, 500, -1, 0.25, False, 0, 2, 95, 300))
     configured_plant_patch_feature(rm, ('plant', 'silken_pincushion_cactus'), plant_config('tfc:plant/silken_pincushion_cactus[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(17.6, 40, 0, 170, -1, 1, False, 0, 3, -64, 320))
     configured_plant_patch_feature(rm, ('plant', 'silver_spurflower'), plant_config('tfc:plant/silver_spurflower[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_121(15.8, 24.8, 130, 375, -0.55, 1, False, 1, 2, -64, 320))
@@ -924,7 +923,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'marsh_jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(60, 80), decorate_replaceable(), decorate_climate(200, 500, 15.7, 28.2, True, fuzzy=True))
 
     # Grass-Type / Basic Plants
-    configured_plant_patch_feature(rm, ('plant', 'beachgrass'), plant_config('tfc:plant/beachgrass[age=1,stage=1]', 1, 15, 28, limit_density=True), decorate_chance(3), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-7.6, 40, 190, 500))
+    configured_plant_patch_feature(rm, ('plant', 'beachgrass'), plant_config('tfc:plant/beachgrass[age=1,stage=1]', 1, 15, 28, limit_density=True, above_tide_plant=True), decorate_chance(3), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-7.6, 40, 190, 500))
     configured_plant_patch_feature(rm, ('plant', 'bluegrass'), plant_config('tfc:plant/bluegrass[age=1,stage=1]', 1, 15, 6, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-0.4, 14., 110, 280))
     configured_plant_patch_feature(rm, ('plant', 'bromegrass'), plant_config('tfc:plant/bromegrass[age=1,stage=1]', 1, 15, 6, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(6.8, 21.2, 140, 360))
     configured_plant_patch_feature(rm, ('plant', 'fountain_grass'), plant_config('tfc:plant/fountain_grass[age=1,stage=1]', 1, 15, 6, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(3.2, 26.6, 75, 150))
@@ -950,6 +949,11 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'ivy_cover'), 'tfc:creeping_plant', {'block': 'tfc:plant/ivy', 'height': 7, 'radius': 4, 'integrity': 0.95}, decorate_climate_121(-6.4, 2.5, 200, 270, -0.45, 0.45, False, 1, 3, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
     configured_placed_feature(rm, ('plant', 'cobblestone_lichen_patch'), 'tfc:creeping_plant', {'block': 'tfc:plant/cobblestone_lichen', 'height': 5, 'radius': 5, 'integrity': 0.55}, decorate_chance(5), decorate_climate_121(-33, 17.6, 25, 450, -1, 1, False, 1, 4, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
     configured_placed_feature(rm, ('plant', 'elegant_sunburst_lichen_patch'), 'tfc:creeping_plant', {'block': 'tfc:plant/elegant_sunburst_lichen', 'height': 5, 'radius': 5, 'integrity': 0.4}, decorate_chance(5), decorate_climate_121(-33, -11.5, 0, 225, -1, 1, False, 1, 4, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
+
+    # Shore "Plants"
+    configured_placed_feature(rm, ('plant', 'anemone_purple_patch'), 'tfc:creeping_ocean_plant', {'block': 'tfc:plant/anemone_purple', 'height': 5, 'radius': 3, 'integrity': 0.6}, decorate_chance(10), decorate_climate(-14, 12, 0, 500), decorate_square(), decorate_heightmap('world_surface_wg'))
+    configured_placed_feature(rm, ('plant', 'anemone_green_patch'), 'tfc:creeping_ocean_plant', {'block': 'tfc:plant/anemone_green', 'height': 5, 'radius': 3, 'integrity': 0.6}, decorate_chance(10), decorate_climate(-16, 10, 0, 500), decorate_square(), decorate_heightmap('world_surface_wg'))
+
 
     # Clay Indicator Plants
     # These piggyback on the clay disc feature, and so have limited decorators
@@ -1055,14 +1059,15 @@ def generate(rm: ResourceManager):
     rm.placed_feature('big_tide_pool', 'tfc:tide_pool', decorate_chance(15), decorate_count(40), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
 
     # Groundcover
-    configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 5, True), decorate_chance(6), decorate_square(), decorate_climate(-10, 50, 200, 500))
+    configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 5, True), decorate_count(4), decorate_square(), extra_singular_decorators=[decorate_intertidal(1, 1)])
     configured_patch_feature(rm, 'clam', patch_config('tfc:groundcover/clam[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(-50, 22, 10, 450))
     configured_patch_feature(rm, 'mollusk', patch_config('tfc:groundcover/mollusk[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(-10, 30, 150, 500))
     configured_patch_feature(rm, 'mussel', patch_config('tfc:groundcover/mussel[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(10, 50, 100, 500))
 
-    configured_patch_feature(rm, 'sticks_shore', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 18, True), decorate_chance(2), decorate_square(), decorate_climate(-50, 50, 50, 500))
+    configured_patch_feature(rm, 'sticks_shore', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 18, True), decorate_chance(2), decorate_square(), decorate_climate(-50, 50, 50, 500), extra_singular_decorators=[decorate_intertidal(1, 10)])
     configured_patch_feature(rm, 'seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 8, True), decorate_chance(5), decorate_square(), decorate_climate(-20, 50, 150, 500))
-    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('tfc:creeping_stone_plantable_on'))
+    configured_patch_feature(rm, 'tideline_seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 5, True), decorate_count(2), decorate_square(), decorate_climate(-20, 50, 150, 500), extra_singular_decorators=[decorate_intertidal(1, 1)])
+    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('tfc:creeping_stone_plantable_on'), extra_singular_decorators=[decorate_intertidal(0, 512)])
 
     # Forest Only
     configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate(-20, 50, 70, 500, True), biome_check=False)
@@ -1131,10 +1136,11 @@ class PlantConfig(NamedTuple):
     limit_density: bool
     no_solid_neighbors: bool
     tall_water_plant: bool
+    above_tide_plant: bool
+    intertidal_plant: bool
 
-
-def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False, epiphyte_plant: bool = False, limit_density: bool = False, no_solid_neighbors: bool = False, tall_water_plant: bool = False) -> PlantConfig:
-    return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant, epiphyte_plant, limit_density, no_solid_neighbors, tall_water_plant)
+def plant_config(block: str, y_spread: int, xz_spread: int, tries: int = None, requires_clay: bool = False, water_plant: bool = False, emergent_plant: bool = False, tall_plant: bool = False, epiphyte_plant: bool = False, limit_density: bool = False, no_solid_neighbors: bool = False, tall_water_plant: bool = False, above_tide_plant: bool = False, intertidal_plant: bool = False) -> PlantConfig:
+    return PlantConfig(block, y_spread, xz_spread, tries, requires_clay, water_plant, emergent_plant, tall_plant, epiphyte_plant, limit_density, no_solid_neighbors, tall_water_plant, above_tide_plant, intertidal_plant)
 
 def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, config: PlantConfig, *patch_decorators: Json):
     state_provider = {
@@ -1173,10 +1179,21 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     })
     rm.configured_feature(singular_feature, *feature)
     rm.placed_feature(patch_feature, patch_feature, *patch_decorators)
-    if config.no_solid_neighbors:
-        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive, decorate_no_solid_neighbors())
+    if config.intertidal_plant:
+        if config.no_solid_neighbors:
+            rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive, decorate_no_solid_neighbors(), decorate_intertidal(-15, 0))
+        else:
+            rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive, decorate_intertidal(-15, 0))
+    elif config.above_tide_plant:
+        if config.no_solid_neighbors:
+            rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive, decorate_no_solid_neighbors(), decorate_intertidal(1, 512))
+        else:
+            rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive, decorate_intertidal(1, 512))
     else:
-        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive)
+        if config.no_solid_neighbors:
+            rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive, decorate_no_solid_neighbors())
+        else:
+            rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), predicate, would_survive)
 
 class PatchConfig(NamedTuple):
     block: str
@@ -1544,6 +1561,14 @@ def decorate_climate_121(min_temp: Optional[float] = None, max_temp: Optional[fl
         'fuzzy': fuzzy
     }
 
+# Elevations are number above/below the high tide elevation
+def decorate_intertidal(min_elevation, max_elevation) -> Json:
+
+    return {
+        'type': 'tfc:intertidal',
+        'min_elevation': min_elevation,
+        'max_elevation': max_elevation
+    }
 
 def decorate_no_solid_neighbors() -> Json:
     return 'tfc:no_solid_neighbors'
@@ -1900,6 +1925,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     if 'river' in name:
         rm.biome_tag('is_river', name)
     if 'ocean' in name and 'mountain' not in name:
+        rm.biome_tag('is_ocean', name)
+    if 'shore' in name or 'stacks' in name or 'tidal' in name or 'embayments' in name or 'coastal' in name or 'terrace' in name or 'setback_cliffs' in name:
         rm.biome_tag('is_ocean', name)
 
     rm.lang('biome.tfc.%s' % name, lang(name))

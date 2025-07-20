@@ -21,12 +21,16 @@ import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceState;
+import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class OceanSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory INSTANCE = OceanSurfaceBuilder::new;
 
+    private final Seed seed;
     private final NormalNoise icebergPillarNoise;
     private final NormalNoise icebergPillarRoofNoise;
     private final NormalNoise icebergSurfaceNoise;
@@ -40,6 +44,7 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
     {
         final RandomSource random = seed.fork();
 
+        this.seed = seed;
         this.icebergPillarNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D, 1.0D));
         this.icebergPillarRoofNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-3, 1.0D));
         this.icebergSurfaceNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D));
@@ -49,7 +54,8 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY);
+        // TODO: NEED to put the logic for sand distribution in ONE PLACE, can't just copy the code from the shore surface builder everywhere
+        ShoreSurfaceBuilder.OCEAN.apply(seed);
         frozenOceanExtension(context, startY, endY);
     }
 

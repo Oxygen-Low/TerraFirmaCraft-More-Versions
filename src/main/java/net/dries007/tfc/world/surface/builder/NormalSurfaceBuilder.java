@@ -32,9 +32,9 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
         buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_GRAVEL, SurfaceStates.MID_DIRT_TO_GRAVEL, SurfaceStates.UNDER_GRAVEL);
     }
 
-    public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topCaveState, SurfaceState midCaveState, SurfaceState underCaveState, int caveHeight, boolean stonySurfaceCaves)
+    public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topCaveState, SurfaceState midCaveState, SurfaceState underCaveState, int caveHeight)
     {
-        buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_GRAVEL, SurfaceStates.MID_DIRT_TO_GRAVEL, SurfaceStates.UNDER_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, topCaveState, midCaveState, underCaveState, caveHeight, stonySurfaceCaves);
+        buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_GRAVEL, SurfaceStates.MID_DIRT_TO_GRAVEL, SurfaceStates.UNDER_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, topCaveState, midCaveState, underCaveState, caveHeight);
     }
 
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState)
@@ -44,10 +44,10 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
 
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState, SurfaceState underWaterState, SurfaceState thinUnderWaterState)
     {
-        buildSurface(context, startY, endY, topState, midState, underState, underWaterState, thinUnderWaterState, topState, midState, underState, SEA_LEVEL_Y, false);
+        buildSurface(context, startY, endY, topState, midState, underState, underWaterState, thinUnderWaterState, topState, midState, underState, SEA_LEVEL_Y);
     }
 
-    public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState, SurfaceState underWaterState, SurfaceState thinUnderWaterState, SurfaceState topCaveState, SurfaceState midCaveState, SurfaceState underCaveState, int caveHeight, boolean stonySurfaceCaves)
+    public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState, SurfaceState underWaterState, SurfaceState thinUnderWaterState, SurfaceState topCaveState, SurfaceState midCaveState, SurfaceState underCaveState, int caveHeight)
     {
         int surfaceDepth = -1;
         int surfaceY = 0;

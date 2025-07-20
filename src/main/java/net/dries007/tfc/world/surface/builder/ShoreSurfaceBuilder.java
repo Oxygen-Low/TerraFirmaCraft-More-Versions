@@ -9,67 +9,64 @@ package net.dries007.tfc.world.surface.builder;
 import net.minecraft.core.BlockPos;
 
 import net.dries007.tfc.world.Seed;
-import net.dries007.tfc.world.noise.Noise2D;
-import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class ShoreSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory SANDY = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE, false);
-    public static final SurfaceBuilderFactory GRAVELLY = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, true);
+    public static final SurfaceBuilderFactory NORMAL = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, false, 6, false);
+    public static final SurfaceBuilderFactory SANDY = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE, false, 6, true);
+    public static final SurfaceBuilderFactory FORCE_RARE_SAND = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE, false, 6, true);
+    public static final SurfaceBuilderFactory GRAVELLY = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.SECOND_GRAVEL, SurfaceStates.RAW, false, 6, false);
+    public static final SurfaceBuilderFactory OCEAN = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, true, 6, false);
+    public static final SurfaceBuilderFactory SEA_CLIFFS = seed -> new ShoreSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, false, 2, false);
 
-    private final Noise2D variantNoise;
-    private final SurfaceState typicalSurfaceState, typicalUnderState;
-    private final boolean gravelly;
+    final Seed seed;
+    final SurfaceState surface;
+    final SurfaceState subsurface;
+    final boolean isOcean;
+    final boolean sandyLand;
+    final int sandHeight;
 
-    protected ShoreSurfaceBuilder(Seed seed, SurfaceState rareSandState, SurfaceState rareSandUnderState, boolean gravelly)
+    protected ShoreSurfaceBuilder(Seed seed, SurfaceState surface, SurfaceState subsurface, boolean isOcean, int sandHeight, boolean sandyLand)
     {
-        this.typicalSurfaceState = rareSandState;
-        this.typicalUnderState = rareSandUnderState;
-        this.gravelly = gravelly;
-        this.variantNoise = new OpenSimplex2D(seed.seed()).octaves(5).spread(0.0003f).abs();
+        this.seed = seed;
+        this.surface = surface;
+        this.subsurface = subsurface;
+        this.isOcean = isOcean;
+        this.sandHeight = sandHeight;
+        this.sandyLand = sandyLand;
     }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        // Adjust slope, shores should have high relief carving where they intersect with the landmass
-        final double slope = context.getSlope();
-        context.setSlope(slope * (slope + 0.2));
-
         final BlockPos pos = context.pos();
         final int x = pos.getX();
         final int z = pos.getZ();
-        final float variantNoiseValue = (float) variantNoise.noise(x, z);
+        final int tideLevel = (int) BiomeNoise.shoreTideLevelNoise(seed).noise(x, z);
+        final int sandHeightAbsolute = tideLevel + sandHeight;
 
-        // The following shall match the sand selection in SeaCliffSurfaceBuilder.java
-        // Rare sands are the "typical" state
-        if (gravelly || variantNoiseValue > 0.65f)
+        if (isOcean && startY < tideLevel - 6)
         {
-            NormalSurfaceBuilder.ROCKY.buildSurface(context, startY, endY, typicalSurfaceState, typicalSurfaceState, typicalUnderState);
+            // Always use gravel in deeper ocean water
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, surface, surface, subsurface, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL);
         }
-        else
+        else if (startY <= sandHeightAbsolute)
         {
-            final SurfaceState top;
-            final SurfaceState under;
-            if (variantNoiseValue > 0.4)
-            {
-                top = SurfaceStates.RED_SAND;
-                under = SurfaceStates.RED_SANDSTONE;
-            }
-            else if (variantNoiseValue > 0.22)
-            {
-                top = SurfaceStates.BROWN_SAND;
-                under = SurfaceStates.BROWN_SANDSTONE;
-            }
-            else
-            {
-                top = SurfaceStates.YELLOW_SAND;
-                under = SurfaceStates.YELLOW_SANDSTONE;
-            }
-            NormalSurfaceBuilder.ROCKY.buildSurface(context, startY, endY, top, top, under);
+            // Shore surface at shore heights, above/below water
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, surface, surface, subsurface, surface, surface);
+        }
+        else if (sandyLand)
+        {
+            // If, in dry biomes, sand should be used instead of gravel on land
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_SHORE_SAND, SurfaceStates.MID_DIRT_TO_SHORE_SAND, SurfaceStates.UNDER_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, surface, surface, subsurface, sandHeightAbsolute);
+        }
+        {
+            // Normal land surface, with shore material at beach level in caves/below overhangs
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, surface, surface, subsurface, sandHeightAbsolute);
         }
     }
 
