@@ -84,9 +84,9 @@ public final class TFCBiomes
     // TODO: Consider sandstone variants of some biomes
     // TODO: Actually implement gravel beaches
     // Standard shore / beach. Material will vary based on location
-    public static final BiomeExtension SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.NORMAL).aquiferHeightOffset(-16).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.SANDY).setShoreBaseHeight(-4));
+    public static final BiomeExtension SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.SANDY).aquiferHeightOffset(-16).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.SANDY).setShoreBaseHeight(-4));
     // TODO: Figure out identity of this biome
-    public static final BiomeExtension TIDAL_FLATS = register("tidal_flats", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.NORMAL).aquiferHeightOffset(-16).type(BiomeBlendType.OCEAN).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.SANDY).setShoreBaseHeight(-4));
+    public static final BiomeExtension TIDAL_FLATS = register("tidal_flats", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.SANDY).aquiferHeightOffset(-16).type(BiomeBlendType.OCEAN).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.SANDY).setShoreBaseHeight(-4));
 
     // Inspired by Bay of Fundy, 12 Apostles, etc. -- High biome shore
     // TODO: Fix stalagmites
@@ -187,8 +187,8 @@ public final class TFCBiomes
     public static final BiomeExtension ANCIENT_SHIELD_VOLCANO = register("ancient_shield_volcano", builder().heightmap(seed -> BiomeNoise.ancientShieldVolcano(seed, 90, 130, BiomeNoise.ancientHotSpots(seed))).surface(ShieldVolcanoSurfaceBuilder.DORMANT).tuffRings(3, -16, 30).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.CAVE));
     public static final BiomeExtension SUNKEN_SHIELD_VOLCANO = register("sunken_shield_volcano", builder().heightmap(seed -> BiomeNoise.sunkenShieldVolcano(seed, BiomeNoise.ancientHotSpots(seed))).surface(ShieldVolcanoSurfaceBuilder.DORMANT).tuffRings(3, -8, 24).aquiferHeightOffset(-16).spawnable().salty().type(RiverBlendType.CAVE));
 
-    public static final BiomeExtension SHIELD_VOLCANO_SHORE = register("shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShieldVolcanoSurfaceBuilder.SHORE).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON).type(ShoreBlendType.SANDY));
-    public static final BiomeExtension OLD_SHIELD_VOLCANO_SHORE = register("old_shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShieldVolcanoSurfaceBuilder.SHORE).tuffRings(3, -8, 26).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON).type(ShoreBlendType.SANDY));
+    public static final BiomeExtension SHIELD_VOLCANO_SHORE = register("shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.VOLCANIC_CLIFFS).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON).type(ShoreBlendType.EMBAYMENTS));
+    public static final BiomeExtension OLD_SHIELD_VOLCANO_SHORE = register("old_shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.VOLCANIC).tuffRings(3, -8, 26).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON).type(ShoreBlendType.SANDY));
 
     // Full Ice Sheet Biomes
     public static final BiomeExtension ICE_SHEET = register("ice_sheet", builder().heightmap(seed -> BiomeNoise.iceSheetSurfaceHeight(seed).add(BiomeNoise.glacialSurfaceTexture(seed))).surface(IceSheetSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());

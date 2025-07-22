@@ -16,9 +16,11 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.CreepingPlantBlock;
 import net.dries007.tfc.common.blocks.plant.CreepingWaterPlantBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeNoise;
@@ -58,6 +60,7 @@ public class CreepingOceanPlantFeature extends Feature<CreepingPlantConfig>
                             if (!newState.isAir())
                             {
                                 final Fluid fluidAt = level.getFluidState(cursor).getType();
+                                //TODO: THE BELOW IS NULL WHEN DIRECTLY GIVEN TFC SALTWATER. May be an issue later, but doesn't seem to be what's stopping it from replacing saltwater
                                 final BlockState waterloggedState = FluidHelpers.fillWithFluid(newState, fluidAt);
                                 setBlock(level, cursor, Objects.requireNonNullElse(waterloggedState, newState));
                             }

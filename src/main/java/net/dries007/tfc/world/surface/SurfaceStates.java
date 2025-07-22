@@ -146,6 +146,25 @@ public final class SurfaceStates
     };
 
     /**
+     * Similar to rare shore sand, but forces volcanic types and green sand is rarer
+     */
+    public static final SurfaceState VOLCANIC_SHORE_SAND = new SurfaceState()
+    {
+        private final Supplier<Block> greenSand = TFCBlocks.SAND.get(SandBlockType.GREEN);
+        private final Supplier<Block> blackSand = TFCBlocks.SAND.get(SandBlockType.BLACK);
+
+        @Override
+        public BlockState getState(SurfaceBuilderContext context)
+        {
+            if (context.groundWater() > 420f)
+            {
+                return greenSand.get().defaultBlockState();
+            }
+            return blackSand.get().defaultBlockState();
+        }
+    };
+
+    /**
      * Selects between three common sand types or the rare type based on absolute-value noise map
      */
     public static final SurfaceState SHORE_SAND = new SurfaceState()
@@ -211,6 +230,22 @@ public final class SurfaceStates
             {
                 return whiteSandstone.get().defaultBlockState();
             }
+        }
+    };
+
+    public static final SurfaceState VOLCANIC_SHORE_SANDSTONE = new SurfaceState()
+    {
+        private final Supplier<Block> greenSandstone = TFCBlocks.SANDSTONE.get(SandBlockType.GREEN).get(SandstoneBlockType.RAW);
+        private final Supplier<Block> blackSandstone = TFCBlocks.SANDSTONE.get(SandBlockType.BLACK).get(SandstoneBlockType.RAW);
+
+        @Override
+        public BlockState getState(SurfaceBuilderContext context)
+        {
+            if (context.groundWater() > 420f)
+            {
+                return greenSandstone.get().defaultBlockState();
+            }
+            return blackSandstone.get().defaultBlockState();
         }
     };
 

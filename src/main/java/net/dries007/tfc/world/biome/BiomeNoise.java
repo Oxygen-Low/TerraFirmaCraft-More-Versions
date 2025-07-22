@@ -1102,6 +1102,14 @@ public final class BiomeNoise
     }
 
     /**
+     * Small scale noise used to vary the material of lava flows
+     */
+    public static Noise2D lavaFlowMaterial(long seed)
+    {
+        return new OpenSimplex2D(seed).octaves(2).spread(0.25);
+    }
+
+    /**
      * Currently erupting location in a hotspot chain, used for biome noise and regional hotspot placement
      */
     public static Noise2D activeHotSpots(long seed)
