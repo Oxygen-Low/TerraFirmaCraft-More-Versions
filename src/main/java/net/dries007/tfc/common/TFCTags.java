@@ -271,6 +271,7 @@ public class TFCTags
         public static final TagKey<Fluid> ANY_INFINITE_WATER = create("any_infinite_water");
 
         public static final TagKey<Fluid> FRESH_WATER = create("fresh_water");
+        public static final TagKey<Fluid> SALT_WATER = create("salt_water");
         public static final TagKey<Fluid> INFINITE_WATER = create("infinite_water");
 
         public static final TagKey<Fluid> MIXABLE = create("mixable");

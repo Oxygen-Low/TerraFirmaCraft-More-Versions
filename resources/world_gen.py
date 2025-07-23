@@ -1814,7 +1814,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
             surface_decorations.append('#tfc:feature/ocean_plants')
         else:
             surface_decorations.append('tfc:sea_stacks_patch')
-        if name == 'shore':
+        if name == 'shore' or name == 'coastal_dunes' or name == 'setback_cliffs':
             surface_decorations.append('tfc:plant/beachgrass_patch')
             surface_decorations.append('tfc:plant/sea_palm_patch')
 
