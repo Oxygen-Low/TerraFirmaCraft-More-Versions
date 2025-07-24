@@ -951,8 +951,8 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'elegant_sunburst_lichen_patch'), 'tfc:creeping_plant', {'block': 'tfc:plant/elegant_sunburst_lichen', 'height': 5, 'radius': 5, 'integrity': 0.4}, decorate_chance(5), decorate_climate_121(-33, -11.5, 0, 225, -1, 1, False, 1, 4, fuzzy=True), decorate_square(), decorate_heightmap('world_surface_wg'))
 
     # Shore "Plants"
-    configured_placed_feature(rm, ('plant', 'anemone_purple_patch'), 'tfc:creeping_ocean_plant', {'block': 'tfc:plant/anemone_purple', 'height': 5, 'radius': 3, 'integrity': 0.6}, decorate_chance(10), decorate_climate(-14, 12, 0, 500), decorate_square(), decorate_heightmap('world_surface_wg'))
-    configured_placed_feature(rm, ('plant', 'anemone_green_patch'), 'tfc:creeping_ocean_plant', {'block': 'tfc:plant/anemone_green', 'height': 5, 'radius': 3, 'integrity': 0.6}, decorate_chance(10), decorate_climate(-16, 10, 0, 500), decorate_square(), decorate_heightmap('world_surface_wg'))
+    configured_placed_feature(rm, ('plant', 'anemone_purple_patch'), 'tfc:creeping_ocean_plant', {'block': 'tfc:plant/anemone_purple', 'height': 5, 'radius': 3, 'integrity': 0.6}, decorate_chance(10), decorate_climate(-14, 12, 0, 500), decorate_square(), decorate_heightmap('ocean_floor_wg'))
+    configured_placed_feature(rm, ('plant', 'anemone_green_patch'), 'tfc:creeping_ocean_plant', {'block': 'tfc:plant/anemone_green', 'height': 5, 'radius': 3, 'integrity': 0.6}, decorate_chance(10), decorate_climate(-16, 10, 0, 500), decorate_square(), decorate_heightmap('ocean_floor_wg'))
 
 
     # Clay Indicator Plants

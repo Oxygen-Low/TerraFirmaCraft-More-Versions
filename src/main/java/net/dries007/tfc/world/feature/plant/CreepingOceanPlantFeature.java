@@ -60,7 +60,6 @@ public class CreepingOceanPlantFeature extends Feature<CreepingPlantConfig>
                             if (!newState.isAir())
                             {
                                 final Fluid fluidAt = level.getFluidState(cursor).getType();
-                                //TODO: THE BELOW IS NULL WHEN DIRECTLY GIVEN TFC SALTWATER. May be an issue later, but doesn't seem to be what's stopping it from replacing saltwater
                                 final BlockState waterloggedState = FluidHelpers.fillWithFluid(newState, fluidAt);
                                 setBlock(level, cursor, Objects.requireNonNullElse(waterloggedState, newState));
                             }
