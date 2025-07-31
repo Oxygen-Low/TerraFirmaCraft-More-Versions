@@ -825,6 +825,12 @@ public final class ForgeEventHandler
     public static void onLivingHurt(LivingIncomingDamageEvent event)
     {
         float amount = event.getAmount();
+        
+        // Vanilla kill command uses Float.MAX_VALUE, possibly others
+        if (amount == Float.MAX_VALUE)
+        {
+            return;
+        }
 
         // Forging Bonus
         final Entity attackerEntity = event.getSource().getEntity();
