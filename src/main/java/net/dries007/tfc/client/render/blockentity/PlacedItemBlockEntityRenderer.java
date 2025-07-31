@@ -113,7 +113,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
             {
                 pose.translate(slotX * 0.5, 0, slotZ * 0.5);
             }
-            pose.translate(0, -0.05, 0);
+            pose.translate(0, -0.0001, 0);
 
             blockRenderer.tesselateWithAO(entity.getLevel(), baked, entity.getBlockState(), entity.getBlockPos(), pose, buffer, true, random, packedLight, packedOverlay, ModelData.EMPTY, RenderType.translucent());
         }
