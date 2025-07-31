@@ -201,6 +201,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(TFCTags.Items.SOUPS, of(4.5f), true);
 
         add(Items.ROTTEN_FLESH, ROTTEN);
+        add(Items.EGG, of(2f), false);
     }
 
     private void add(Food item, FoodData food)
@@ -210,7 +211,12 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
 
     private void add(ItemLike item, FoodData food)
     {
-        add(nameOf(item).replace("food/", ""), new FoodDefinition(Ingredient.of(item), food, true));
+        add(item, food, true);
+    }
+
+    private void add(ItemLike item, FoodData food, boolean edible)
+    {
+        add(nameOf(item).replace("food/", ""), new FoodDefinition(Ingredient.of(item), food, edible));
     }
 
     private void add(TagKey<Item> tag, FoodData food, boolean edible)
