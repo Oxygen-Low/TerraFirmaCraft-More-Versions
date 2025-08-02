@@ -459,6 +459,7 @@ public class TFCTags
         public static final TagKey<Item> TOOLS_BLOWPIPE = commonTag("tools/blowpipe");
         /** Used in loot tables to prevent dropping of certain items */
         public static final TagKey<Item> TOOLS_SHARP = tag("tools/sharp");
+        public static final TagKey<Item> TOOLS_LARGE = tag("tools/large");
 
         // Damage Types
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");

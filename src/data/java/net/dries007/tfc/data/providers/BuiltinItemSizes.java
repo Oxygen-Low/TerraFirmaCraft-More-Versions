@@ -98,10 +98,10 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         ), Size.LARGE, Weight.MEDIUM);
         add("tools", ingredientOf(
             Ingredient.of(Tags.Items.TOOLS_FISHING_ROD),
-            Ingredient.of(Tags.Items.MINING_TOOL_TOOLS),
+            Ingredient.of(Tags.Items.TOOLS_SHIELD),
             Ingredient.of(Tags.Items.MELEE_WEAPON_TOOLS),
             Ingredient.of(Tags.Items.RANGED_WEAPON_TOOLS),
-            Ingredient.of(Tags.Items.TOOLS_SHIELD)
+            Ingredient.of(Tags.Items.TOOLS_MACE)
         ), Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("plants", TFCTags.Items.PLANTS, Size.TINY, Weight.VERY_LIGHT);
         add("sluices", TFCTags.Items.SLUICES, Size.VERY_LARGE, Weight.VERY_HEAVY);
