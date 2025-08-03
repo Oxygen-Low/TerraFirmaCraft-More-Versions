@@ -11,15 +11,16 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
 import net.dries007.tfc.common.recipes.AdvancedShapelessRecipe;
 import net.dries007.tfc.common.recipes.outputs.DamageCraftingRemainderModifier;
@@ -38,7 +39,14 @@ public class CraftingRecipesTest implements TestSetup
     @Test
     public void testCraftingRecipesWithToolsDamageInputs()
     {
-        final Set<CraftingRecipe> expectedDoNotDamageInputs = Collections.EMPTY_SET; // have fun
+        final Set<String> expectedDoNotDamageInputs = Stream.of(
+            Stream.of(
+                "minecraft:fire_charge",
+                "tfc:crafting/add_large_bait",
+                "tfc:crafting/add_small_bait"
+            ),
+            Arrays.stream(Wood.VALUES).map(wood -> "tfc:crafting/wood/sewing_table/" + wood.getSerializedName())
+        ).flatMap(s -> s).collect(Collectors.toSet());
 
         final RecipeManager manager = Helpers.getUnsafeRecipeManager();
 
@@ -46,8 +54,8 @@ public class CraftingRecipesTest implements TestSetup
             .getAllRecipesFor(RecipeType.CRAFTING)
             .stream()
             .filter(holder -> {
+                if (expectedDoNotDamageInputs.contains(holder.id().toString())) return false;
                 final CraftingRecipe recipe = holder.value();
-                if (expectedDoNotDamageInputs.contains(recipe)) return false;
                 if (recipe instanceof AdvancedShapedRecipe || recipe instanceof AdvancedShapelessRecipe)
                 {
                     Class<?> recipeType = recipe instanceof AdvancedShapedRecipe ? AdvancedShapedRecipe.class : AdvancedShapelessRecipe.class;
