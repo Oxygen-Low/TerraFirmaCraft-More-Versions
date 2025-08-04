@@ -21,7 +21,8 @@ import net.dries007.tfc.test.TestSetup;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.Tags;
 
-public class ToolsTest implements TestSetup {
+public class ToolsTest implements TestSetup
+{
     @Test
     public void testToolsAreSmallToolsOrLargeTools()
     {
