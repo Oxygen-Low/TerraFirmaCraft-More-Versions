@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.biome.BiomeBlendType;
 import net.dries007.tfc.world.biome.BiomeExtension;
-import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.region.RegionPartition;
@@ -28,8 +27,6 @@ import net.dries007.tfc.world.river.RiverInfo;
 import net.dries007.tfc.world.river.RiverNoiseSampler;
 import net.dries007.tfc.world.shore.ShoreBlendType;
 import net.dries007.tfc.world.shore.ShoreNoiseSampler;
-
-import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class ChunkHeightFiller
 {

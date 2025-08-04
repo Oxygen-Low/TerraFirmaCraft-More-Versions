@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.feature.plant;
 
 import com.mojang.serialization.Codec;
-import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;

@@ -14,7 +14,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 @Mixin(WaterFluid.class)
 public class WaterMixin
@@ -22,7 +24,9 @@ public class WaterMixin
     @Inject(method = "isSame", at = @At("HEAD"), cancellable = true)
     private void inject$isSame(Fluid fluid, CallbackInfoReturnable<Boolean> cir)
     {
-        cir.setReturnValue(fluid == Fluids.WATER || fluid == Fluids.FLOWING_WATER || fluid == TFCFluids.RIVER_WATER.get()
-            || fluid == TFCFluids.SALT_WATER.getSource() || fluid == TFCFluids.SALT_WATER.getFlowing());
+        if (Helpers.isFluid(fluid, TFCTags.Fluids.ANY_INFINITE_WATER))
+        {
+            cir.setReturnValue(true);
+        }
     }
 }

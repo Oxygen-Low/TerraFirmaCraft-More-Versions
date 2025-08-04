@@ -20,7 +20,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class MixingFluid extends BaseFlowingFluid
 {
@@ -64,9 +66,7 @@ public abstract class MixingFluid extends BaseFlowingFluid
 
     @Override
     public boolean isSame(Fluid fluid) {
-        return super.isSame(fluid) || fluid == TFCFluids.RIVER_WATER.get()
-            || fluid == TFCFluids.SALT_WATER.getSource() || fluid == TFCFluids.SALT_WATER.getFlowing()
-            || fluid == Fluids.WATER || fluid == Fluids.FLOWING_WATER;
+        return super.isSame(fluid) || Helpers.isFluid(fluid, TFCTags.Fluids.ANY_INFINITE_WATER);
     }
 
     /**

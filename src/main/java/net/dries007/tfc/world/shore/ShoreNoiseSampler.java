@@ -9,8 +9,9 @@ package net.dries007.tfc.world.shore;
 import net.dries007.tfc.world.biome.BiomeExtension;
 
 /**
- * River noise samplers are implemented as modifiers on the original results produced by {@link net.dries007.tfc.world.BiomeNoiseSampler}s.
- * Thus, they take in the {@code height} and {@code noise} values, and generally do their own interpolation / blending, based on the distance to the river in question.
+ * Shore noise samplers are implemented as modifiers on the original results produced by {@link net.dries007.tfc.world.BiomeNoiseSampler}s.
+ * Thus, they take in the {@code height} and {@code noise} values, and generally do their own interpolation / blending, based on the relative
+ * weights of land, ocean, and shore biomes.
  */
 public interface ShoreNoiseSampler
 {

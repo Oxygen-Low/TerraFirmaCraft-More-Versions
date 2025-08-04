@@ -1,9 +1,14 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.blocks.plant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,9 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -104,7 +107,10 @@ public abstract class CreepingWaterPlantBlock extends CreepingPlantBlock impleme
         if (getFluidProperty().canContain(fluid))
         {
             state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluid));
-            if (fluid == TFCFluids.SALT_WATER.getSource()) state = state.setValue(OPEN, true);
+            if (fluid == TFCFluids.SALT_WATER.getSource())
+            {
+                state = state.setValue(OPEN, true);
+            }
         }
         return updateStateFromSides(context.getLevel(), context.getClickedPos(), state);
     }
@@ -152,11 +158,12 @@ public abstract class CreepingWaterPlantBlock extends CreepingPlantBlock impleme
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    {
         if (!level.isClientSide)
         {
             level.setBlock(pos, state.setValue(OPEN, false), Block.UPDATE_ALL);
-            level.scheduleTick(new BlockPos(pos), this, 150);
+            level.scheduleTick(pos, this, 150);
         }
     }
 }

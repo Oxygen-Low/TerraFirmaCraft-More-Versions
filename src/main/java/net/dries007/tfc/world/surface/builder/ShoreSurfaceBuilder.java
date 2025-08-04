@@ -107,7 +107,6 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
     }
 
     /**
-     *
      * Essentially mimics @link ShieldVolcanoSurfaceBuilder for placement of fresh lava flows
      * but using different materials
      */

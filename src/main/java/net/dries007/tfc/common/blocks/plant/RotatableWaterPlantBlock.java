@@ -124,7 +124,10 @@ public abstract class RotatableWaterPlantBlock extends WaterPlantBlock
         if (getFluidProperty().canContain(fluid))
         {
             state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluid));
-            if (fluid == TFCFluids.SALT_WATER.getSource()) state = state.setValue(OPEN, true);
+            if (fluid == TFCFluids.SALT_WATER.getSource())
+            {
+                state = state.setValue(OPEN, true);
+            }
         }
         return state;
     }
@@ -159,11 +162,12 @@ public abstract class RotatableWaterPlantBlock extends WaterPlantBlock
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    {
         if (!level.isClientSide)
         {
             level.setBlock(pos, state.setValue(OPEN, false), Block.UPDATE_ALL);
-            level.scheduleTick(new BlockPos(pos), this, 150);
+            level.scheduleTick(pos, this, 150);
         }
     }
 }
