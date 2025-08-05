@@ -84,13 +84,11 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.extensions.BlowpipeExtension;
 import net.dries007.tfc.client.extensions.FluidRendererExtension;
 import net.dries007.tfc.client.extensions.ItemRendererExtension;
-import net.dries007.tfc.client.extensions.SheetPileExtension;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
 import net.dries007.tfc.client.model.PlantBlockModel;
 import net.dries007.tfc.client.model.ScrapingBlockModel;
-import net.dries007.tfc.client.model.SheetPileBlockModel;
 import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.BearModel;
@@ -460,7 +458,6 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), ghostBlock);
         TFCBlocks.STAINED_WATTLE.values().forEach(wattle -> ItemBlockRenderTypes.setRenderLayer(wattle.get(), ghostBlock));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.UNSTAINED_WATTLE.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUBLE_INGOT_PILE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SCRAPING.get(), cutout);
@@ -770,7 +767,6 @@ public final class ClientEventHandler
         event.register(Helpers.identifier("trim"), new TrimmedItemModel.Loader());
         event.register(Helpers.identifier("ingot_pile"), IngotPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("double_ingot_pile"), DoubleIngotPileBlockModel.INSTANCE);
-        event.register(Helpers.identifier("sheet_pile"), SheetPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("scraping"), ScrapingBlockModel.INSTANCE);
         event.register(Helpers.identifier("plant"), PlantBlockModel.Loader.INSTANCE);
     }
@@ -944,9 +940,6 @@ public final class ClientEventHandler
             TFCItems.BLOWPIPE_WITH_GLASS.get(),
             TFCItems.CERAMIC_BLOWPIPE.get(),
             TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get());
-
-        // Blocks
-        event.registerBlock(new SheetPileExtension(TFCBlocks.SHEET_PILE.get()), TFCBlocks.SHEET_PILE.get());
 
         // Fluids
         TFCFluids.METALS.forEach((metal, holder) -> event.registerFluidType(

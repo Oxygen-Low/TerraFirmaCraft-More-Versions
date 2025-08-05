@@ -882,7 +882,7 @@ NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox')
 
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
@@ -1390,7 +1390,6 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.mud_bricks': 'Mud Bricks',
     'config.jade.plugin_tfc.decaying': 'Decaying Block',
     'config.jade.plugin_tfc.loom': 'Loom',
-    'config.jade.plugin_tfc.sheet_pile': 'Sheet Pile',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
     'config.jade.plugin_tfc.axle': 'Axle',
     'config.jade.plugin_tfc.encased_axle': 'Encased Axle',

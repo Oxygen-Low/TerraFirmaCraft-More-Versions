@@ -250,7 +250,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.FIREPIT,
                 TFCBlocks.INGOT_PILE,
                 TFCBlocks.DOUBLE_INGOT_PILE,
-                TFCBlocks.SHEET_PILE,
                 TFCBlocks.BLAST_FURNACE,
                 TFCBlocks.CERAMIC_BOWL,
                 TFCBlocks.CRANKSHAFT,

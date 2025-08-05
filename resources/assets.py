@@ -2270,11 +2270,9 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('ingot_pile', 'tfc:block/ingot_pile').with_lang(lang('ingot pile'))
     rm.blockstate('double_ingot_pile', 'tfc:block/double_ingot_pile').with_lang(lang('double ingot pile'))
-    rm.blockstate('sheet_pile', 'tfc:block/sheet_pile').with_lang(lang('sheet pile'))
 
     rm.custom_block_model('ingot_pile', 'tfc:ingot_pile', {})
     rm.custom_block_model('double_ingot_pile', 'tfc:double_ingot_pile', {})
-    rm.custom_block_model('sheet_pile', 'tfc:sheet_pile', {})
 
 
     for fluid in SIMPLE_FLUIDS:

@@ -50,7 +50,6 @@ import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.common.blocks.devices.DoubleIngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.LogPileBlock;
-import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.common.container.TFCContainerProviders;
@@ -346,63 +345,6 @@ public final class InteractionManager
 
         registerBlock(Ingredient.of(Tags.Items.INGOTS), (stack, context) -> doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64));
         registerBlock(Ingredient.of(TFCTags.Items.DOUBLE_INGOTS), (stack, context) -> doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36));
-
-        registerBlock(Ingredient.of(TFCTags.Items.SHEETS), (stack, context) -> {
-            final Player player = context.getPlayer();
-            if (player != null && player.mayBuild() && player.isShiftKeyDown())
-            {
-                final Level level = context.getLevel();
-                final Direction clickedFace = context.getClickedFace(); // i.e. click on UP
-                final Direction sheetFace = clickedFace.getOpposite(); // i.e. place on DOWN
-
-                final BlockPos clickedPos = context.getClickedPos();
-                final BlockPos relativePos = clickedPos.relative(clickedFace);
-
-                final BlockState clickedState = level.getBlockState(clickedPos);
-                final BlockState relativeState = level.getBlockState(relativePos);
-
-                final BlockPlaceContext blockContext = new BlockPlaceContext(context);
-                final BooleanProperty property = DirectionPropertyBlock.getProperty(sheetFace);
-
-                if (blockContext.replacingClickedOnBlock())
-                {
-                    // Sheets are not allowed to place on replaceable blocks, as it is dependent on the face clicked - but when we click on a replaceable block, that face doesn't make sense.
-                    return InteractionResult.FAIL;
-                }
-
-                // Sheets behave differently than ingots, because we need to check the targeted face if it's empty or not
-                // We assume immediately that we want to target the relative pos and state
-                if (Helpers.isBlock(relativeState, TFCBlocks.SHEET_PILE.get()))
-                {
-                    // We targeted an existing sheet pile, so we need to check if there's an empty space for it
-                    if (!relativeState.getValue(property) && BlockItemPlacement.canPlace(blockContext, clickedState) && clickedState.isFaceSturdy(level, clickedPos, clickedFace))
-                    {
-                        // Add to an existing sheet pile
-                        final ItemStack insertStack = stack.split(1);
-                        SheetPileBlock.addSheet(level, relativePos, relativeState, sheetFace, insertStack);
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                    else
-                    {
-                        // No space
-                        return InteractionResult.FAIL;
-                    }
-                }
-                // This is where we assert that we can only replace replaceable blocks
-                else if (level.getBlockState(relativePos).canBeReplaced(blockContext))
-                {
-                    // Want to place a new sheet at the above location
-                    final BlockState placingState = TFCBlocks.SHEET_PILE.get().defaultBlockState().setValue(property, true);
-                    if (BlockItemPlacement.canPlace(blockContext, placingState) && clickedState.isFaceSturdy(level, clickedPos, clickedFace))
-                    {
-                        final ItemStack insertStack = stack.split(1);
-                        SheetPileBlock.addSheet(level, relativePos, placingState, sheetFace, insertStack);
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                }
-            }
-            return InteractionResult.PASS;
-        });
 
         register(Ingredient.of(TFCTags.Items.SALAD_BOWLS), Target.BOTH, (stack, context) -> {
             // Only open salads when shift key is down
