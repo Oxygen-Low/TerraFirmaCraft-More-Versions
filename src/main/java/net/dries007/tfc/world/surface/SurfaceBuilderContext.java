@@ -18,6 +18,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
@@ -123,6 +124,11 @@ public class SurfaceBuilderContext
     public RockSettings getSeaLevelRock()
     {
         return rockData.getRock(cursor.getX(), seaLevel, cursor.getZ());
+    }
+
+    public RockSettings getApproxSecondRock()
+    {
+        return rockData.getRock(cursor.getX(), Math.max(cursor.getY() - 64, -64), cursor.getZ());
     }
 
     public RockSettings getBottomRock()

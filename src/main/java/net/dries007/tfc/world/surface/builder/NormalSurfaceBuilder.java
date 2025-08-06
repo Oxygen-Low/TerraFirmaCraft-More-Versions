@@ -12,6 +12,8 @@ import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
+
 public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
 {
     INSTANCE(-1),
@@ -30,6 +32,11 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
         buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_GRAVEL, SurfaceStates.MID_DIRT_TO_GRAVEL, SurfaceStates.UNDER_GRAVEL);
     }
 
+    public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topCaveState, SurfaceState midCaveState, SurfaceState underCaveState, int caveHeight)
+    {
+        buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_GRAVEL, SurfaceStates.MID_DIRT_TO_GRAVEL, SurfaceStates.UNDER_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, topCaveState, midCaveState, underCaveState, caveHeight);
+    }
+
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState)
     {
         buildSurface(context, startY, endY, topState, midState, underState, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL);
@@ -37,9 +44,14 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
 
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState, SurfaceState underWaterState, SurfaceState thinUnderWaterState)
     {
+        buildSurface(context, startY, endY, topState, midState, underState, underWaterState, thinUnderWaterState, topState, midState, underState, SEA_LEVEL_Y);
+    }
+
+    public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState, SurfaceState underWaterState, SurfaceState thinUnderWaterState, SurfaceState topCaveState, SurfaceState midCaveState, SurfaceState underCaveState, int caveHeight)
+    {
         int surfaceDepth = -1;
         int surfaceY = 0;
-        boolean underwaterLayer = false, firstLayer = false;
+        boolean underwaterLayer = false, firstLayer = false, hasPlacedFirstSurface = false;
         SurfaceState surfaceState = SurfaceStates.RAW;
 
         for (int y = startY; y >= endY; --y)
@@ -48,6 +60,18 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
             if (stateAt.isAir())
             {
                 surfaceDepth = -1; // Reached air, reset surface depth
+                if (y <= caveHeight) // Use alternate surface states at depth
+                {
+                    topState = topCaveState;
+                    midState = midCaveState;
+                    underState = underCaveState;
+                }
+                else if (hasPlacedFirstSurface)
+                {
+                    topState = surfaceState;
+                    midState = surfaceState;
+                    underState = surfaceState;
+                }
             }
             else if (context.isDefaultBlock(stateAt))
             {
@@ -99,6 +123,8 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                 }
                 else if (surfaceDepth > 0)
                 {
+                    hasPlacedFirstSurface = true;
+
                     // Subsurface layers
                     surfaceDepth--;
                     context.setBlockState(y, surfaceState);

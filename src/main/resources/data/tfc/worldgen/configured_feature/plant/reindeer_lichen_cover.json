@@ -5,6 +5,7 @@
     "block": "tfc:plant/reindeer_lichen",
     "height": 7,
     "radius": 6,
-    "integrity": 0.95
+    "integrity": 0.95,
+    "tide_height": 2
   }
 }

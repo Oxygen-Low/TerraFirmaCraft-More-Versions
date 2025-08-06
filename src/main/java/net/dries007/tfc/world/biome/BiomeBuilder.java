@@ -19,11 +19,11 @@ import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.river.RiverBlendType;
+import net.dries007.tfc.world.shore.ShoreBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 import net.dries007.tfc.world.surface.builder.TuffRingsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.TuyasSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.VolcanoesSurfaceBuilder;
-import net.dries007.tfc.world.Seed;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
@@ -41,6 +41,7 @@ public class BiomeBuilder
     private AquiferLookahead aquiferSurfaceHeight;
     private BiomeBlendType biomeBlendType;
     private RiverBlendType riverBlendType;
+    private ShoreBlendType shoreBlendType;
     private boolean salty;
     private boolean volcanic;
     private boolean hasTuyas;
@@ -52,7 +53,7 @@ public class BiomeBuilder
     private boolean spawnable;
     private boolean rivers;
     private boolean shore;
-    private int cliffBaseHeight;
+    private int shoreBaseHeight;
     private boolean sandyRiverShores;
 
     private BiomeBuilder()
@@ -63,6 +64,7 @@ public class BiomeBuilder
         };
         biomeBlendType = BiomeBlendType.LAND;
         riverBlendType = RiverBlendType.NONE;
+        shoreBlendType = ShoreBlendType.NONE;
         salty = false;
         volcanic = false;
         hasTuffRings = false;
@@ -74,7 +76,7 @@ public class BiomeBuilder
         spawnable = false;
         rivers = true;
         shore = false;
-        cliffBaseHeight = 0; // Above/below sea level
+        shoreBaseHeight = SEA_LEVEL_Y;
         sandyRiverShores = true;
     }
 
@@ -136,6 +138,12 @@ public class BiomeBuilder
         return this;
     }
 
+    public BiomeBuilder type(ShoreBlendType type)
+    {
+        this.shoreBlendType = type;
+        return this;
+    }
+
     public BiomeBuilder salty()
     {
         this.salty = true;
@@ -161,9 +169,9 @@ public class BiomeBuilder
         return this;
     }
 
-    public BiomeBuilder setCliffBaseHeight(int cliffBaseHeight)
+    public BiomeBuilder setShoreBaseHeight(int shoreBaseHeight)
     {
-        this.cliffBaseHeight = cliffBaseHeight;
+        this.shoreBaseHeight = SEA_LEVEL_Y + shoreBaseHeight;
         return this;
     }
 
@@ -236,6 +244,6 @@ public class BiomeBuilder
     {
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, hasTuffRings, hasTuyas, volcanoFrequency, volcanoBasaltHeight, tuffRingFrequency, tuyaFrequency, spawnable, rivers, shore, cliffBaseHeight, sandyRiverShores);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, shoreBlendType, salty, volcanic, hasTuffRings, hasTuyas, volcanoFrequency, volcanoBasaltHeight, tuffRingFrequency, tuyaFrequency, spawnable, rivers, shore, shoreBaseHeight, sandyRiverShores);
     }
 }

@@ -14,7 +14,9 @@ import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.Noise3D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.noise.OpenSimplex3D;
 import net.dries007.tfc.world.region.Units;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
@@ -112,6 +114,15 @@ public final class BiomeNoise
     public static Noise2D hills(long seed, int minHeight, int maxHeight)
     {
         return new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(SEA_LEVEL_Y + minHeight, SEA_LEVEL_Y + maxHeight);
+    }
+
+    /**
+     * Return a constant. Used for technical biomes such as shore where the height seen in game is not based on the biome noise
+     * but the biome noise is still needed for blending
+     */
+    public static Noise2D constant(int height)
+    {
+        return (x, z) -> (SEA_LEVEL_Y + height);
     }
 
     /**
@@ -1091,6 +1102,14 @@ public final class BiomeNoise
     }
 
     /**
+     * Small scale noise used to vary the material of lava flows
+     */
+    public static Noise2D lavaFlowMaterial(long seed)
+    {
+        return new OpenSimplex2D(seed).octaves(2).spread(0.25);
+    }
+
+    /**
      * Currently erupting location in a hotspot chain, used for biome noise and regional hotspot placement
      */
     public static Noise2D activeHotSpots(long seed)
@@ -1249,6 +1268,34 @@ public final class BiomeNoise
     {
         final TuyaNoise tuyas = new TuyaNoise(seed);
         return (x, z) -> tuyas.modifyHeight(x, z, baseNoise.noise(x, z), rarity, baseVolcanoHeight, scaleVolcanoHeight, icy);
+    }
+
+    /**
+     * Used for various shores
+     */
+    public static Noise3D cliffNoise(Seed seed)
+    {
+        return new OpenSimplex3D(seed.seed()).octaves(2).spread(0.1f);
+    }
+
+    public static Noise2D lowerTerraceNoise(Seed seed)
+    {
+        return BiomeNoise.hills(seed.seed(), 7, 15);
+    }
+
+    public static Noise2D upperTerraceNoise(Seed seed)
+    {
+        return BiomeNoise.hills(seed.seed(), 18, 30);
+    }
+
+    /**
+     * As temporal tides are infeasible, vary the heights of beaches relative to sea level such that
+     * some beaches represent high tide conditions, and others low-tide conditions
+     * Highest tide is at zero, lowest tide is at 4
+     */
+    public static Noise2D shoreTideLevelNoise(Seed seed)
+    {
+        return new OpenSimplex2D(seed.seed()).octaves(3).spread(0.005f).scaled(SEA_LEVEL_Y - 6, SEA_LEVEL_Y + 6).clamped(SEA_LEVEL_Y, SEA_LEVEL_Y + 4).add(new OpenSimplex2D(seed.seed()).spread(0.03));
     }
 
     public static BiomeNoiseSampler undergroundLakes(long seed, Noise2D heightNoise)

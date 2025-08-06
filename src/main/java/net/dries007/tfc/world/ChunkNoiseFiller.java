@@ -42,6 +42,8 @@ import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.river.RiverInfo;
 import net.dries007.tfc.world.river.RiverNoiseSampler;
+import net.dries007.tfc.world.shore.ShoreBlendType;
+import net.dries007.tfc.world.shore.ShoreNoiseSampler;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
@@ -113,15 +115,16 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         BiomeSourceExtension biomeSource,
         Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers,
         Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers,
-        Noise2D shoreSampler,
+        Map<ShoreBlendType, ShoreNoiseSampler> shoreSamplers,
         NoiseSampler sampler,
         ChunkBaseBlockSource baseBlockSource,
         ChunkNoiseSamplingSettings settings,
         int seaLevel,
+        Noise2D tideHeightNoise,
         Beardifier beardifier
     )
     {
-        super(sampledBiomeWeights, biomeSource, biomeNoiseSamplers, riverNoiseSamplers, shoreSampler, seaLevel);
+        super(sampledBiomeWeights, biomeSource, biomeNoiseSamplers, riverNoiseSamplers, shoreSamplers, seaLevel, tideHeightNoise);
 
         this.chunk = chunk;
         this.chunkMinX = chunk.getPos().getMinBlockX();
@@ -553,6 +556,21 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             else if (weight > 0)
             {
                 final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
+                noise += weight * sampler.noise(y, initialNoise);
+            }
+        }
+
+        // Apply transformations from shores
+        for (ShoreBlendType type : ShoreBlendType.ALL)
+        {
+            final double weight = shoreBlendWeights[type.ordinal()];
+            if (type == ShoreBlendType.NONE)
+            {
+                noise += weight * initialNoise;
+            }
+            else if (weight > 0)
+            {
+                final ShoreNoiseSampler sampler = shoreNoiseSamplers.get(type);
                 noise += weight * sampler.noise(y, initialNoise);
             }
         }

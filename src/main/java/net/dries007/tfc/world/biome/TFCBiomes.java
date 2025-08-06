@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.river.RiverBlendType;
+import net.dries007.tfc.world.shore.ShoreBlendType;
 import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.BurrenSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.DuneSurfaceBuilder;
@@ -39,6 +40,7 @@ import net.dries007.tfc.world.surface.builder.RockyPlateauSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.ShieldVolcanoSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.ShilinSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.SimpleSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.StoneCirclesSurfaceBuilder;
 
 import static net.dries007.tfc.world.biome.BiomeBuilder.*;
@@ -63,7 +65,7 @@ public final class TFCBiomes
     public static final BiomeExtension LOW_CANYONS = register("low_canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 21)).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores()); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Mid biomes
-    public static final BiomeExtension ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE)); // Higher hills, above sea level. Some larger / steeper hills.
+    public static final BiomeExtension ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON)); // Higher hills, above sea level. Some larger / steeper hills.
     public static final BiomeExtension HIGHLANDS = register("highlands", builder().heightmap(seed -> BiomeNoise.sharpHills(seed, -3, 28)).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.CANYON)); // Hills with sharp, exposed rocky areas.
     public static final BiomeExtension BADLANDS = register("badlands", builder().heightmap(seed -> BiomeNoise.badlands(seed, 22, 19.5f)).surface(BadlandsSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CANYON)); // Very high flat area with steep relief carving, similar to vanilla mesas.
     public static final BiomeExtension PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Very high area, very flat top.
@@ -78,8 +80,29 @@ public final class TFCBiomes
     public static final BiomeExtension VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(NormalSurfaceBuilder.ROCKY).aquiferHeightOffset(-8).salty().volcanoes(2, -12, 50, 20).type(RiverBlendType.CAVE)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
 
     // Shores
-    public static final BiomeExtension SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores()); // Standard shore / beach. Material will vary based on location
-    public static final BiomeExtension TIDAL_FLATS = register("tidal_flats", builder().heightmap(BiomeNoise::tidalFlats).surface(ShoreSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).type(BiomeBlendType.OCEAN).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores());
+    // Each shore type is paired with a secondary shore type, which is sometimes applied
+    // Standard shore / beach. Material will vary based on location
+    public static final BiomeExtension SHORE = register("shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.SANDY).aquiferHeightOffset(-16).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.SANDY).setShoreBaseHeight(-4));
+    public static final BiomeExtension TIDAL_FLATS = register("tidal_flats", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.SANDY).aquiferHeightOffset(-16).type(BiomeBlendType.OCEAN).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.SANDY).setShoreBaseHeight(-4));
+
+    // Inspired by Bay of Fundy, 12 Apostles, etc. -- High biome shore
+    public static final BiomeExtension SEA_STACKS = register("sea_stacks", builder().heightmap(seed -> BiomeNoise.hills(seed, 10, 30)).surface(ShoreSurfaceBuilder.SEA_CLIFFS).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.TALL_CANYON).noRivers().noSandyRiverShores().type(ShoreBlendType.SEA_STACKS).setShoreBaseHeight(-6));
+
+    // Multiple tiers of cliffs -- High to montane biome shore
+    public static final BiomeExtension TERRACE_UPPER = register("terrace_upper", builder().heightmap(seed -> BiomeNoise.constant(0)).surface(ShoreSurfaceBuilder.SEA_CLIFFS).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.TALL_CANYON).noRivers().noSandyRiverShores().type(ShoreBlendType.UPPER_TERRACE));
+    public static final BiomeExtension TERRACE_LOWER = register("terrace_lower", builder().heightmap(seed -> BiomeNoise.constant(0)).surface(ShoreSurfaceBuilder.SEA_CLIFFS).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.TALL_CANYON).noRivers().noSandyRiverShores().type(ShoreBlendType.LOWER_TERRACE));
+
+    // Vegetated zone below shore cliffs -- Mid-high biome shore
+    public static final BiomeExtension SETBACK_CLIFFS = register("setback_cliffs", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(ShoreSurfaceBuilder.SANDY).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.CANYON).noRivers().noSandyRiverShores().type(ShoreBlendType.SETBACK_CLIFFS));
+    // Vegetated coastal Dunes -- Below setback cliffs
+    public static final BiomeExtension COASTAL_DUNES = register("coastal_dunes", builder().heightmap(seed -> BiomeNoise.constant(0)).surface(ShoreSurfaceBuilder.SANDY).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.DUNES));
+
+    // Chaotic rock formations, tide pools, and blowholes
+    public static final BiomeExtension ROCKY_SHORES = register("rocky_shores", builder().heightmap(seed -> BiomeNoise.constant(-15)).surface(SimpleSurfaceBuilder.ROCKY).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.ROCKY_SHORES));
+
+    // Similar Rocky Shores, but with beaches mixed in
+    public static final BiomeExtension EMBAYMENTS = register("embayments", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.SEA_CLIFFS).aquiferHeightOffset(-40).type(BiomeBlendType.LAND).salty().shore().type(RiverBlendType.WIDE).noRivers().noSandyRiverShores().type(ShoreBlendType.EMBAYMENTS)); //
+
 
     // Water
     public static final BiomeExtension LAKE = register("lake", builder().heightmap(BiomeNoise::lake).surface(NormalSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).type(BiomeBlendType.LAKE).type(RiverBlendType.WIDE).noRivers());
@@ -143,7 +166,7 @@ public final class TFCBiomes
     // Small-medium cylindrical dolines
     public static final BiomeExtension CENOTE_PLAINS = register("cenote_plains", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, 4, 10), 11, 8)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.FLOODPLAIN));
     public static final BiomeExtension CENOTE_HILLS = register("cenote_hills", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, -5, 16), 16, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
-    public static final BiomeExtension CENOTE_ROLLING_HILLS = register("cenote_rolling_hills", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, -5, 28), 22, 14)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension CENOTE_ROLLING_HILLS = register("cenote_rolling_hills", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, -5, 28), 22, 14)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON));
     public static final BiomeExtension CENOTE_CANYONS = register("cenote_canyons", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.canyons(seed, 2, 28), 18, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON).noSandyRiverShores());
     public static final BiomeExtension CENOTE_HIGHLANDS = register("cenote_highlands", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.sharpHills(seed, 0, 24), 20, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores());  // Modified "weathered" highlands. Cenotes may not reach water level.
     public static final BiomeExtension CENOTE_PLATEAU = register("cenote_plateau", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, 20, 30), 22, 20)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Very high area, dry cenotes.
@@ -159,8 +182,8 @@ public final class TFCBiomes
     public static final BiomeExtension ANCIENT_SHIELD_VOLCANO = register("ancient_shield_volcano", builder().heightmap(seed -> BiomeNoise.ancientShieldVolcano(seed, 90, 130, BiomeNoise.ancientHotSpots(seed))).surface(ShieldVolcanoSurfaceBuilder.DORMANT).tuffRings(3, -16, 30).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.CAVE));
     public static final BiomeExtension SUNKEN_SHIELD_VOLCANO = register("sunken_shield_volcano", builder().heightmap(seed -> BiomeNoise.sunkenShieldVolcano(seed, BiomeNoise.ancientHotSpots(seed))).surface(ShieldVolcanoSurfaceBuilder.DORMANT).tuffRings(3, -8, 24).aquiferHeightOffset(-16).spawnable().salty().type(RiverBlendType.CAVE));
 
-    public static final BiomeExtension SHIELD_VOLCANO_SHORE = register("shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShieldVolcanoSurfaceBuilder.SHORE).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON));
-    public static final BiomeExtension OLD_SHIELD_VOLCANO_SHORE = register("old_shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShieldVolcanoSurfaceBuilder.SHORE).tuffRings(3, -8, 26).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON));
+    public static final BiomeExtension SHIELD_VOLCANO_SHORE = register("shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.VOLCANIC_CLIFFS).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON).type(ShoreBlendType.EMBAYMENTS));
+    public static final BiomeExtension OLD_SHIELD_VOLCANO_SHORE = register("old_shield_volcano_shore", builder().heightmap(BiomeNoise::shore).surface(ShoreSurfaceBuilder.VOLCANIC).tuffRings(3, -8, 26).spawnable().salty().shore().type(RiverBlendType.TALL_CANYON).type(ShoreBlendType.SANDY));
 
     // Full Ice Sheet Biomes
     public static final BiomeExtension ICE_SHEET = register("ice_sheet", builder().heightmap(seed -> BiomeNoise.iceSheetSurfaceHeight(seed).add(BiomeNoise.glacialSurfaceTexture(seed))).surface(IceSheetSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
@@ -174,10 +197,10 @@ public final class TFCBiomes
     public static final BiomeExtension ICE_SHEET_EDGE = register("ice_sheet_edge", builder().heightmap(BiomeNoise::glacialBase).surface(IceSheetSurfaceBuilder.EDGE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores());
     public static final BiomeExtension ICE_SHEET_TUYAS_EDGE = register("ice_sheet_tuyas_edge", builder().heightmap(BiomeNoise::glacialBase).surface(IceSheetSurfaceBuilder.EDGE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores().tuyas(3, 0, 35, 40, true));
     public static final BiomeExtension ICE_SHEET_MOUNTAINS_EDGE = register("ice_sheet_mountains_edge", builder().heightmap(seed -> BiomeNoise.glacialCirques(seed).addConstant(39).max(BiomeNoise.glacialCirquesIceSurfaceHeight(seed).addConstant(39))).surface(IceSheetSurfaceBuilder.ICE_SHEET_MOUNTAINS).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
-    public static final BiomeExtension ICE_SHEET_OCEANIC_MOUNTAINS_EDGE = register("ice_sheet_oceanic_mountains_edge", builder().heightmap(seed -> BiomeNoise.glacialCirquesIceSurfaceHeight(seed).max(BiomeNoise.glacialCirques(seed))).surface(IceSheetSurfaceBuilder.ICE_SHEET_OCEANIC_MOUNTAINS).aquiferHeightOffset(-24).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores().shore().setCliffBaseHeight(-16).salty());
-    public static final BiomeExtension MELTWATER_LAKE = register("meltwater_lake", builder().heightmap(BiomeNoise::lake).surface(IceSheetSurfaceBuilder.EDGE_LAKE).aquiferHeightOffset(-16).type(BiomeBlendType.LAKE).type(RiverBlendType.WIDE).noRivers().shore().setCliffBaseHeight(-16));
+    public static final BiomeExtension ICE_SHEET_OCEANIC_MOUNTAINS_EDGE = register("ice_sheet_oceanic_mountains_edge", builder().heightmap(seed -> BiomeNoise.glacialCirquesIceSurfaceHeight(seed).max(BiomeNoise.glacialCirques(seed))).surface(IceSheetSurfaceBuilder.ICE_SHEET_OCEANIC_MOUNTAINS).aquiferHeightOffset(-24).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores().shore().setShoreBaseHeight(-16).salty().type(ShoreBlendType.CLASSIC));
+    public static final BiomeExtension MELTWATER_LAKE = register("meltwater_lake", builder().heightmap(BiomeNoise::lake).surface(IceSheetSurfaceBuilder.EDGE_LAKE).aquiferHeightOffset(-16).type(BiomeBlendType.LAKE).type(RiverBlendType.WIDE).noRivers().shore().setShoreBaseHeight(-16).type(ShoreBlendType.CLASSIC));
     public static final BiomeExtension ICE_SHEET_OCEANIC = register("ice_sheet_oceanic", builder().heightmap(seed -> BiomeNoise.oceanicIceSheetSurfaceHeight(seed).add(BiomeNoise.glacialSurfaceTexture(seed))).surface(IceSheetSurfaceBuilder.OCEANIC).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
-    public static final BiomeExtension ICE_SHEET_SHORE = register("ice_sheet_shore", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).surface(IceSheetSurfaceBuilder.OCEANIC).aquiferHeightOffset(-24).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores().shore().setCliffBaseHeight(-12).salty());
+    public static final BiomeExtension ICE_SHEET_SHORE = register("ice_sheet_shore", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).surface(IceSheetSurfaceBuilder.OCEANIC).aquiferHeightOffset(-24).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores().shore().setShoreBaseHeight(-12).salty().type(ShoreBlendType.CLASSIC));
 
     // Glaciated Biomes
     public static final BiomeExtension GLACIATED_MOUNTAINS = register("glaciated_mountains", builder().heightmap(seed -> BiomeNoise.glacialCirques(seed).addConstant(39).max(BiomeNoise.glacialCirquesIceSurfaceHeight(seed).addConstant(39))).surface(IceSheetSurfaceBuilder.GLACIATED_MOUNTAINS).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());

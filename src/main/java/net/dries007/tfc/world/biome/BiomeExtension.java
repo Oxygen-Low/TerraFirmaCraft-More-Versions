@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.river.RiverBlendType;
+import net.dries007.tfc.world.shore.ShoreBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 
@@ -37,6 +38,7 @@ public final class BiomeExtension
 
     private final BiomeBlendType biomeBlendType;
     private final RiverBlendType riverBlendType;
+    private final ShoreBlendType shoreBlendType;
     private final boolean salty;
     private final boolean volcanic;
     private final boolean hasTuffCones;
@@ -48,14 +50,14 @@ public final class BiomeExtension
     private final boolean spawnable;
     private final boolean rivers;
     private final boolean shore;
-    private final int cliffBaseHeight;
+    private final int shoreBaseHeight;
     private final boolean sandyRiverShores;
 
     @Nullable private List<HolderSet<PlacedFeature>> flattenedFeatures;
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, @Nullable Function<Seed, BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, boolean hasTuffCones, boolean hasTuyas, int volcanoRarity, int volcanoBasaltHeight, int tuffRingRarity, int tuyaRarity, boolean spawnable, boolean rivers, boolean shore, int cliffBaseHeight, boolean sandyRiverShores)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable Function<Seed, BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, ShoreBlendType shoreBlendType, boolean salty, boolean volcanic, boolean hasTuffCones, boolean hasTuyas, int volcanoRarity, int volcanoBasaltHeight, int tuffRingRarity, int tuyaRarity, boolean spawnable, boolean rivers, boolean shore, int shoreBaseHeight, boolean sandyRiverShores)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
@@ -63,6 +65,7 @@ public final class BiomeExtension
         this.aquiferSurfaceHeight = aquiferSurfaceHeight;
         this.biomeBlendType = biomeBlendType;
         this.riverBlendType = riverBlendType;
+        this.shoreBlendType = shoreBlendType;
         this.salty = salty;
         this.volcanic = volcanic;
         this.hasTuffCones = hasTuffCones;
@@ -74,7 +77,7 @@ public final class BiomeExtension
         this.spawnable = spawnable;
         this.rivers = rivers;
         this.shore = shore;
-        this.cliffBaseHeight = cliffBaseHeight;
+        this.shoreBaseHeight = shoreBaseHeight;
         this.sandyRiverShores = sandyRiverShores;
     }
 
@@ -91,6 +94,11 @@ public final class BiomeExtension
     public RiverBlendType riverBlendType()
     {
         return riverBlendType;
+    }
+
+    public ShoreBlendType shoreBlendType()
+    {
+        return shoreBlendType;
     }
 
     public boolean hasSandyRiverShores()
@@ -133,9 +141,9 @@ public final class BiomeExtension
         return shore;
     }
 
-    public int getCliffBaseHeight()
+    public int getShoreBaseHeight()
     {
-        return cliffBaseHeight;
+        return shoreBaseHeight;
     }
 
     public int getVolcanoRarity()
