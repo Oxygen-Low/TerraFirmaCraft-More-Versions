@@ -55,29 +55,12 @@ public class CraftingRecipesTest implements TestSetup
             .filter(holder -> {
                 if (expectedDoNotDamageInputs.contains(holder.id().toString())) return false;
                 final CraftingRecipe recipe = holder.value();
-                if (recipe instanceof AdvancedShapedRecipe || recipe instanceof AdvancedShapelessRecipe)
+                final Optional<ItemStackProvider> remainder = recipe instanceof AdvancedShapedRecipe shaped ? shaped.getRemainder()
+                    : recipe instanceof AdvancedShapelessRecipe shapeless ? shapeless.getRemainder() : Optional.empty();
+
+                if (remainder.isPresent() && remainder.get().modifiers().stream().anyMatch(modifier ->  modifier instanceof DamageCraftingRemainderModifier))
                 {
-                    Class<?> recipeType = recipe instanceof AdvancedShapedRecipe ? AdvancedShapedRecipe.class : AdvancedShapelessRecipe.class;
-                    Field remainder;
-                    try
-                    {
-                        remainder = recipeType.getDeclaredField("remainder");
-                        remainder.setAccessible(true);
-                        Optional<ItemStackProvider> remainderProvider;
-                        try {
-                            remainderProvider = (Optional<ItemStackProvider>) remainder.get(recipe);
-                            if (remainderProvider.isPresent() && remainderProvider.get().modifiers().stream().anyMatch(modifier ->  modifier instanceof DamageCraftingRemainderModifier))
-                        {
-                            return false;
-                        }
-                        } catch (IllegalArgumentException | IllegalAccessException e) {
-                            fail("Could not get value of field 'remainder' of recipeType: " + e);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        fail("Could not get field 'remainder' of recipeType: " + e);
-                    }
+                    return false;
                 }
 
                 final Stream<ItemStack> stacks = recipe
