@@ -1167,6 +1167,29 @@ public interface CraftingRecipes extends Recipes
         recipe()
             .input(TFCBlocks.PLANTS.get(Plant.BARREL_CACTUS))
             .shapeless(TFCItems.CACTUS_WOOD);
+        recipe()
+            .inputIsPrimary(TFCTags.Items.TOOLS_HAMMER)
+            .input(Ingredient.of(
+                TFCItems.FOOD.get(Food.SHELLFISH),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MOLLUSK),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.CLAM),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MUSSEL),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SEA_URCHIN),
+                Items.TURTLE_SCUTE,
+                Items.ARMADILLO_SCUTE,
+                TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.MOSSY_LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.DOLOMITE).get(Rock.BlockType.LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.DOLOMITE).get(Rock.BlockType.MOSSY_LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.CHALK).get(Rock.BlockType.LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.CHALK).get(Rock.BlockType.MOSSY_LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.LOOSE),
+                TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.MOSSY_LOOSE),
+                TFCBlocks.PLANTS.get(Plant.MUSSELS).get(),
+                TFCBlocks.PLANTS.get(Plant.BARNACLES).get()
+            ))
+            .damageInputs()
+            .shapeless(TFCItems.POWDERS.get(Powder.FLUX), 2);
     }
 
     /**

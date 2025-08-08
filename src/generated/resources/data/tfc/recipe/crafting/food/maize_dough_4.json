@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
+  "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
       "type": "tfc:fluid_content",
@@ -55,7 +54,14 @@
     }
   ],
   "result": {
-    "count": 4,
-    "id": "tfc:food/maize_dough"
+    "modifiers": [
+      {
+        "type": "tfc:copy_oldest_food"
+      }
+    ],
+    "stack": {
+      "count": 4,
+      "id": "tfc:food/maize_dough"
+    }
   }
 }

@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
+  "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
       "type": "tfc:fluid_content",
@@ -99,7 +98,14 @@
     }
   ],
   "result": {
-    "count": 8,
-    "id": "tfc:food/oat_dough"
+    "modifiers": [
+      {
+        "type": "tfc:copy_oldest_food"
+      }
+    ],
+    "stack": {
+      "count": 8,
+      "id": "tfc:food/oat_dough"
+    }
   }
 }
