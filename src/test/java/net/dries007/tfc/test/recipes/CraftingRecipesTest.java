@@ -34,7 +34,6 @@ import net.neoforged.neoforge.common.Tags;
 
 public class CraftingRecipesTest implements TestSetup
 {
-    @SuppressWarnings("unchecked")
     @Test
     public void testCraftingRecipesWithToolsDamageInputs()
     {
@@ -74,5 +73,30 @@ public class CraftingRecipesTest implements TestSetup
             .toList();
 
         assertTrue(recipes.isEmpty(), "Recipes with tools do not damage inputs: " + String.join("\n", recipes));
+    }
+
+    @Test
+    public void testAdvancedShapelessRecipesHavePrimaryInput()
+    {
+        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
+
+        final List<String> recipes = manager
+            .getAllRecipesFor(RecipeType.CRAFTING)
+            .stream()
+            .filter(holder -> {
+                final CraftingRecipe recipe = holder.value();
+                if (recipe instanceof AdvancedShapelessRecipe advancedShapeless)
+                {
+                    return advancedShapeless.getPrimaryIngredient().isEmpty();
+                }
+                else
+                {
+                    return false;
+                }
+            })
+            .map(holder -> holder.id().toString())
+            .toList();
+
+        assertTrue(recipes.isEmpty(), "Advanced shapeless crafting recipes do not have primary inputs: " + String.join("\n", recipes));
     }
 }
