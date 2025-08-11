@@ -139,4 +139,10 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     {
         return remainder;
     }
+
+    @VisibleForTesting
+    public Optional<Ingredient> getPrimaryIngredient()
+    {
+        return primaryIngredient;
+    }
 }
