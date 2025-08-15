@@ -213,6 +213,9 @@ public class TFCTags
         /** Blocks that most animals will be able to move through without getting slowed, as would a player. */
         public static final TagKey<Block> ANIMAL_IGNORED_PLANTS = tag("animal_ignored_plants");
 
+        /** Blocks that bears will use their ice-sliding animation on. */
+        public static final TagKey<Block> BEAR_CRAWLS_ON = tag("bear_crawls_on");
+
         /** Used in the Field Guide to display indicators in a multiblock */
         public static final TagKey<Block> CLAY_INDICATORS = tag("clay_indicators");
 
