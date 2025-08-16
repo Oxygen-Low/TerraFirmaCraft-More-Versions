@@ -1375,26 +1375,9 @@ public final class ForgeEventHandler
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
-        if (event.shouldUpdateStaticData())
+        if (event.shouldUpdateStaticData() && event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD)
         {
-            // First, reload all caches
-            final RecipeManager manager = Helpers.getUnsafeRecipeManager();
-            IndirectHashCollection.reloadAllCaches(manager);
-
-            // Then apply post reload actions which may query the cache
-            Support.updateMaximumSupportRange();
-            FluidHeat.updateCache();
-
-            TFCComponents.onModifyDefaultComponentsAfterResourceReload();
-            FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);
-
-            SelfTests.runDataPackTests(manager);
-
-            final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
-            for (RecipeType<?> type : BuiltInRegistries.RECIPE_TYPE)
-            {
-                LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), BuiltInRegistries.RECIPE_TYPE.getKey(type));
-            }
+            Helpers.updateReloadableData(event.getRegistryAccess(), Helpers.getUnsafeRecipeManager());
         }
     }
 
