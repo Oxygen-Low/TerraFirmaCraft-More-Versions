@@ -478,6 +478,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 Items.PAPER,
                 TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE),
                 TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD));
+        tag(ItemTags.COALS).add(TFCItems.ORES.get(Ore.BITUMINOUS_COAL), TFCItems.ORES.get(Ore.LIGNITE));
         tag(FORGE_FUEL).addTag(ItemTags.COALS);
         tag(BLAST_FURNACE_FUEL).add(Items.CHARCOAL);
         tag(BLAST_FURNACE_SHEETS)
