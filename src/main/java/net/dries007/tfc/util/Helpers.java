@@ -35,6 +35,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -70,6 +71,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -109,6 +111,7 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ISlowEntities;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
@@ -119,7 +122,10 @@ import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
+import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.data.Support;
 import net.dries007.tfc.util.tooltip.Tooltips;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -436,6 +442,27 @@ public final class Helpers
     public static void setCachedRecipeManager(RecipeManager manager)
     {
         CACHED_RECIPE_MANAGER = manager;
+    }
+
+    public static void updateReloadableData(RegistryAccess access, RecipeManager manager)
+    {
+        // First, reload all caches
+        IndirectHashCollection.reloadAllCaches(manager);
+
+        // Then apply post reload actions which may query the cache
+        Support.updateMaximumSupportRange();
+        FluidHeat.updateCache();
+
+        TFCComponents.onModifyDefaultComponentsAfterResourceReload();
+        FoodCapability.markRecipeOutputsAsNonDecaying(access, manager);
+
+        SelfTests.runDataPackTests(manager);
+
+        final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
+        for (RecipeType<?> type : BuiltInRegistries.RECIPE_TYPE)
+        {
+            LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), BuiltInRegistries.RECIPE_TYPE.getKey(type));
+        }
     }
 
     /**

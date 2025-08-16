@@ -53,6 +53,7 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderHighlightEvent;
@@ -131,6 +132,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onHandRender);
         bus.addListener(ClientForgeEventHandler::onToast);
         bus.addListener(ClientForgeEventHandler::onEffectRender);
+        bus.addListener(ClientForgeEventHandler::onRecipesUpdated);
         bus.addListener(IngameOverlays::checkGuiOverlays);
     }
 
@@ -605,5 +607,10 @@ public class ClientForgeEventHandler
     public static void onEffectRender(ScreenEvent.RenderInventoryMobEffects event)
     {
         event.addHorizontalOffset(TFCConfig.CLIENT.effectHorizontalAdjustment.get());
+    }
+
+    public static void onRecipesUpdated(RecipesUpdatedEvent event)
+    {
+        Helpers.updateReloadableData(ClientHelpers.getLevelOrThrow().registryAccess(), event.getRecipeManager());
     }
 }
