@@ -56,6 +56,11 @@ public class PowderkegBlock extends SealableDeviceBlock
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
             if (previousSealed)
             {
+                if (state.getValue(LIT))
+                {
+                    powderkeg.setLit(false, null);
+                    Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+                }
                 powderkeg.onUnseal();
             }
             else
