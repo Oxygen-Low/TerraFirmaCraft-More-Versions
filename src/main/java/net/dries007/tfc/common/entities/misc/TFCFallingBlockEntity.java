@@ -13,8 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -246,14 +244,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     private boolean canPlaceAt(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState, BlockState toughnessBlockState)
     {
         final BlockPos below = posAt.below();
-        return hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level(), posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP))
+        return canFallThrough(this.level(), posAt, Direction.DOWN, toughnessBlockState)
             && fallingBlockState.canSurvive(this.level(), posAt)
             && !canFallThrough(this.level(), below, Direction.DOWN, toughnessBlockState);
     }
 
     private void placeAsBlockOrDropAsItem(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState)
     {
-        net.dries007.tfc.TerraFirmaCraft.LOGGER.info("thingy");
         if (level().setBlockAndUpdate(posAt, fallingBlockState))
         {
             afterPlacementAsBlock(hitBlockState, posAt, fallingBlockState);
