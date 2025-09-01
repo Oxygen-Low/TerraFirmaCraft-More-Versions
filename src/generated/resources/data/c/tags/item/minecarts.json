@@ -19,6 +19,7 @@
     "tfc:wood/chest_minecart/spruce",
     "tfc:wood/chest_minecart/sycamore",
     "tfc:wood/chest_minecart/white_cedar",
-    "tfc:wood/chest_minecart/willow"
+    "tfc:wood/chest_minecart/willow",
+    "minecraft:minecart"
   ]
 }
