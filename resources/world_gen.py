@@ -58,6 +58,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/tuyas', 'tfc:tuya_rivulet', 'tfc:tuya_caldera', 'tfc:random_tuya_fissure', 'tfc:pumice_patch', 'tfc:lava_surface_spring')
     rm.placed_feature_tag('feature/surface_flood_fill_lakes', 'tfc:flood_fill_lake')
     rm.placed_feature_tag('feature/shield_volcanoes', 'tfc:pumice_shield_volcano_patch')
+    rm.placed_feature_tag('feature/guano_islands', 'tfc:extra_island_guano_patch')
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
@@ -82,6 +83,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'deep_ocean', 'ocean', ocean_features=True)
     biome(rm, 'deep_ocean_trench', 'ocean', ocean_features=True)
     biome(rm, 'river', 'river')
+    biome(rm, 'guano_island', 'beach', ocean_features=True)
     biome(rm, 'shore', 'beach', ocean_features=True)
     biome(rm, 'tidal_flats', 'beach', ocean_features=True)
     biome(rm, 'sea_stacks', 'beach', ocean_features='both')
@@ -1111,7 +1113,8 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'sticks_shore', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 18, True), decorate_chance(2), decorate_square(), decorate_climate(-50, 50, 50, 500), extra_singular_decorators=[decorate_intertidal(1, 10)])
     configured_patch_feature(rm, 'seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 8, True), decorate_chance(5), decorate_square(), decorate_climate(-20, 50, 150, 500))
     configured_patch_feature(rm, 'tideline_seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 5, True), decorate_count(2), decorate_square(), decorate_climate(-20, 50, 150, 500), extra_singular_decorators=[decorate_intertidal(1, 1)])
-    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 6, 25), decorate_chance(4), decorate_square(), decorate_climate(-30, 10, 100, 500), extra_singular_decorators=[decorate_intertidal(2, 32), decorate_on_top_of('tfc:creeping_stone_plantable_on')])
+    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 6, 25), decorate_chance(4), decorate_square(), decorate_biome(), decorate_climate(-30, 10, 100, 500), extra_singular_decorators=[decorate_intertidal(2, 32), decorate_on_top_of('tfc:creeping_stone_plantable_on')])
+    configured_patch_feature(rm, 'extra_island_guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 3, 15), decorate_count(10), decorate_square(), decorate_biome(), decorate_climate(-30, 15, 0, 500), extra_singular_decorators=[decorate_intertidal(1, 32), decorate_on_top_of('tfc:creeping_stone_plantable_on')])
 
     # Forest Only
     configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate_120(-20, 50, 70, 500, True), biome_check=False)
@@ -1937,6 +1940,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     if shield_volcano_features:
         large_features.append('#tfc:feature/shield_volcanoes')
 
+    if 'guano' in name:
+        large_features.append('#tfc:feature/guano_islands')
     if hot_spring_features:  # can be True, 'empty'
         if hot_spring_features == 'empty':
             large_features.append('tfc:random_empty_hot_spring')

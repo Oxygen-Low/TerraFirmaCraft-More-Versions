@@ -79,6 +79,9 @@ public final class TFCBiomes
     public static final BiomeExtension VOLCANIC_MOUNTAINS = register("volcanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, 10, 60)).surface(SimpleSurfaceBuilder.ROCKY_VOLCANIC_SOIL).volcanoes(4, 25, 50, 40).type(RiverBlendType.CAVE)); // Volcanic mountains - slightly smaller, but with plentiful tall volcanoes
     public static final BiomeExtension VOLCANIC_OCEANIC_MOUNTAINS = register("volcanic_oceanic_mountains", builder().heightmap(seed -> BiomeNoise.mountains(seed, -24, 50)).surface(SimpleSurfaceBuilder.ROCKY_VOLCANIC_SOIL).aquiferHeightOffset(-8).salty().volcanoes(2, -12, 50, 20).type(RiverBlendType.CAVE)); // Volcanic oceanic islands. Slightly smaller and lower but with very plentiful volcanoes
 
+    // Island Only
+    public static final BiomeExtension GUANO_ISLAND = register("guano_island", builder().heightmap(BiomeNoise::rockyIslands).surface(SimpleSurfaceBuilder.ROCKY_SHORE).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores().salty()); // Mimic oceanic mountains
+
     // Shores
     // Each shore type is paired with a secondary shore type, which is sometimes applied
     // Standard shore / beach. Material will vary based on location
