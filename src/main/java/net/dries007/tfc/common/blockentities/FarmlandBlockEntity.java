@@ -91,7 +91,6 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
         lastUpdateTick = tick;
     }
 
-    // todo: Either saveAdditional or loadAdditional isn't working
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {

@@ -180,6 +180,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'patterned_ground', 'plains', boulders=True)
     biome(rm, 'inverted_patterned_ground', 'plains', boulders=True)
     biome(rm, 'stone_circles', 'plains', boulders=True)
+
     # Carvers
     rm.configured_carver('cave', 'tfc:cave', {
         'probability': 0.3,
