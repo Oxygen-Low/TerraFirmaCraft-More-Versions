@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;

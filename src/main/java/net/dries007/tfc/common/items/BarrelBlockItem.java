@@ -22,17 +22,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.blockentities.BarrelInventoryCallback;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
-import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
-import net.dries007.tfc.common.capabilities.FluidTankCallback;
-import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.BlockItemPlacement;
 import net.dries007.tfc.util.Helpers;
