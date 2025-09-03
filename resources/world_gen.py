@@ -7,6 +7,7 @@ from mcresources.type_definitions import ResourceIdentifier, JsonObject, Json, V
 
 from constants import *
 
+ALL_BIOMES = []
 
 def generate(rm: ResourceManager):
 
@@ -1003,7 +1004,6 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'perovskia'), plant_config('tfc:plant/perovskia[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate_120(-8.4, 11.6, 0, 280))
     configured_plant_patch_feature(rm, ('plant', 'rose'), plant_config('tfc:plant/rose[age=1,stage=1,part=lower]', 1, 15, 10, True, tall_plant=True, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_120(-7.4, 17.6, 150, 300))
     configured_noise_plant_feature(rm, ('plant', 'water_canna'), plant_config('tfc:plant/water_canna[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate_120(11.6, 38, 150, 500))
-    configured_plant_patch_feature(rm, ('plant', 'rose'), plant_config('tfc:plant/rose[age=1,stage=1,part=lower]', 1, 15, 10, True, tall_plant=True, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate_120(-6.6, 17.1, 150, 310))
 
     # Crops
     for crop, crop_data in CROPS.items():
@@ -1131,6 +1131,11 @@ def generate(rm: ResourceManager):
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(-48, 32), decorate_biome())
 
     rm.biome_tag('has_predictable_winds', '#tfc:is_ocean', 'tfc:shore', 'tfc:tidal_flats')
+
+    for b in TFC_BIOMES:
+        assert b in ALL_BIOMES, 'Error: Biome %s described in TFC_BIOMES not represented in world_gen.py' % b
+    # Error above? Uncomment this to generate a new TFC_BIOMES list.
+    #print([b for b in ALL_BIOMES])
 
 
 def configured_placed_feature(rm: ResourceManager, name_parts: ResourceIdentifier, feature: Optional[ResourceIdentifier] = None, config: JsonObject = None, *placements: Json):
@@ -1975,6 +1980,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         rm.biome_tag('is_ocean', name)
 
     rm.lang('biome.tfc.%s' % name, lang(name))
+    assert name in TFC_BIOMES, 'Error: Biome not in TFC_BIOMES list: %s' % name
+    ALL_BIOMES.append(name)
     rm.biome(
         name_parts=name,
         has_precipitation=True,
