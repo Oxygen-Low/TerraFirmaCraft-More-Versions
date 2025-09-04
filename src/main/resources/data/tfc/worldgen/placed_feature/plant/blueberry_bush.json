@@ -8,9 +8,8 @@
       "max_temperature": 29,
       "min_groundwater": 100,
       "max_groundwater": 400,
-      "max_forest": 2,
-      "min_elevation": -64,
-      "max_elevation": 320
+      "min_forest": 0,
+      "max_forest": 2
     },
     {
       "type": "minecraft:heightmap",

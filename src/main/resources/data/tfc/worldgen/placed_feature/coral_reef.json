@@ -15,8 +15,6 @@
       "type": "tfc:climate",
       "min_temperature": 12,
       "max_temperature": 50,
-      "min_elevation": -64,
-      "max_elevation": 320,
       "fuzzy": true
     },
     {

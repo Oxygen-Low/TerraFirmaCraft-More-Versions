@@ -118,6 +118,34 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.DUCK.get()
             );
 
+        tag(LARGE_PREY)
+            .add(
+                TFCEntities.DEER.get(),
+                TFCEntities.CARIBOU.get(),
+                TFCEntities.BONGO.get(),
+                TFCEntities.PIG.get(),
+                TFCEntities.COW.get(),
+                TFCEntities.SHEEP.get(),
+                TFCEntities.YAK.get(),
+                TFCEntities.MUSK_OX.get(),
+                TFCEntities.HORSE.get(),
+                TFCEntities.MULE.get(),
+                TFCEntities.DONKEY.get(),
+                TFCEntities.GOAT.get()
+            );
+
+        tag(HUNTED_BY_LAND_PREDATORS)
+            .addTags(
+                BIRD_PREY,
+                LARGE_PREY
+            )
+            .add(
+                TFCEntities.RAT.get(),
+                TFCEntities.JERBOA.get(),
+                TFCEntities.LEMMING.get(),
+                TFCEntities.MONGOOSE.get()
+            );
+
         tag(HUNTED_BY_CATS)
             .addTags(
                 SMALL_FISH,

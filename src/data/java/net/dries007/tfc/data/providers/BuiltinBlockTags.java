@@ -145,6 +145,17 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             // Already includes base stone overworld, which includes raw and hardened stone
             .addTags(Tags.Blocks.GRAVELS, Tags.Blocks.COBBLESTONES)
             .add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
+        tag(EXTRA_CAVE_CARVER_REPLACEABLE)
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.RAW).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.DOLOMITE).get(Rock.BlockType.RAW).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.CHALK).get(Rock.BlockType.RAW).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.RAW).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.RAW).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.GRAVEL).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.DOLOMITE).get(Rock.BlockType.GRAVEL).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.CHALK).get(Rock.BlockType.GRAVEL).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.GRAVEL).get())
+            .add(TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.GRAVEL).get());
         tag(BlockTags.CANDLE_CAKES)
             .add(TFCBlocks.CANDLE_CAKE)
             .add(TFCBlocks.DYED_CANDLE_CAKES);

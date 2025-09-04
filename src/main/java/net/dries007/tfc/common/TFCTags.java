@@ -73,6 +73,7 @@ public class TFCTags
         public static final TagKey<Block> STONES_LOOSE = commonTag("stones/loose");
         /** Common solid stone blocks, including stone, cobble, bricks, smooth, plus non-stone bricks */
         public static final TagKey<Block> INSULATION = tag("insulation");
+        public static final TagKey<Block> EXTRA_CAVE_CARVER_REPLACEABLE = tag("extra_cave_carver_replaceable");
 
         public static final TagKey<Block> LAMPS = tag("lamps");
         public static final TagKey<Block> ANVILS = tag("anvils");
@@ -661,6 +662,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> SMALL_FISH = tag("small_fish");
         public static final TagKey<EntityType<?>> RAMMING_ANIMALS = tag("ramming_animals");
         public static final TagKey<EntityType<?>> BIRD_PREY = tag("bird_prey");
+        public static final TagKey<EntityType<?>> LARGE_PREY = tag("large_prey");
 
         // ===== Data Generated ====== //
 
