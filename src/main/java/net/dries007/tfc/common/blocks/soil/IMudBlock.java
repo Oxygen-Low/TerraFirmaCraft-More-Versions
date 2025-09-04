@@ -54,7 +54,7 @@ public interface IMudBlock
         {
             final FluidStack simulatedDrained = fluidHandler.drain(waterRequired, IFluidHandler.FluidAction.SIMULATE);
 
-            if (simulatedDrained.is(TFCTags.Fluids.ANY_INFINITE_WATER) && simulatedDrained.getAmount() >= waterRequired)
+            if (simulatedDrained.is(TFCTags.Fluids.ANY_FRESH_WATER) && simulatedDrained.getAmount() >= waterRequired)
             {
                 fluidHandler.drain(waterRequired, IFluidHandler.FluidAction.EXECUTE);
                 level.setBlockAndUpdate(pos, mud);
