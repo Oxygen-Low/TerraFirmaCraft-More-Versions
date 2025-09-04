@@ -20,6 +20,7 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.component.heat.IHeatConsumer;
@@ -51,6 +52,7 @@ public final class BlockCapabilities
         event.registerBlockEntity(HEAT, TFCBlockEntities.CRUCIBLE.get(), (object, context) -> object.getInventory());
         registerInventory(event, TFCBlockEntities.FIREPIT);
         registerInventory(event, TFCBlockEntities.GRILL);
+        event.registerBlockEntity(FLUID, TFCBlockEntities.LAMP.get(), LampBlockEntity::getSidedFluidInventory);
         registerInventory(event, TFCBlockEntities.LARGE_VESSEL);
         registerInventory(event, TFCBlockEntities.LOOM);
         registerInventory(event, TFCBlockEntities.NEST_BOX);
