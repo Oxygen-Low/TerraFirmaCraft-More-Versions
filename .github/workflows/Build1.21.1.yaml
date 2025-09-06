@@ -1,0 +1,59 @@
+name: Build 1.21.1
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: 1.21.1-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: Show Gradle version
+        run: ./gradlew --version
+
+      - name: Build
+        run: ./gradlew clean build -x test --no-daemon --stacktrace
+
+      - name: Verify produced JARs
+        run: |
+          echo "Listing jars in build/libs"
+          ls -lah build/libs || true
+          for f in build/libs/*.jar; do
+            echo "== $f =="; jar tf "$f" | head -n 40 || true; break
+          done
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TerraFirmaCraft-${{ github.sha }}
+          path: build/libs/*.jar
+          retention-days: 30
+
+      - name: Upload test reports (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TerraFirmaCraft-test-reports-${{ github.sha }}
+          path: |
+            build/reports/tests/test
+            build/test-results/test
+          retention-days: 30
