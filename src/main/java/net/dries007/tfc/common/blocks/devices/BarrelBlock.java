@@ -300,7 +300,7 @@ public class BarrelBlock extends SealableDeviceBlock
     }
 
     @Override
-    public boolean isStackSealed(ItemStack stack)
+    protected boolean isStackSealed(ItemStack stack)
     {
         return stack.has(TFCComponents.BARREL);
     }

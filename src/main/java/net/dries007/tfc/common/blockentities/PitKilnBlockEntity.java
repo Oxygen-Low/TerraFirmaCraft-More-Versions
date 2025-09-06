@@ -57,7 +57,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 {
                     // consume contents, don't cook items, convert to placed item
                     pitKiln.emptyFuelContents();
-                    convertPitKilnToPlacedItem(level, pos, true);
+                    convertPitKilnToPlacedItem(level, pos);
                     return;
                 }
             }
@@ -66,7 +66,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
             {
                 // consume contents, don't cook items, convert to placed item
                 pitKiln.emptyFuelContents();
-                convertPitKilnToPlacedItem(level, pos, true);
+                convertPitKilnToPlacedItem(level, pos);
                 return;
             }
 
@@ -83,17 +83,14 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
                 pitKiln.markForSync();
 
-                convertPitKilnToPlacedItem(level, pos, true);
+                convertPitKilnToPlacedItem(level, pos);
             }
         }
     }
 
-    public static void convertPitKilnToPlacedItem(Level level, BlockPos pos, boolean playSound)
+    public static void convertPitKilnToPlacedItem(Level level, BlockPos pos)
     {
-        if (playSound)
-        {
-            Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
-        }
+        Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
         level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
@@ -183,14 +180,14 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     {
         if (state.hasProperty(PitKilnBlock.STAGE) && state.getValue(PitKilnBlock.STAGE) > 0)
         {
-            for (ItemStack item : logItems.reversed())
+            for (ItemStack item : logItems)
             {
                 if (!item.isEmpty())
                 {
                     return item.copy();
                 }
             }
-            for (ItemStack item : strawItems.reversed())
+            for (ItemStack item : strawItems)
             {
                 if (!item.isEmpty())
                 {
@@ -223,7 +220,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
 
     public boolean hasFuel()
     {
-        return this.getBlockState().getValue(PitKilnBlock.STAGE) == PitKilnBlock.LOG_END;
+        return !(logItems.stream().anyMatch(ItemStack::isEmpty) || strawItems.stream().anyMatch(ItemStack::isEmpty));
     }
 
     public boolean tryLight()

@@ -38,9 +38,13 @@ public abstract class TFCPassableCactusBlock extends TFCTallGrassBlock
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = level.getBlockState(pos.below());
+        final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+
+        mutable.setWithOffset(pos, 0, -1, 0);
+        BlockState belowState = level.getBlockState(mutable);
         if (state.getValue(PART) == Part.LOWER)
         {
             return Helpers.isBlock(belowState, TFCTags.Blocks.DRY_PLANT_PLANTABLE_ON);

@@ -8,9 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
 import java.util.function.Function;
-
-import org.jetbrains.annotations.VisibleForTesting;
-
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -24,6 +22,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 
@@ -132,17 +131,5 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.ADVANCED_SHAPELESS_CRAFTING.get();
-    }
-
-    @VisibleForTesting
-    public Optional<ItemStackProvider> getRemainder()
-    {
-        return remainder;
-    }
-
-    @VisibleForTesting
-    public Optional<Ingredient> getPrimaryIngredient()
-    {
-        return primaryIngredient;
     }
 }

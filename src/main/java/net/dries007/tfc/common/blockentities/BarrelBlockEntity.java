@@ -484,7 +484,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         assert level != null;
 
         final @Nullable SealedBarrelRecipe oldRecipe = RecipeHelpers.unbox(recipe.value());
-        recipe.unload();
         final @Nullable SealedBarrelRecipe newRecipe = getRecipe(); // Trigger the update
 
         if (oldRecipe != null && newRecipe != null && oldRecipe != newRecipe)
@@ -516,9 +515,8 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public Component getRecipeTooltip()
     {
         getRecipe(); // Load recipe if present
-        final RecipeHolder<SealedBarrelRecipe> holder = recipe.value();
-        return holder != null
-            ? Component.translatable("tfc.recipe.barrel." + holder.id().getNamespace() + "." + holder.id().getPath().replace('/', '.'))
+        return recipe.value() != null
+            ? Component.translatable("tfc.recipe.barrel." + recipe.value().id())
             : null;
     }
 

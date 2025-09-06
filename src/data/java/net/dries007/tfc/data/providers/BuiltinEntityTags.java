@@ -55,11 +55,19 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.DOLPHIN.get()
             );
 
-        tag(SMALL_FISH)
+        tag(BUBBLE_COLUMN_IMMUNE)
             .add(
+                TFCEntities.ORCA.get(),
+                TFCEntities.DOLPHIN.get(),
+                TFCEntities.SQUID.get(),
+                TFCEntities.OCTOPOTEUTHIS.get(),
+                TFCEntities.ISOPOD.get(),
+                TFCEntities.LOBSTER.get(),
+                TFCEntities.HORSESHOE_CRAB.get(),
                 TFCEntities.COD.get(),
                 TFCEntities.PUFFERFISH.get(),
                 TFCEntities.TROPICAL_FISH.get(),
+                TFCEntities.JELLYFISH.get(),
                 TFCEntities.FRESHWATER_FISH.get(Fish.SALMON).get(),
                 TFCEntities.FRESHWATER_FISH.get(Fish.RAINBOW_TROUT).get(),
                 TFCEntities.FRESHWATER_FISH.get(Fish.LAKE_TROUT).get(),
@@ -69,105 +77,10 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.FRESHWATER_FISH.get(Fish.CRAPPIE).get()
             );
 
-        tag(BUBBLE_COLUMN_IMMUNE)
-            .addTags(SMALL_FISH)
-            .add(
-                TFCEntities.ORCA.get(),
-                TFCEntities.DOLPHIN.get(),
-                TFCEntities.SQUID.get(),
-                TFCEntities.OCTOPOTEUTHIS.get(),
-                TFCEntities.ISOPOD.get(),
-                TFCEntities.LOBSTER.get(),
-                TFCEntities.HORSESHOE_CRAB.get(),
-                TFCEntities.JELLYFISH.get()
-            );
-
         tag(NEEDS_LARGE_FISHING_BAIT)
             .add(
                 TFCEntities.ORCA.get(),
                 TFCEntities.DOLPHIN.get()
             );
-
-        tag(RAMMING_ANIMALS)
-            .add(
-                TFCEntities.BOAR.get(),
-                TFCEntities.BISON.get(),
-                TFCEntities.MOOSE.get(),
-                TFCEntities.WILDEBEEST.get()
-            );
-
-        tag(PESTS)
-            .addTag(UNIVERSAL_PESTS)
-            .addTag(COLD_PESTS)
-            .addTag(DESERT_PESTS)
-            .addTag(TROPICAL_PESTS);
-
-        tag(COLD_PESTS).add(TFCEntities.LEMMING.get());
-        tag(UNIVERSAL_PESTS).add(TFCEntities.RAT.get());
-        tag(DESERT_PESTS).add(TFCEntities.JERBOA.get());
-        tag(TROPICAL_PESTS).add(TFCEntities.MONGOOSE.get());
-
-        tag(BIRD_PREY)
-            .add(
-                TFCEntities.TURKEY.get(),
-                TFCEntities.PHEASANT.get(),
-                TFCEntities.GROUSE.get(),
-                TFCEntities.CHICKEN.get(),
-                TFCEntities.PENGUIN.get(),
-                TFCEntities.QUAIL.get(),
-                TFCEntities.DUCK.get()
-            );
-
-        tag(LARGE_PREY)
-            .add(
-                TFCEntities.DEER.get(),
-                TFCEntities.CARIBOU.get(),
-                TFCEntities.BONGO.get(),
-                TFCEntities.PIG.get(),
-                TFCEntities.COW.get(),
-                TFCEntities.SHEEP.get(),
-                TFCEntities.YAK.get(),
-                TFCEntities.MUSK_OX.get(),
-                TFCEntities.HORSE.get(),
-                TFCEntities.MULE.get(),
-                TFCEntities.DONKEY.get(),
-                TFCEntities.GOAT.get()
-            );
-
-        tag(HUNTED_BY_LAND_PREDATORS)
-            .addTags(
-                BIRD_PREY,
-                LARGE_PREY
-            )
-            .add(
-                TFCEntities.RAT.get(),
-                TFCEntities.JERBOA.get(),
-                TFCEntities.LEMMING.get(),
-                TFCEntities.MONGOOSE.get()
-            );
-
-        tag(HUNTED_BY_CATS)
-            .addTags(
-                SMALL_FISH,
-                BIRD_PREY
-            )
-            .add(
-                TFCEntities.RAT.get(),
-                TFCEntities.JERBOA.get(),
-                TFCEntities.LEMMING.get()
-            );
-
-        tag(HUNTED_BY_DOGS)
-            .add(
-                TFCEntities.RAT.get(),
-                TFCEntities.JERBOA.get(),
-                TFCEntities.LEMMING.get(),
-                TFCEntities.MONGOOSE.get()
-            );
-
-        tag(NOT_RAMMED_BY_RAMMERS)
-            .addTags(BUBBLE_COLUMN_IMMUNE, PESTS, BIRD_PREY)
-            .add(TFCEntities.FROG.get());
-
     }
 }

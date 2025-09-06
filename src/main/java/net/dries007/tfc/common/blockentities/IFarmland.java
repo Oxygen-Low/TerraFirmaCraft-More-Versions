@@ -81,8 +81,6 @@ public interface IFarmland
 
     void setAdditionalWater(float rainfall);
 
-    void setAdditionalWaterWithoutSync(float rainfall);
-
     default void addAdditionalWater(float additionalWater)
     {
         setAdditionalWater(getAdditionalWater() + additionalWater);
@@ -94,32 +92,25 @@ public interface IFarmland
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
+     * Resupplies other nutrient by 1/6 of the amount consumed.
      *
      * @return The amount of nutrient {@code type} that was actually consumed.
      */
-    default float consumeNutrients(float amount, NutrientType type)
+    default float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
     {
-        if (amount <= 0)
-        {
-            return 0;
-        }
-        float startValue = getNutrient(type);
-
+        final float startValue = getNutrient(type);
         final float consumed = Math.min(startValue, amount);
 
         setNutrient(type, startValue - consumed);
+        for (NutrientType other : NutrientType.VALUES)
+        {
+            if (other != type)
+            {
+                addNutrient(other, consumed * 1 / 6f);
+            }
+        }
 
         return consumed;
-    }
-
-    default void produceNutrients(float amount, NutrientType type, float percentOtherNutrientsConsumed, float growthDelta)
-    {
-        if (amount <= 0)
-        {
-            // Nutrient-producing crops will always add some amount of nutrients to the soil, but using fertilizer will boost this up to 3x
-            amount = -(0.3f + 0.7f * percentOtherNutrientsConsumed) * amount * growthDelta;
-            addNutrient(type, amount);
-        }
     }
 
     default boolean isMaxedOut()
@@ -129,6 +120,7 @@ public interface IFarmland
 
     default void updateAdditionalWater(long fromTick, long toTick)
     {
+        // TODO :: We need some way to inject additional water (watering can?)
         long deltaTicks = toTick - fromTick;
         addAdditionalWater(deltaTicks * WATER_DISSIPATION_RATE);
     }
@@ -147,16 +139,9 @@ public interface IFarmland
         setNutrient(POTASSIUM, nbt.getFloat("k"));
     }
 
-    default void loadNutrientsWithoutSync(CompoundTag nbt)
+    default void loadAdditionalWater(CompoundTag nbt)
     {
-        setNutrientWithoutSync(NITROGEN, nbt.getFloat("n"));
-        setNutrientWithoutSync(PHOSPHOROUS, nbt.getFloat("p"));
-        setNutrientWithoutSync(POTASSIUM, nbt.getFloat("k"));
-    }
-
-    default void loadAdditionalWaterWithoutSync(CompoundTag nbt)
-    {
-        setAdditionalWaterWithoutSync(nbt.getFloat("water"));
+        setAdditionalWater(nbt.getFloat("water"));
     }
 
     default void saveAdditionalWater(CompoundTag nbt)

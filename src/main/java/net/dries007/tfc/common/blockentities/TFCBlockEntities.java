@@ -126,6 +126,7 @@ public final class TFCBlockEntities
         TFCBlocks.ROCK_ANVILS.values().stream(),
         TFCBlocks.METALS.values().stream().map(m -> m.get(Metal.BlockType.ANVIL)).filter(Objects::nonNull)
     ));
+    public static final Id<SheetPileBlockEntity> SHEET_PILE = register("sheet_pile", SheetPileBlockEntity::new, TFCBlocks.SHEET_PILE);
     public static final Id<IngotPileBlockEntity> INGOT_PILE = register("ingot_pile", IngotPileBlockEntity::new, Stream.of(TFCBlocks.INGOT_PILE, TFCBlocks.DOUBLE_INGOT_PILE));
     public static final Id<BlastFurnaceBlockEntity> BLAST_FURNACE = register("blast_furnace", BlastFurnaceBlockEntity::new, TFCBlocks.BLAST_FURNACE);
     public static final Id<TFCBellBlockEntity> BELL = register("bell", TFCBellBlockEntity::new, Stream.of(TFCBlocks.BRONZE_BELL, TFCBlocks.BRASS_BELL));

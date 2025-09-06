@@ -11,7 +11,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathType;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -68,15 +66,6 @@ public enum Plant implements RegistryPlant
     TIMOTHY_GRASS(BlockType.SHORT_GRASS, 0.9F),
     RADDIA_GRASS(BlockType.SHORT_GRASS, 0.9F),
     RED_OAT_GRASS(BlockType.SHORT_GRASS, 0.9F, true, -0.1f, 0.33f, 0.45f, 0.55f, 0.75f, 0.85f),
-
-    // Intertidal Plant-Likes
-    ANEMONE_GREEN(BlockType.OCEAN_CREEPING, 1.0F),
-    ANEMONE_PURPLE(BlockType.OCEAN_CREEPING, 1.0F),
-    ANEMONE_LARGE_ORANGE(BlockType.OCEAN_ROTATABLE, 1.0F),
-    ANEMONE_LARGE_PURPLE(BlockType.OCEAN_ROTATABLE, 1.0F),
-    BARNACLES(BlockType.OCEAN_ROCK_CREEPING, 1.0F),
-    MUSSELS(BlockType.OCEAN_ROCK_CREEPING, 1.0F),
-    STARFISH(BlockType.OCEAN_ROTATABLE, 1.0F),
 
     // Other Plants
     ALLIUM(BlockType.STANDARD, 1.0F, false, -0.15F, 0.2F, 0.3F, 0.4F, 0.64F, 0.92F),
@@ -284,7 +273,7 @@ public enum Plant implements RegistryPlant
     private int getMaxAgeForType(BlockType type)
     {
         if (type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.BEACH_GRASS || type == BlockType.SHORT_GRASS
-            || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED || type == BlockType.CACTUSBED || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING
+            || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED|| type == BlockType.CACTUSBED || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING
             || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.TWISTING_TOP || type == BlockType.TWISTING_SOLID_TOP
             || type == BlockType.BRANCHING_CACTUS_TOP || type == BlockType.KELP_TOP || type == BlockType.WEEPING_TOP || type == BlockType.TALL_WATER_FRESH
             || type == BlockType.TALL_SHRUB)
@@ -489,15 +478,12 @@ public enum Plant implements RegistryPlant
         BRANCHING_CACTUS((plant, type) -> BranchingCactusBlock.createBody(fire(solid()).strength(0.25f).sound(SoundType.WOOL).pathType(PathType.DAMAGE_OTHER))),
         BRANCHING_CACTUS_TOP((plant, type) -> GrowingBranchingCactusBlock.createGrowing(fire(solid()).randomTicks().strength(0.25f).sound(SoundType.WOOL).pathType(PathType.DAMAGE_OTHER), plant.transform(), plant.secondTransform())),
         // Water
-        OCEAN_ROCK_CREEPING((plant, type) -> CreepingWaterPlantBlock.createRock(plant, TFCBlockStateProperties.SALT_WATER, ExtendedProperties.of(nonSolid(plant).sound(SoundType.BASALT)))),
-        OCEAN_CREEPING((plant, type) -> CreepingWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, ExtendedProperties.of(nonSolid(plant).sound(SoundType.BASALT)))),
-        OCEAN_ROTATABLE((plant, type) -> RotatableWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, ExtendedProperties.of(nonSolid(plant).sound(SoundType.SLIME_BLOCK)))),
         KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant).lootFrom(plant.transform()), plant.transform(), Direction.UP, BodyPlantBlock.THIN_BODY_SHAPE, TFCBlockStateProperties.SALT_WATER, plant)),
         KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_THIN_SHAPE, TFCBlockStateProperties.SALT_WATER, plant))),
         KELP_TREE((plant, type) -> KelpTreeBlock.create(ExtendedProperties.of(kelp(plant)), TFCBlockStateProperties.SALT_WATER)),
         KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), plant.transform())),
-        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> TFCTags.Fluids.SALT_WATER, nonSolid(plant)), PlaceOnWaterBlockItem::new),
-        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> TFCTags.Fluids.FRESH_WATER, nonSolid(plant)), PlaceOnWaterBlockItem::new),
+        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.source(), nonSolid(plant)), PlaceOnWaterBlockItem::new),
+        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, nonSolid(plant)), PlaceOnWaterBlockItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         TALL_WATER_FRESH((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ))),

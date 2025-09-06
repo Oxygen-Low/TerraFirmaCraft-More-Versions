@@ -22,6 +22,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
@@ -248,22 +249,15 @@ public interface BarrelRecipes extends Recipes
             .input(Fluids.WATER, 500)
             .output(fluidOf(SimpleFluid.LIMEWATER), 500)
             .instant();
-        barrel("process_olives")
+        barrel()
             .input(fluidOf(SimpleFluid.OLIVE_OIL_WATER), 250)
             .input(TFCItems.JUTE_NET)
             .output(fluidOf(SimpleFluid.OLIVE_OIL), 50)
             .output(TFCItems.DIRTY_JUTE_NET)
             .instant();
-        barrel("process_canola")
-            .input(fluidOf(SimpleFluid.CANOLA_OIL_WATER), 250)
-            .input(TFCItems.JUTE_NET)
-            .output(fluidOf(SimpleFluid.CANOLA_OIL), 50)
-            .output(TFCItems.DIRTY_JUTE_NET)
-            .instant();
         cooling(Fluids.WATER, -5f);
         cooling(TFCFluids.SALT_WATER.getSource(), -5f);
         cooling(fluidOf(SimpleFluid.OLIVE_OIL), -40f);
-        cooling(fluidOf(SimpleFluid.CANOLA_OIL), -40f);
         barrel("clean_bowl")
             .input(ingredientOf(
                 Ingredient.of(TFCTags.Items.SOUPS),
@@ -283,8 +277,7 @@ public interface BarrelRecipes extends Recipes
         barrel("clean_jute_net")
             .input(TFCItems.DIRTY_JUTE_NET)
             .input(Fluids.WATER, 100)
-            .output(TFCItems.JUTE_NET)
-            .instant();
+            .output(TFCItems.JUTE_NET);
 
         // Instant Fluid Mixing
         barrel()

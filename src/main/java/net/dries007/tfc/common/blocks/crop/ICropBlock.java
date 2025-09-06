@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 /**
@@ -35,11 +36,6 @@ public interface ICropBlock
 
     ClimateRange getClimateRange();
 
-    float getNForGrowth();
-
-    float getPForGrowth();
-
-    float getKForGrowth();
-
+    FarmlandBlockEntity.NutrientType getPrimaryNutrient();
 
 }

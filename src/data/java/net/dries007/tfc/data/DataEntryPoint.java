@@ -17,7 +17,6 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.tags.WorldPresetTags;
@@ -26,7 +25,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.dries007.tfc.common.TFCDamageTypes;
+
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
 import net.dries007.tfc.data.providers.BuiltinDamageTypes;
@@ -93,13 +92,6 @@ public final class DataEntryPoint
             BuiltinPaintings.VOLCANO
         ));
         tags(event, Registries.DAMAGE_TYPE, lookup, (provider, tags) -> {
-            tags.tag(DamageTypeTags.NO_KNOCKBACK).add(
-                TFCDamageTypes.CORAL,
-                TFCDamageTypes.DEHYDRATION,
-                TFCDamageTypes.GRILL,
-                TFCDamageTypes.PLUCK,
-                TFCDamageTypes.POT
-            );
             tags.tag(PhysicalDamageType.IS_CRUSHING).add(
                 DamageTypes.IN_WALL,
                 DamageTypes.CRAMMING,

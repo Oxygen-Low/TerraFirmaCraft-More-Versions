@@ -85,7 +85,6 @@
     "tfc:rock/chiseled/gneiss",
     "tfc:rock/chiseled/marble",
     "minecraft:bricks",
-    "tfc:fire_bricks",
-    "tfc:reinforced_fire_bricks"
+    "tfc:fire_bricks"
   ]
 }

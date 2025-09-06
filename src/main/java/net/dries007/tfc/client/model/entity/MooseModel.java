@@ -12,6 +12,7 @@ import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -22,6 +23,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.entities.prey.RammingPrey;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
 
 public class MooseModel extends HierarchicalAnimatedModel<RammingPrey>
 {

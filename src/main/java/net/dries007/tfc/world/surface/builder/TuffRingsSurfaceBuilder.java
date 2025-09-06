@@ -40,11 +40,11 @@ public class TuffRingsSurfaceBuilder implements SurfaceBuilder
             {
                 if (startY < context.getSeaLevel() + 3)
                 {
-                    buildTuffSurface(context, startY, endY, SurfaceStates.VOLCANIC_SHORE_SAND, SurfaceStates.VOLCANIC_SHORE_SAND, SurfaceStates.TUFF, SurfaceStates.TUFF_GRAVEL);
+                    buildTuffSurface(context, startY, endY, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.TUFF, SurfaceStates.TUFF_GRAVEL);
                 }
                 else
                 {
-                    buildTuffSurface(context, startY, endY, SurfaceStates.VOLCANIC_TOP_GRASS_TO_LOCAL_GRAVEL, SurfaceStates.VOLCANIC_MID_DIRT_TO_LOCAL_GRAVEL, SurfaceStates.TUFF, SurfaceStates.TUFF_GRAVEL);
+                    buildTuffSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_GRAVEL, SurfaceStates.MID_DIRT_TO_GRAVEL, SurfaceStates.TUFF, SurfaceStates.TUFF_GRAVEL);
                 }
                 return;
             }

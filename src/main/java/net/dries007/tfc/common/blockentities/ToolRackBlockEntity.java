@@ -7,8 +7,9 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +20,8 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.TerraFirmaCraft.*;
+
 public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public ToolRackBlockEntity(BlockPos pos, BlockState state)
@@ -26,7 +29,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         super(TFCBlockEntities.TOOL_RACK.get(), pos, state, defaultInventory(4));
     }
 
-    public InteractionResult onRightClick(Player player, int slot)
+    public ItemInteractionResult onRightClick(Player player, int slot)
     {
         assert level != null;
         final ItemStack heldItem = player.getMainHandItem();
@@ -44,7 +47,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     ItemHandlerHelper.giveItemToPlayer(player, extracted, player.getInventory().selected);
                 }
                 markForSync();
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             // Just extract
             if (!level.isClientSide)
@@ -52,7 +55,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, 1, false), player.getInventory().selected);
             }
             markForSync();
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         else if (shouldInsert)
         {
@@ -61,10 +64,10 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 insertItem(slot, heldItem.split(1));
             }
             markForSync();
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

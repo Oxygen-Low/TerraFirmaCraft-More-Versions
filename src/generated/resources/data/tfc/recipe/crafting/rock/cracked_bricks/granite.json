@@ -8,9 +8,6 @@
       "tag": "c:tools/hammer"
     }
   ],
-  "primary_ingredient": {
-    "tag": "c:tools/hammer"
-  },
   "remainder": {
     "modifiers": [
       {

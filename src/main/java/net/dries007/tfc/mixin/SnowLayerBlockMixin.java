@@ -48,12 +48,13 @@ public abstract class SnowLayerBlockMixin extends Block
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
+        playerWillDestroy(level, pos, state, player);
         final int prevLayers = state.getValue(SnowLayerBlock.LAYERS);
         if (prevLayers > 1 && !player.isCreative())
         {
-            return level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, prevLayers - 1), level.isClientSide() ? 11 : 3);
+            return level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, prevLayers - 1), level.isClientSide ? 11 : 3);
         }
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide ? 11 : 3);
     }
 
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)

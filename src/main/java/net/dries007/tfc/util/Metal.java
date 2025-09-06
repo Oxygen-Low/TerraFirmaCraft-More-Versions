@@ -56,7 +56,6 @@ import net.dries007.tfc.common.blocks.WeatheringStairBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.items.ChiselItem;
-import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.common.items.LampBlockItem;
 import net.dries007.tfc.common.items.TFCMaceItem;
@@ -239,7 +238,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
         private static Function<RegistryMetal, Block> grate(Age age)
         {
             return metal -> {
-                final BlockBehaviour.Properties prop = blockProperties(metal).noOcclusion().sound(SoundType.COPPER_GRATE).noOcclusion().isValidSpawn(TFCBlocks::neverEntity).isRedstoneConductor(TFCBlocks::never).isSuffocating(TFCBlocks::never).isViewBlocking(TFCBlocks::never).lightLevel(TFCBlocks.lavaLoggedBlockEmission());
+                final BlockBehaviour.Properties prop = blockProperties(metal).noOcclusion().sound(SoundType.COPPER_GRATE).noOcclusion().isValidSpawn(TFCBlocks::neverEntity).isRedstoneConductor(TFCBlocks::never).isSuffocating(TFCBlocks::never).isViewBlocking(TFCBlocks::never);
                 return metal.weatheredParts()
                     ? new WeatheringGrateBlock(prop, age, metal.weatheringResistance())
                     : new GrateBlock(prop);
@@ -343,11 +342,11 @@ public enum Metal implements StringRepresentable, RegistryMetal
         AXE_HEAD(PartType.ALL, true),
         SHOVEL(PartType.ALL, metal -> new ShovelItem(metal.toolTier(), tool(metal, 0.875f, -3.0f))),
         SHOVEL_HEAD(PartType.ALL, true),
-        HOE(PartType.ALL, metal -> new TFCHoeItem(metal.toolTier(), tool(metal, 0.5f, -2.0f))),
+        HOE(PartType.ALL, metal -> new TFCHoeItem(metal.toolTier(), tool(metal, -1f, -2.0f))),
         HOE_HEAD(PartType.ALL, true),
-        CHISEL(PartType.ALL, metal -> new ChiselItem(metal.toolTier(), tool(metal, 0.27f, 1.5f))),
+        CHISEL(PartType.ALL, metal -> new ChiselItem(metal.toolTier(), tool(metal, -0.27f, 1.5f))),
         CHISEL_HEAD(PartType.ALL, true),
-        HAMMER(PartType.ALL, metal -> new HammerItem(metal.toolTier(), tool(metal, 1f, -3f))),
+        HAMMER(PartType.ALL, metal -> new ToolItem(metal.toolTier(), TFCTags.Blocks.MINEABLE_WITH_HAMMER, tool(metal, 1f, -3f))),
         HAMMER_HEAD(PartType.ALL, true),
         SAW(PartType.ALL, metal -> new AxeItem(metal.toolTier(), tool(metal, 0.5f, -3f))),
         SAW_BLADE(PartType.ALL, true),

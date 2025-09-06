@@ -41,7 +41,6 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
@@ -163,7 +162,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             .ifPresent(entity -> entity.ejectInventoryIfNeeded(newState));
 
         // Default super() behavior
-        if (state.hasBlockEntity() && (!Helpers.isBlock(state, newState.getBlock()) || !newState.hasBlockEntity()))
+        if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity()))
         {
             level.removeBlockEntity(pos);
         }
@@ -182,7 +181,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
         if (placedItem != null)
         {
             final ItemStack held = player.getItemInHand(hand);
-            if (!held.isEmpty() && (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) || Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_4_STRAW)) && PitKilnBlockEntity.isValid(level, pos))
+            if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && !held.isEmpty() && PitKilnBlockEntity.isValid(level, pos))
             {
                 if (!level.isClientSide())
                 {

@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/barrel/oak",
-      "text": "Бочка изготовлена из семи $(thing)брусьев$()."
+      "text": "The barrel is made from seven $(thing)lumber$()."
     },
     {
       "type": "patchouli:image",

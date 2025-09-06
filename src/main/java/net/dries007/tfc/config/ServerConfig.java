@@ -304,8 +304,8 @@ public class ServerConfig extends BaseConfig
         enableLightningStrippingLogs = builder.comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);
         oceanWindScale = builder.comment("Every time the z coordinate reaches a multiple of this point, the wind over oceans will switch directions.").define("oceanWindScale", 5000, 128, Integer.MAX_VALUE);
         excludedMetalTagNames = builder.comment(
-            "TFC will try and infer metals from tags that match the pattern 'c:type/...', where 'type' is one of 'ingots' or 'double_ingots'",
-            "These will be used to determine what metal is an item for the purpose of rendering it in an ingot pile",
+            "TFC will try and infer metals from tags that match the pattern 'c:type/...', where 'type' is one of 'ingots', 'double_ingots', or 'sheets'",
+            "These will be used to determine what metal is an item for the purpose of rendering it in an ingot or sheet pile",
             "This is a list of tag names (not including the 'c' namespace), that look like the above (so i.e. 'ingots/not_a_real_metal') that should not be included"
         ).define("", List.of(), e -> true);
 

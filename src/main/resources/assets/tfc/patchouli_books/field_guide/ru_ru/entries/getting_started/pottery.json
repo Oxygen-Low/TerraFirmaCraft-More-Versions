@@ -24,8 +24,8 @@
           ]
         ],
         "mapping": {
-          "0": "tfc:clay_grass/aridisol",
-          "X": "tfc:clay_grass/aridisol",
+          "0": "tfc:clay_grass/sandy_loam",
+          "X": "tfc:clay_grass/sandy_loam",
           "C": "#tfc:clay_indicators"
         }
       },
@@ -58,13 +58,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/decay#large_vessels)Большой сосуд$() создаётся аналогичным образом. Его можно разместить, и он имеет девять слотов для предметов. Для получения дополнительной информации ознакомьтесь со связанной главой.",
-      "title": "Большой сосуд"
+      "text": "The $(l:mechanics/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
+      "title": "Large Vessel"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_large_vessel",
-      "text": "Лепка большого глиняного сосуда."
+      "text": "Knapping a Clay Large Vessel."
     },
     {
       "type": "patchouli:text",

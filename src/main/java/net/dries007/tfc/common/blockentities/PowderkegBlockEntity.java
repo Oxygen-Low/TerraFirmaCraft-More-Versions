@@ -70,36 +70,15 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         {
             count += inventory.getStackInSlot(i).getCount();
         }
-        return getStrength(count);
-    }
-
-    public static int getStrength(ItemListComponent inventory)
-    {
-        final List<ItemStack> contents = inventory.contents();
-        int count = 0;
-        for (ItemStack stack : contents)
-        {
-            count += stack.getCount();
-        }
-        return getStrength(count);
-    }
-
-    private static int getStrength(int itemCount)
-    {
-        return Math.min(MAX_STRENGTH, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * itemCount / SLOTS));
+        return Math.min(MAX_STRENGTH, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * count / SLOTS));
     }
 
     private static void explode(PowderkegBlockEntity powderkeg)
     {
         assert powderkeg.level != null;
-        final int x = powderkeg.worldPosition.getX();
-        final int y = powderkeg.worldPosition.getY();
-        final int z = powderkeg.worldPosition.getZ();
-        final int strength = getStrength(powderkeg);
-        PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, x, y, z, strength);
+        PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
         explosion.explode();
         explosion.finalizeExplosion(true);
-        explosion.sendExplosionPacketToClients();
     }
 
     private int fuse = -1;
@@ -199,23 +178,25 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     public static class PowderkegInventory extends InventoryItemHandler
     {
         private final PowderkegBlockEntity powderkeg;
+        private final InventoryItemHandler inventory;
 
         PowderkegInventory(InventoryBlockEntity<?> entity)
         {
             super(entity, SLOTS);
             powderkeg = (PowderkegBlockEntity) entity;
+            inventory = new InventoryItemHandler(entity, SLOTS);
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
-            return canModify() ? super.insertItem(slot, stack, simulate) : stack;
+            return canModify() ? inventory.insertItem(slot, stack, simulate) : stack;
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
-            return canModify() ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+            return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
         }
 
         private boolean canModify()

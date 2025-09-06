@@ -43,13 +43,6 @@
     "SJS",
     " B "
   ],
-  "remainder": {
-    "modifiers": [
-      {
-        "type": "tfc:damage_crafting_remainder"
-      }
-    ]
-  },
   "result": {
     "modifiers": [
       {

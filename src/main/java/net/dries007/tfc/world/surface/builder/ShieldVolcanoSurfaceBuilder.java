@@ -24,14 +24,16 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
     public static final SurfaceBuilderFactory SHORE = seed -> new ShieldVolcanoSurfaceBuilder(seed, false, true);
 
     private final boolean hasLavaFlows;
-    private final boolean isSandy;
+    private final boolean sandy;
     private final long seed;
+    private final Noise2D smoothNoise;
 
-    ShieldVolcanoSurfaceBuilder(Seed seed, boolean hasLavaFlows, boolean isSandy)
+    ShieldVolcanoSurfaceBuilder(Seed seed, boolean hasLavaFlows, boolean sandy)
     {
         this.hasLavaFlows = hasLavaFlows;
-        this.isSandy = isSandy;
+        this.sandy = sandy;
         this.seed = seed.seed();
+        this.smoothNoise = new OpenSimplex2D(this.seed).octaves(2).spread(0.25);
     }
 
     @Override
@@ -44,12 +46,12 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
         final SurfaceState bot;
         final SurfaceState underwater;
 
-        if (isSandy)
+        if (sandy)
         {
-            top = SurfaceStates.VOLCANIC_SHORE_SAND;
-            mid = SurfaceStates.VOLCANIC_SHORE_SAND;
-            bot = SurfaceStates.VOLCANIC_SHORE_SANDSTONE;
-            underwater = SurfaceStates.VOLCANIC_SHORE_SAND;
+            top = SurfaceStates.RARE_SHORE_SAND;
+            mid = SurfaceStates.RARE_SHORE_SAND;
+            bot = SurfaceStates.RARE_SHORE_SANDSTONE;
+            underwater = SurfaceStates.RARE_SHORE_SAND;
         }
         else
         {
@@ -65,8 +67,7 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
         }
         else
         {
-            final Noise2D smoothNoise = BiomeNoise.lavaFlowMaterial(seed);
-            final double noiseValue = smoothNoise.noise(x, z);
+            final double noiseValue = this.smoothNoise.noise(x, z);
             final Noise2D lavaFlows = BiomeNoise.lavaFlow(seed);
             final double flowValue = lavaFlows.noise(x, z);
 

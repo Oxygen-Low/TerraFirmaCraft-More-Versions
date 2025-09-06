@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Затем вам потребуется построить доменную печь вместе с её $(thing)дымовой трубой$(). Дымовая труба должна быть изготовлена из $(l:mechanics/fire_clay#fire_bricks)укреплённых огнеупорных кирпичей$(), так как они достаточно прочны, чтобы выдерживать высокую температуру. Их можно изготовить из блоков огнеупорного кирпича, а также из кованого железа или стальных листов."
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",
@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Дымоход доменной печи может состоять максимум из пяти слоёв — для каждого слоя требуется восемь $(thing)усиленных огнеупорных кирпичей$() для завершения сборки. Наличие большего числа слоёв увеличивает общую вместимость доменной печи, позволяя ей одновременно выплавлять больше стали. Каждый слой дымохода, до максимально допустимых пяти, позволяет доменной печи вмещать четыре дополнительных предмета руды."
+      "text": "Дымоход высокой печи может состоять до пяти слоев - каждый слой требует четырех $(thing)Огнеупорных кирпичей$() и двенадцати $(thing)Кованых железных листов$(), чтобы завершить. Наличие большего количества слоев увеличивает общую вместимость высокой печи, позволяя плавить больше стали за один раз. Каждый слой дымохода, до максимума пяти, позволяет высокой печи вмещать на четыре дополнительных предмета руды."
     },
     {
       "type": "patchouli:text",
@@ -57,7 +57,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Наконец, чтобы начать, разожгите доменную печь с помощью $(l:getting_started/firepit#firestarter)разжигателя$(), $(thing)кремня и пирита$() или $(thing)кремня и стали$(). Она начнёт нагревать руды, находящиеся внутри. Убедитесь, что доменная печь продолжает получать топливо, и используйте меха, чтобы подать в неё воздух, когда внутренняя температура достигнет максимума для древесного угля. После разогрева руд они расплавятся и превратятся в $(l:mechanics/steel)чугун$()."
+      "text": "Finally, to get started, light the blast furnace with a $(l:getting_started/firepit#firestarter)Fire Starter$(), a $(thing)Flint and Pyrite$(), or a $(thing)Flint and Steel$(). It will begin to heat the ores inside. Make sure that the blast furnace continues to have fuel, and use the bellows to add air to the blast furnace after its internal temperature has reached the maximum for charcoal. After the ores inside heat up, they will melt and convert into $(l:mechanics/steel)Pig Iron$()."
     },
     {
       "type": "patchouli:text",

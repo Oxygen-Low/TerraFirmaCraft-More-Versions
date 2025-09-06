@@ -77,7 +77,7 @@ public record MetalItem(
                 {
                     final String[] path = id.getPath().split("/");
                     if (path.length == 2
-                        && (path[0].equals("ingots") || path[0].equals("double_ingots"))
+                        && (path[0].equals("ingots") || path[0].equals("double_ingots") || path[0].equals("sheets"))
                         && !path[1].contains("/")
                         && !excludedTags.contains(id.getPath())
                     )

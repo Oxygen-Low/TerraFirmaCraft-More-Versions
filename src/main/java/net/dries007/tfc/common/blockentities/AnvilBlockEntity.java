@@ -8,9 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.Collection;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -66,9 +65,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     public static final int[] SLOTS_BY_HAND_EXTRACT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
     public static final int[] SLOTS_BY_HAND_INSERT = new int[] {SLOT_CATALYST, SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
 
-    @Nullable
-    private ResourceLocation lastRecipe = null;
-
     public AnvilBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.ANVIL.get(), pos, state, AnvilInventory::new);
@@ -89,27 +85,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
      */
     public MenuProvider planProvider()
     {
-        return new MenuProvider()
-        {
-            @Override
-            public Component getDisplayName()
-            {
-                return AnvilBlockEntity.this.getDisplayName();
-            }
-
-            @Nullable
-            @Override
-            public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player)
-            {
-                return createPlanContainer(containerId, playerInventory, player);
-            }
-
-            @Override
-            public boolean shouldTriggerClientSideContainerClosingOnOpen()
-            {
-                return false;
-            }
-        };
+        return new SimpleMenuProvider(this::createPlanContainer, getDisplayName());
     }
 
     /**
@@ -125,12 +101,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
     {
         return AnvilContainer.create(this, player.getInventory(), containerId);
-    }
-
-    @Override
-    public boolean shouldTriggerClientSideContainerClosingOnOpen()
-    {
-        return false;
     }
 
     @Nullable
@@ -167,26 +137,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
-    {
-        super.loadAdditional(nbt, provider);
-        if (nbt.contains("lastRecipe", CompoundTag.TAG_STRING))
-        {
-            lastRecipe = ResourceLocation.tryParse(nbt.getString("lastRecipe"));
-        }
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
-    {
-        super.saveAdditional(nbt, provider);
-        if (lastRecipe != null)
-        {
-            nbt.putString("lastRecipe", lastRecipe.toString());
-        }
-    }
-
-    @Override
     public void setAndUpdateSlots(int slot)
     {
         assert level != null;
@@ -199,19 +149,11 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             if (recipe == null)
             {
                 // Select a default recipe if we only find a single recipe for this item
-                if (!level.isClientSide)
+                final Collection<RecipeHolder<AnvilRecipe>> all = AnvilRecipe.getAll(level, stack, getTier());
+                if (all.size() == 1 && !level.isClientSide)
                 {
-                    final Collection<RecipeHolder<AnvilRecipe>> all = AnvilRecipe.getAll(level, stack, getTier());
-                    if (all.size() == 1)
-                    {
-                        // Update the recipe held by the forging item
-                        forge.setRecipe(all.iterator().next(), inventory);
-                    }
-                    else if (lastRecipe != null)
-                    {
-                        // set a remembered recipe
-                        all.stream().filter(r -> r.id().equals(lastRecipe)).findAny().ifPresent(r -> forge.setRecipe(r, inventory));
-                    }
+                    // Update the recipe held by the forging item
+                    forge.setRecipe(all.iterator().next(), inventory);
                 }
             }
         }
@@ -234,7 +176,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         if (!stack.isEmpty() && recipe != null)
         {
             ForgingCapability.get(stack).setRecipe(new RecipeHolder<>(recipeId, recipe), inventory);
-            lastRecipe = recipeId;
         }
     }
 

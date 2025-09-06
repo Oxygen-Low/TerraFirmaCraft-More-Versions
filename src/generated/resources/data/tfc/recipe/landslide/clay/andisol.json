@@ -1,8 +1,0 @@
-{
-  "type": "tfc:landslide",
-  "ingredient": [
-    "tfc:clay/andisol",
-    "tfc:clay_grass/andisol"
-  ],
-  "result": "tfc:clay/andisol"
-}

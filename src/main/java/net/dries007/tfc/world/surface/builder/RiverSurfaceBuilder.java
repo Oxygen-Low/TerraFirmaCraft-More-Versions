@@ -12,14 +12,13 @@ import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
-public class RiverSurfaceBuilder implements SurfaceBuilder
+public class RiverSurfaceBuilder extends ShoreSurfaceBuilder
 {
     public static final SurfaceBuilderFactory INSTANCE = RiverSurfaceBuilder::new;
-    final Seed seed;
 
     protected RiverSurfaceBuilder(Seed seed)
     {
-        this.seed = seed;
+        super(seed);
     }
 
     @Override
@@ -28,7 +27,7 @@ public class RiverSurfaceBuilder implements SurfaceBuilder
         final BiomeExtension biome = context.originalBiome();
         if (biome.isShore())
         {
-            biome.createSurfaceBuilder(seed).buildSurface(context, startY, endY);
+            super.buildSurface(context, startY, endY);
         }
         else if (!biome.hasSandyRiverShores())
         {

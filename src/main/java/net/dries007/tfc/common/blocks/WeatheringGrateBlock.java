@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -29,7 +27,7 @@ public class WeatheringGrateBlock extends WeatheringBlock implements IFluidLogga
 
     public WeatheringGrateBlock(Properties properties, Age age, float weatheringResistance)
     {
-        super(properties, age, weatheringResistance);
+        super(properties.randomTicks(), age, weatheringResistance);
         registerDefaultState(getStateDefinition().any().setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 
@@ -68,17 +66,5 @@ public class WeatheringGrateBlock extends WeatheringBlock implements IFluidLogga
     public FluidProperty getFluidProperty()
     {
         return FLUID;
-    }
-
-    @Override
-    protected boolean isRandomlyTicking(BlockState state)
-    {
-        return state.getFluidState().isRandomlyTicking();
-    }
-
-    @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
-    {
-        state.getFluidState().randomTick(level, pos, random);
     }
 }

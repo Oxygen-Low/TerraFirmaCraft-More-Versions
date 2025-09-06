@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Мир",
   "description": "Всё о природном мире вокруг вас.",
-  "icon": "tfc:grass/entisol",
+  "icon": "tfc:grass/loam",
   "sortnum": 0
 }

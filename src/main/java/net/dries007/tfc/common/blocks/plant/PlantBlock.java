@@ -173,9 +173,9 @@ public abstract class PlantBlock extends TFCBushBlock
 
             @Nullable
             public BlockState getStateForPlacement(BlockPlaceContext context) {
-                BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-                if (Helpers.isBlock(state, this)) {
-                    return state.setValue(AGE, Math.min(3, state.getValue(AGE) + 1));
+                BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
+                if (blockstate.is(this)) {
+                    return blockstate.setValue(AGE, Math.min(3, blockstate.getValue(AGE) + 1));
                 }
                 return super.getStateForPlacement(context);
             }
@@ -227,7 +227,7 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        final IntegerProperty ageProp = getPlant().getAgeProperty();
+        final var ageProp = getPlant().getAgeProperty();
         if (ageProp != null)
         {
             final int age = state.getValue(ageProp);

@@ -133,21 +133,16 @@ class Fruit(NamedTuple):
 
 class Crop(NamedTuple):
     type: str
-    category: str
     stages: int
-    min_temp_wg: float
-    max_temp_wg: float
+    nutrient: str
+    min_temp: float
+    max_temp: float
     min_water: float
     max_water: float
-    min_temp_growth: float
-    max_temp_growth: float
-    min_hydration: float
-    max_hydration: float
-    nitrogen: float
-    phosphorous: float
-    potassium: float
-    min_forest: Optional[int]
-    max_forest: Optional[int]
+    min_hydration: int
+    max_hydration: int
+    min_forest: Optional[str]
+    max_forest: Optional[str]
 
 
 class Metal(NamedTuple):
@@ -413,7 +408,6 @@ ORE_VEINS: dict[str, Vein] = {
 
     'amethyst': Vein.new('amethyst', 25, 8, 40, 60, 0.2, ('sedimentary', 'metamorphic'), vein_type='disc', biomes='#tfc:is_river', height=4),
     'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4),
-    'ruby': Vein.new('ruby', 12, 22, -70, -10, 0.2, ('schist', 'gneiss')),
 }
 
 ALL_MINERALS = ('bituminous_coal', 'lignite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
@@ -445,20 +439,14 @@ DEPOSIT_RARES: Dict[str, str] = {
 ROCK_DECORATIONS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
-SOIL_BLOCK_VARIANTS = ('entisol', 'aridisol', 'oxisol', 'fluvisol', 'andisol', 'podzol', 'alfisol', 'mollisol')
-PLAIN_CUBE_SOIL_BLOCK_VARIANTS = ('entisol', 'aridisol', 'oxisol', 'andisol', 'alfisol', 'mollisol')
-COLUMN_SOIL_BLOCK_VARIANTS = ('podzol', 'fluvisol')
-ALFISOL_REPLACEABLE = ('entisol', 'aridisol', 'oxisol')
-PODZOL_REPLACEABLE = ('entisol', 'aridisol', 'oxisol', 'alfisol')
-FOREST_SOIL_DISC_REPLACED = ('dirt', 'duff', 'mud', 'clay', 'clay_duff', 'rooted_dirt', 'coarse_dirt')
-NATURAL_SOIL_BLOCKS = ('dirt', 'duff', 'mud', 'clay', 'clay_duff', 'rooted_dirt', 'coarse_dirt', 'grass', 'clay_grass')
+SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
 MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
-SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'canola_oil', 'canola_oil_water', 'tallow', 'tannin', 'vinegar', 'beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
+SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar', 'beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
 WOODS: dict[str, Wood] = {
     'acacia': Wood(650, 1000),
@@ -484,37 +472,31 @@ WOODS: dict[str, Wood] = {
 }
 
 # DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
-# https://docs.google.com/spreadsheets/d/1USmCWiRrj5205WyoRNNTUkoNrqm9AStRzwnD1v6633o
+# https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/
 CROPS: dict[str, Crop] = {
-    'cassava': Crop('default', 'legume', 6, 10.4, 40, 260, 500, 10, 47, 45, 100, -50, 40, 20, 3, None),
-    'green_bean': Crop('double_stick', 'legume', 8, -4, 19.4, 150, 410, -4, 30, 25, 90, -80, 50, 40, 3, None),
-    'lentil': Crop('default', 'legume', 6, -7.6, 19.4, 75, 190, -7, 30, 15, 50, -80, 20, 20, None, None),
-    'peanut': Crop('default', 'legume', 6, 12.2, 40, 130, 360, 12, 47, 20, 80, -90, 50, 50, None, None),
-    'soybean': Crop('default', 'legume', 7, -9.4, 15.8, 160, 410, -9, 27, 25, 90, -80, 60, 30, 3, None),
-    'barley': Crop('default', 'cereal', 8, -9.4, 17.6, 70, 310, -9, 29, 10, 70, 75, -20, -20, None, 2),
-    'oat': Crop('default', 'cereal', 8, -9.4, 15.8, 140, 400, -9, 27, 25, 85, 100, -35, -25, None, 2),
-    'rye': Crop('default', 'cereal', 8, -9.4, 8.6, 100, 350, -9, 23, 15, 80, 100, -20, -40, None, 2),
-    'maize': Crop('double', 'cereal', 6, -9.4, 23., 300, 500, -9, 32, 50, 100, 90, -25, -25, None, 2),
-    'wheat': Crop('default', 'cereal', 8, -9.4, 15.8, 100, 400, -9, 27, 15, 85, 100, -30, -30, None, 2),
-    'rice': Crop('default', 'cereal', 8, 8.6, 40, 200, 500, 8, 47, 35, 100, 40, 30, 30, 2, None),
-    'beet': Crop('default', 'vegetable', 6, -13, 23., 70, 300, -13, 32, 10, 70, 40, 30, 50, None, None),
-    'cabbage': Crop('default', 'vegetable', 6, -13, 23., 60, 280, -13, 32, 10, 65, 50, 20, 40, None, None),
-    'carrot': Crop('default', 'vegetable', 5, -13, 23., 100, 400, -13, 32, 15, 85, 50, 30, 40, None, None),
-    'garlic': Crop('default', 'vegetable', 5, -5.8, 15.8, 60, 310, -5, 27, 10, 70, 40, 20, 50, None, None),
-    'onion': Crop('default', 'vegetable', 7, -7.6, 21.2, 100, 390, -7, 31, 15, 85, 40, 40, 40, None, None),
-    'potato': Crop('default', 'vegetable', 7, -9.4, 15.8, 200, 420, -9, 27, 35, 90, 40, 20, 60, None, None),
-    'squash': Crop('default', 'vegetable', 8, -9.4, 19.4, 90, 390, -9, 30, 15, 85, 25, 45, 50, 3, None),
-    'tomato': Crop('double_stick', 'vegetable', 8, 1.4, 40, 120, 390, 1, 47, 20, 85, 40, 50, 60, 3, None),
-    'red_bell_pepper': Crop('pickable', 'pickable vegetable', 7, 12.2, 40, 190, 450, 12, 47, 30, 95, 30, 40, 50, None, None),
-    'yellow_bell_pepper': Crop('pickable', 'pickable vegetable', 7, 12.2, 40, 190, 450, 12, 47, 30, 95, 30, 40, 50, None, None),
-    'pumpkin': Crop('spreading', 'spreading vegetable', 8, -9.4, 23., 120, 390, -9, 32, 20, 85, 40, 30, 60, None, None),
-    'melon': Crop('spreading', 'spreading vegetable', 8, 5, 40, 200, 500, 5, 47, 35, 100, 30, 40, 65, None, None),
-    'canola': Crop('default', 'cover', 6, -13, 19.4, 120, 320, -35, 17, 20, 75, -30, -60, -100, None, 2),
-    'radish': Crop('default', 'cover', 6, -11.2, 23., 190, 410, -33, 21, 30, 90, -50, -100, -60, None, None),
-    'alfalfa': Crop('default', 'cover', 6, -9.4, 15.8, 240, 480, -30, 14, 40, 100, -80, -50, -60, None, 2),
-    'jute': Crop('double', 'misc', 6, 1.4, 19.4, 100, 410, 1, 30, 15, 90, 60, 40, -40, None, None),
-    'papyrus': Crop('double', 'misc', 6, 12.2, 40, 310, 500, 12, 47, 50, 100, 60, -40, 40, None, None),
-    'sugarcane': Crop('double', 'misc', 8, 17.6, 40, 160, 500, 17, 47, 25, 100, 50, 50, 50, None, None),
+    'barley': Crop('default', 8, 'nitrogen', -8, 26, 70, 310, 18, 75, None, 'edge'),
+    'oat': Crop('default', 8, 'phosphorus', 3, 40, 140, 400, 35, 100, None, 'edge'),
+    'rye': Crop('default', 8, 'phosphorus', -11, 30, 100, 350, 25, 85, None, 'edge'),
+    'maize': Crop('double', 6, 'phosphorus', 13, 40, 300, 500, 75, 100, None, 'edge'),
+    'wheat': Crop('default', 8, 'phosphorus', -4, 35, 100, 400, 25, 100, None, 'edge'),
+    'rice': Crop('default', 8, 'phosphorus', 15, 30, 100, 500, 25, 100, 'normal', None),
+    'beet': Crop('default', 6, 'potassium', -5, 20, 70, 300, 18, 85, None, None),
+    'cabbage': Crop('default', 6, 'nitrogen', -10, 27, 60, 280, 15, 65, None, None),
+    'carrot': Crop('default', 5, 'potassium', 3, 30, 100, 400, 25, 100, None, None),
+    'garlic': Crop('default', 5, 'nitrogen', -20, 18, 60, 310, 15, 75, None, None),
+    'green_bean': Crop('double_stick', 8, 'nitrogen', 2, 35, 150, 410, 38, 100, 'normal', None),
+    'potato': Crop('default', 7, 'potassium', -1, 37, 200, 410, 50, 100, None, None),
+    'onion': Crop('default', 7, 'nitrogen', 0, 30, 100, 390, 25, 90, None, None),
+    'soybean': Crop('default', 7, 'nitrogen', 8, 30, 160, 410, 40, 100, 'normal', None),
+    'squash': Crop('default', 8, 'potassium', 5, 33, 90, 390, 23, 95, 'normal', None),
+    'sugarcane': Crop('double', 8, 'potassium', 12, 38, 160, 500, 40, 100, None, None),
+    'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
+    'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
+    'papyrus': Crop('double', 6, 'potassium', 19, 37, 310, 500, 70, 100, None, None),
+    'pumpkin': Crop('spreading', 8, 'phosphorus', 5, 22, 120, 390, 30, 70, None, None),
+    'melon': Crop('spreading', 8, 'phosphorus', 19, 35, 200, 500, 75, 100, 'normal', None),
+    'red_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
+    'yellow_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
 }
 
 PLANTS: dict[str, Plant] = {
@@ -660,14 +642,6 @@ PLANTS: dict[str, Plant] = {
     'silver_bromeliad': Plant(False, 21.2, 28.4, 25, 110, 'perched_epiphyte'),
     'sunflower': Plant(False, 8.6, 17.6, 100, 205, 'standard'),
     'tank_bromeliad': Plant(False, 17.6, 26.6, 320, 500, 'perched_epiphyte'),
-
-    'anemone_purple': Plant(False, -14, 12, 50, 470, 'ocean_creeping'),
-    'anemone_green': Plant(False, -16, 10, 50, 470, 'ocean_creeping'),
-    'barnacles': Plant(False, -25, 25, 0, 500, 'ocean_creeping'),
-    'mussels': Plant(False, -15, 10, 0, 500, 'ocean_creeping'),
-    'starfish': Plant(False, -25, 35, 0, 500, 'rotatable_water_plant'),
-    'anemone_large_purple': Plant(False, -10, 8, 0, 500, 'ocean_creeping'),
-    'anemone_large_orange': Plant(False, 0, 16, 0, 500, 'ocean_creeping'),
 }
 
 FLOWERPOT_CROSS_PLANTS = {
@@ -843,7 +817,7 @@ VESSEL_TYPES = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'smooth_mud_bricks')
-SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'cactus_wood', 'compost', 'daub', 'dirty_jute_net', 'dried_cactus_wood', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'canola', 'alfalfa', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'canola_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'cactus_wood', 'compost', 'daub', 'dirty_jute_net', 'dried_cactus_wood', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -859,28 +833,28 @@ SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blow
 GLASS_TYPES = ('silica', 'hematitic', 'olivine', 'volcanic')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'humus', 'rotten_flesh', 'bone')
-OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water', 'ocean_creeping', 'rotatable_water_plant', 'ocean_rock_creeping')
+OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo', 'flame_vine', 'cycad')
-UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks')
+UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
 # todo: bush hydration / groundwater separation and proper ranges
 # Note, this may be worth moving entirely to groundwater now that we have that system
 # When this gest updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
 # Alternatively, we ditch rainfall and/or hydration entirely.
 BERRIES: dict[str, Berry] = {
-    'blackberry': Berry(7, 24, 200, 500, 'spreading', 0, 2),
-    'raspberry': Berry(5, 25, 200, 500, 'spreading', 0, 2),
-    'blueberry': Berry(7, 29, 100, 400, 'spreading', 0, 2),
-    'elderberry': Berry(10, 33, 100, 400, 'spreading', 0, 2),
+    'blackberry': Berry(7, 24, 200, 500, 'spreading', 'none', 'edge'),
+    'raspberry': Berry(5, 25, 200, 500, 'spreading', 'none', 'edge'),
+    'blueberry': Berry(7, 29, 100, 400, 'spreading', 'none', 'edge'),
+    'elderberry': Berry(10, 33, 100, 400, 'spreading', 'none', 'edge'),
 
-    'snowberry': Berry(-7, 18, 200, 500, 'stationary', 2, 4),
-    'bunchberry': Berry(15, 35, 200, 500, 'stationary', 2, 4),
-    'gooseberry': Berry(5, 27, 200, 500, 'stationary', 2, 4),
-    'cloudberry': Berry(-2, 17, 80, 380, 'stationary', 2, 4),
-    'strawberry': Berry(5, 28, 100, 400, 'stationary', 2, 4),
-    'wintergreen_berry': Berry(-6, 17, 100, 400, 'stationary', 2, 4),
+    'snowberry': Berry(-7, 18, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'bunchberry': Berry(15, 35, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'gooseberry': Berry(5, 27, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'cloudberry': Berry(-2, 17, 80, 380, 'stationary', 'edge', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 400, 'stationary', 'edge', 'old_growth'),
+    'wintergreen_berry': Berry(-6, 17, 100, 400, 'stationary', 'edge', 'old_growth'),
 
-    'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 2, 4)
+    'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 
 FRUITS: dict[str, Fruit] = {
@@ -895,25 +869,26 @@ FRUITS: dict[str, Fruit] = {
     'plum': Fruit(15, 31, 250, 400),
     'red_apple': Fruit(1, 25, 100, 280)
 }
-JAR_FRUITS = tuple([*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice', 'peanut'])
+JAR_FRUITS = tuple([*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice'])
 
 SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich', '_bread_jam_sandwich')
-MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'baked_potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice', 'pumpkin_chunks', 'melon_slice', 'cassava', 'lentil', 'peanut', 'radish')
+MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'baked_potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice', 'pumpkin_chunks', 'melon_slice')
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs', 'fox')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'bison', 'peafowl', 'jerboa', 'lemming', 'mongoose', *SIMPLE_FRESHWATER_FISH)
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox')
 
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
-TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'plateau_wide', 'hills', 'rolling_hills', 'highlands', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'guano_island', 'shore', 'tidal_flats', 'sea_stacks', 'terrace_upper', 'terrace_lower', 'setback_cliffs', 'coastal_dunes', 'rocky_shores', 'embayments', 'salt_flats', 'mud_flats', 'dune_sea', 'grassy_dunes', 'whorled_canyons', 'stair_step_canyons', 'mesas', 'buttes', 'hoodoos', 'rocky_plateau', 'tower_karst_plains', 'burren_plains', 'shilin_plains', 'doline_plains', 'cenote_plains', 'tower_karst_canyons', 'doline_canyons', 'cenote_canyons', 'shilin_canyons', 'tower_karst_hills', 'shilin_hills', 'doline_hills', 'cenote_hills', 'tower_karst_highlands', 'burren_badlands_tall', 'shilin_highlands', 'doline_highlands', 'cenote_highlands', 'extreme_doline_plateau', 'burren_plateau', 'shilin_plateau', 'doline_plateau', 'cenote_plateau', 'tower_karst_lake', 'tower_karst_bay', 'extreme_doline_mountains', 'burren_badlands', 'doline_rolling_hills', 'cenote_rolling_hills', 'burren_roche_moutonee', 'active_shield_volcano', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'sunken_shield_volcano', 'shield_volcano_shore', 'old_shield_volcano_shore', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake', 'ice_sheet', 'ice_sheet_mountains', 'ice_sheet_oceanic_mountains', 'ice_sheet_shield_volcano', 'ice_sheet_tuyas', 'subglacial_lake', 'ice_sheet_edge', 'ice_sheet_tuyas_edge', 'ice_sheet_mountains_edge', 'ice_sheet_oceanic_mountains_edge', 'meltwater_lake', 'ice_sheet_oceanic', 'ice_sheet_shore', 'glaciated_shield_volcano', 'glaciated_mountains', 'glaciated_oceanic_mountains', 'glacially_carved_mountains', 'glacially_carved_oceanic_mountains', 'drumlins', 'tuyas', 'knob_and_kettle', 'patterned_ground', 'inverted_patterned_ground', 'stone_circles']
-VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host', 'flow', 'bolt')
+# TODO: Ensure all new biomes added here
+TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
+VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host')
 
 BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashhed_frittilary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
 
@@ -1100,14 +1075,10 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.boar.ambient': 'Boar oinks',
     'subtitles.entity.tfc.boar.hurt': 'Boar squeals',
     'subtitles.entity.tfc.boar.attack': 'Boar grunts',
-    'subtitles.entity.tfc.wildebeest.death': 'Wildebeest dies',
+    'subtitles.entity.tfc.wildbeest.death': 'Wildebeest dies',
     'subtitles.entity.tfc.wildebeest.ambient': 'Wildebeest grunts',
     'subtitles.entity.tfc.wildebeest.hurt': 'Wildebeest yelps',
     'subtitles.entity.tfc.wildebeest.attack': 'Wildebeest rams',
-    'subtitles.entity.tfc.bison.death': 'Bison dies',
-    'subtitles.entity.tfc.bison.ambient': 'Bison grunts',
-    'subtitles.entity.tfc.bison.hurt': 'Bison yelps',
-    'subtitles.entity.tfc.bison.attack': 'Bison rams',
     'subtitles.entity.tfc.grouse.death': 'Grouse dies',
     'subtitles.entity.tfc.grouse.ambient': 'Grouse calls',
     'subtitles.entity.tfc.grouse.hurt': 'Grouse squeals',
@@ -1124,15 +1095,6 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.rat.death': 'Rat dies',
     'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
-    'subtitles.entity.tfc.jerboa.death': 'Jerboa dies',
-    'subtitles.entity.tfc.jerboa.ambient': 'Jerboa squeaks',
-    'subtitles.entity.tfc.jerboa.hurt': 'Jerboa squeals',
-    'subtitles.entity.tfc.lemming.death': 'Lemming dies',
-    'subtitles.entity.tfc.lemming.ambient': 'Lemming squeaks',
-    'subtitles.entity.tfc.lemming.hurt': 'Lemming squeals',
-    'subtitles.entity.tfc.mongoose.death': 'Mongoose dies',
-    'subtitles.entity.tfc.mongoose.ambient': 'Mongoose squeaks',
-    'subtitles.entity.tfc.mongoose.hurt': 'Mongoose squeals',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
     'subtitles.entity.tfc.dog.ambient': 'Dog Barks',
     'subtitles.entity.tfc.dog.hurt': 'Dog Yelps',
@@ -1269,8 +1231,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.temperature_rankine': '%s\u00b0R',
     'tfc.tooltip.temperature_kelvin': '%s K',
     'tfc.tooltip.farmland.mature': '§aMature',
-    'tfc.tooltip.farmland.hydration_simple': '§1Hydration: §r%s%%',
-    'tfc.tooltip.farmland.hydration': '§1Hydration:§r %s%% (§6Min: §r%s%% §3Max: §r%s%%)',
+    'tfc.tooltip.farmland.hydration': '§1Hydration: §r%s%%',
     'tfc.tooltip.farmland.hydration_too_low': ' - §4Too low! §r(>%s%%)',
     'tfc.tooltip.farmland.hydration_too_high': ' - §4Too high! §r(<%s%%)',
     'tfc.tooltip.farmland.temperature': '§4Temperature: §r%s\u00b0C',
@@ -1428,6 +1389,7 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.mud_bricks': 'Mud Bricks',
     'config.jade.plugin_tfc.decaying': 'Decaying Block',
     'config.jade.plugin_tfc.loom': 'Loom',
+    'config.jade.plugin_tfc.sheet_pile': 'Sheet Pile',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
     'config.jade.plugin_tfc.axle': 'Axle',
     'config.jade.plugin_tfc.encased_axle': 'Encased Axle',
@@ -1510,8 +1472,6 @@ DEFAULT_LANG = {
     'tfc.create_world.continentalness.tooltip': 'The proportion of the world that is made up of land rather than water',
     'tfc.create_world.grass_density': 'Grass Density',
     'tfc.create_world.grass_density.tooltip': 'Multiplier that applies to the amount of short and tall grass placed within a chunk.',
-    'tfc.create_world.finite_continents': 'Finite Continents',
-    'tfc.create_world.finite_continents.tooltip': 'Should there be a finite amount of continents in the world?',
 
     # Entities
     **dict(('entity.tfc.%s' % fish, lang(fish)) for fish in SIMPLE_FRESHWATER_FISH),
@@ -1584,7 +1544,6 @@ DEFAULT_LANG = {
     'entity.tfc.panda': 'Panda',
     'entity.tfc.boar': 'Boar',
     'entity.tfc.wildebeest': 'Wildebeest',
-    'entity.tfc.bison': 'Bison',
     'entity.tfc.ocelot': 'Ocelot',
     'entity.tfc.bongo': 'Bongo',
     'entity.tfc.caribou': 'Caribou',
@@ -1598,9 +1557,6 @@ DEFAULT_LANG = {
     'entity.tfc.peafowl.male': 'Peacock',
     'entity.tfc.peafowl.female': 'Peahen',
     'entity.tfc.rat': 'Rat',
-    'entity.tfc.jerboa': 'Jerboa',
-    'entity.tfc.lemming': 'Lemming',
-    'entity.tfc.mongoose': 'Mongoose',
     'entity.tfc.cat': 'Cat',
     'entity.tfc.cat.female': 'Female Cat',
     'entity.tfc.cat.male': 'Male Cat',
@@ -1754,7 +1710,6 @@ DEFAULT_LANG = {
     'tfc.enum.rockdisplaycategory.metamorphic': 'Metamorphic',
     'tfc.enum.foresttype.sparse': 'sparse',
     'tfc.enum.foresttype.grassland': 'Grassland',
-    'tfc.enum.foresttype.clearing': 'Clearing',
     'tfc.enum.foresttype.shrubland': 'Shrubland',
     'tfc.enum.foresttype.primary_monoculture': 'Primary Monoculture',
     'tfc.enum.foresttype.primary_diverse': 'Primary',
@@ -1952,7 +1907,6 @@ DEFAULT_LANG = {
 
     'tfc.config.common.defaultCalendarStartDay': 'Default Calendar Start Day',
     'tfc.config.common.defaultMonthLength': 'Default Month Length',
-    'tfc.config.common.defaultCalendarDayLength': 'Default Calendar Day Length',
     'tfc.config.common.defaultWorldPreset': 'Default World Preset',
     'tfc.config.common.enableDatapackTests': 'Enable Datapack Tests',
 
@@ -2254,313 +2208,6 @@ DEFAULT_LANG = {
     'tfc.config.server.yakMinProduceFamiliarity': 'Yak Min Produce Familiarity',
     'tfc.config.server.yakProduceTicks': 'Produce Ticks',
     'tfc.config.server.yakUses': 'Uses',
-    # Recipes
-    'tfc.recipe.barrel.tfc.barrel.small_soaked_hide': 'Small Soaked Hide',
-    'tfc.recipe.barrel.tfc.barrel.small_prepared_hide': 'Small Prepared Hide',
-    'tfc.recipe.barrel.tfc.barrel.small_leather': 'Leather',
-    'tfc.recipe.barrel.tfc.barrel.medium_soaked_hide': 'Medium Soaked Hide',
-    'tfc.recipe.barrel.tfc.barrel.medium_prepared_hide': 'Medium Prepared Hide',
-    'tfc.recipe.barrel.tfc.barrel.medium_leather': 'Leather',
-    'tfc.recipe.barrel.tfc.barrel.large_soaked_hide': 'Large Soaked Hide',
-    'tfc.recipe.barrel.tfc.barrel.large_prepared_hide': 'Large Prepared Hide',
-    'tfc.recipe.barrel.tfc.barrel.large_leather': 'Leather',
-    'tfc.recipe.barrel.tfc.barrel.tannin': 'Tannin',
-    'tfc.recipe.barrel.tfc.barrel.jute_fiber': 'Jute Fiber',
-    'tfc.recipe.barrel.tfc.barrel.sugar': 'Sugar',
-    'tfc.recipe.barrel.tfc.barrel.glue': 'Glue',
-    'tfc.recipe.barrel.tfc.barrel.soaked_papyrus_strip': 'Soaking Papyrus Strips',
-    'tfc.recipe.barrel.tfc.barrel.beer': 'Fermenting Beer',
-    'tfc.recipe.barrel.tfc.barrel.cider': 'Fermenting Cider',
-    'tfc.recipe.barrel.tfc.barrel.rum': 'Fermenting Rum',
-    'tfc.recipe.barrel.tfc.barrel.sake': 'Fermenting Sake',
-    'tfc.recipe.barrel.tfc.barrel.vodka': 'Fermenting Vodka',
-    'tfc.recipe.barrel.tfc.barrel.whiskey': 'Fermenting Whiskey',
-    'tfc.recipe.barrel.tfc.barrel.corn_whiskey': 'Fermenting Corn Whiskey',
-    'tfc.recipe.barrel.tfc.barrel.rye_whiskey': 'Fermenting Rye Whiskey',
-    'tfc.recipe.barrel.tfc.barrel.vinegar': 'Vinegar',
-    'tfc.recipe.barrel.tfc.barrel.brined': 'Brining',
-    'tfc.recipe.barrel.tfc.barrel.pickling': 'Pickling',
-    'tfc.recipe.barrel.tfc.barrel.preserved_in_vinegar': 'Preserving In Vinegar',
-    'tfc.recipe.barrel.tfc.barrel.mortar': 'Mortar',
-    'tfc.recipe.barrel.tfc.barrel.curdling': 'Curdling Milk',
-    'tfc.recipe.barrel.tfc.barrel.cheese': 'Cheese',
-    'tfc.recipe.barrel.tfc.barrel.raw_alabaster': 'Raw Alabaster',
-    'tfc.recipe.barrel.tfc.barrel.clean_jute_net': 'Cleaning Jute Net',
-    'tfc.recipe.barrel.tfc.barrel.candle': 'Candle',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_wool': 'Bleaching Wool',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_carpet': 'Bleaching Carpet',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_bed': 'Bleaching Bed',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_terracotta': 'Bleaching Terracotta',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_banner': 'Bleaching Banner',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_glazed_terracotta': 'Bleaching Glazed Terracotta',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_shulkers': 'Bleaching Shulker Box',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_concrete_powder': 'Bleaching Concrete Powder',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_candles': 'Bleaching Candles',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_windmill_blades': 'Bleaching Windmill Blades',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_raw': 'Bleaching Raw Alabaster',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_bricks': 'Bleaching Bricks Alabaster',
-    'tfc.recipe.barrel.tfc.barrel.dye.bleach_polished': 'Bleaching Polished Alabaster',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_strad': 'Imprinting Strad Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_shulker': 'Dyeing Shulker White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_glazed_vessel': 'Dyeing Unfired Vessel White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_glazed_large_vessel': 'Dyeing Unfired Large Vessel White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_concrete_powder': 'Dyeing Aggregate White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_candle': 'Dyeing Candle White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_leather': 'Dyeing Leather White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_raw_alabaster': 'Dyeing Alabaster Raw White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_bricks_alabaster': 'Dyeing Alabaster Bricks White',
-    'tfc.recipe.barrel.tfc.barrel.dye.white_polished_alabaster': 'Dyeing Alabaster Polished White',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_wool': 'Dyeing Wool Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_carpet': 'Dyeing Carpet Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_bed': 'Dyeing Bed Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_terracotta': 'Dyeing Terracotta Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_banner': 'Dyeing Banner Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_glazed_terracotta': 'Dyeing Glazed Terracotta Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_blocks': 'Imprinting Blocks Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_shulker': 'Dyeing Shulker Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_glazed_vessel': 'Dyeing Unfired Vessel Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_glazed_large_vessel': 'Dyeing Unfired Large Vessel Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_concrete_powder': 'Dyeing Aggregate Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_candle': 'Dyeing Candle Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_leather': 'Dyeing Leather Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_raw_alabaster': 'Dyeing Alabaster Raw Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_bricks_alabaster': 'Dyeing Alabaster Bricks Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_polished_alabaster': 'Dyeing Alabaster Polished Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.orange_windmill_blade': 'Dyeing Windmill Blade Orange',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_wool': 'Dyeing Wool Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_carpet': 'Dyeing Carpet Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_bed': 'Dyeing Bed Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_terracotta': 'Dyeing Terracotta Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_banner': 'Dyeing Banner Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_glazed_terracotta': 'Dyeing Glazed Terracotta Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_mellohi': 'Imprinting Mellohi Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_shulker': 'Dyeing Shulker Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_glazed_vessel': 'Dyeing Unfired Vessel Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_glazed_large_vessel': 'Dyeing Unfired Large Vessel Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_concrete_powder': 'Dyeing Aggregate Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_candle': 'Dyeing Candle Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_leather': 'Dyeing Leather Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_raw_alabaster': 'Dyeing Alabaster Raw Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_bricks_alabaster': 'Dyeing Alabaster Bricks Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_polished_alabaster': 'Dyeing Alabaster Polished Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.magenta_windmill_blade': 'Dyeing Windmill Blade Magenta',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_wool': 'Dyeing Wool Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_carpet': 'Dyeing Carpet Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_bed': 'Dyeing Bed Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_terracotta': 'Dyeing Terracotta Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_banner': 'Dyeing Banner Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_glazed_terracotta': 'Dyeing Glazed Terracotta Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_wait': 'Imprinting Wait Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_shulker': 'Dyeing Shulker Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_glazed_vessel': 'Dyeing Unfired Vessel Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_glazed_large_vessel': 'Dyeing Unfired Large Vessel Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_concrete_powder': 'Dyeing Aggregate Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_candle': 'Dyeing Candle Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_leather': 'Dyeing Leather Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_raw_alabaster': 'Dyeing Alabaster Raw Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_bricks_alabaster': 'Dyeing Alabaster Bricks Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_polished_alabaster': 'Dyeing Alabaster Polished Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_blue_windmill_blade': 'Dyeing Windmill Blade Light Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_wool': 'Dyeing Wool Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_carpet': 'Dyeing Carpet Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_bed': 'Dyeing Bed Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_terracotta': 'Dyeing Terracotta Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_banner': 'Dyeing Banner Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_glazed_terracotta': 'Dyeing Glazed Terracotta Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_13': 'Imprinting 13 Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_shulker': 'Dyeing Shulker Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_glazed_vessel': 'Dyeing Unfired Vessel Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_glazed_large_vessel': 'Dyeing Unfired Large Vessel Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_concrete_powder': 'Dyeing Aggregate Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_candle': 'Dyeing Candle Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_leather': 'Dyeing Leather Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_raw_alabaster': 'Dyeing Alabaster Raw Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_bricks_alabaster': 'Dyeing Alabaster Bricks Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_polished_alabaster': 'Dyeing Alabaster Polished Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.yellow_windmill_blade': 'Dyeing Windmill Blade Yellow',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_wool': 'Dyeing Wool Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_carpet': 'Dyeing Carpet Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_bed': 'Dyeing Bed Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_terracotta': 'Dyeing Terracotta Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_banner': 'Dyeing Banner Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_glazed_terracotta': 'Dyeing Glazed Terracotta Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_cat': 'Imprinting Cat Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_shulker': 'Dyeing Shulker Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_glazed_vessel': 'Dyeing Unfired Vessel Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_glazed_large_vessel': 'Dyeing Unfired Large Vessel Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_concrete_powder': 'Dyeing Aggregate Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_candle': 'Dyeing Candle Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_leather': 'Dyeing Leather Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_raw_alabaster': 'Dyeing Alabaster Raw Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_bricks_alabaster': 'Dyeing Alabaster Bricks Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_polished_alabaster': 'Dyeing Alabaster Polished Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.lime_windmill_blade': 'Dyeing Windmill Blade Lime',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_wool': 'Dyeing Wool Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_carpet': 'Dyeing Carpet Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_bed': 'Dyeing Bed Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_terracotta': 'Dyeing Terracotta Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_banner': 'Dyeing Banner Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_glazed_terracotta': 'Dyeing Glazed Terracotta Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_shulker': 'Dyeing Shulker Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_glazed_vessel': 'Dyeing Unfired Vessel Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_glazed_large_vessel': 'Dyeing Unfired Large Vessel Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_concrete_powder': 'Dyeing Aggregate Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_candle': 'Dyeing Candle Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_leather': 'Dyeing Leather Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_raw_alabaster': 'Dyeing Alabaster Raw Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_bricks_alabaster': 'Dyeing Alabaster Bricks Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_polished_alabaster': 'Dyeing Alabaster Polished Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.pink_windmill_blade': 'Dyeing Windmill Blade Pink',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_wool': 'Dyeing Wool Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_carpet': 'Dyeing Carpet Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_bed': 'Dyeing Bed Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_terracotta': 'Dyeing Terracotta Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_banner': 'Dyeing Banner Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_glazed_terracotta': 'Dyeing Glazed Terracotta Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_shulker': 'Dyeing Shulker Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_glazed_vessel': 'Dyeing Unfired Vessel Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_glazed_large_vessel': 'Dyeing Unfired Large Vessel Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_concrete_powder': 'Dyeing Aggregate Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_candle': 'Dyeing Candle Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_leather': 'Dyeing Leather Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_raw_alabaster': 'Dyeing Alabaster Raw Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_bricks_alabaster': 'Dyeing Alabaster Bricks Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_polished_alabaster': 'Dyeing Alabaster Polished Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.gray_windmill_blade': 'Dyeing Windmill Blade Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_wool': 'Dyeing Wool Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_carpet': 'Dyeing Carpet Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_bed': 'Dyeing Bed Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_terracotta': 'Dyeing Terracotta Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_banner': 'Dyeing Banner Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_glazed_terracotta': 'Dyeing Glazed Terracotta Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_shulker': 'Dyeing Shulker Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_glazed_vessel': 'Dyeing Unfired Vessel Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_glazed_large_vessel': 'Dyeing Unfired Large Vessel Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_concrete_powder': 'Dyeing Aggregate Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_candle': 'Dyeing Candle Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_leather': 'Dyeing Leather Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_raw_alabaster': 'Dyeing Alabaster Raw Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_bricks_alabaster': 'Dyeing Alabaster Bricks Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_polished_alabaster': 'Dyeing Alabaster Polished Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.light_gray_windmill_blade': 'Dyeing Windmill Blade Light Gray',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_wool': 'Dyeing Wool Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_carpet': 'Dyeing Carpet Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_bed': 'Dyeing Bed Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_terracotta': 'Dyeing Terracotta Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_banner': 'Dyeing Banner Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_glazed_terracotta': 'Dyeing Glazed Terracotta Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_otherside': 'Imprinting Otherside Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_shulker': 'Dyeing Shulker Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_glazed_vessel': 'Dyeing Unfired Vessel Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_glazed_large_vessel': 'Dyeing Unfired Large Vessel Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_concrete_powder': 'Dyeing Aggregate Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_candle': 'Dyeing Candle Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_leather': 'Dyeing Leather Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_raw_alabaster': 'Dyeing Alabaster Raw Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_bricks_alabaster': 'Dyeing Alabaster Bricks Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_polished_alabaster': 'Dyeing Alabaster Polished Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.cyan_windmill_blade': 'Dyeing Windmill Blade Cyan',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_wool': 'Dyeing Wool Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_carpet': 'Dyeing Carpet Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_bed': 'Dyeing Bed Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_terracotta': 'Dyeing Terracotta Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_banner': 'Dyeing Banner Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_glazed_terracotta': 'Dyeing Glazed Terracotta Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_mall': 'Imprinting Mall Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_shulker': 'Dyeing Shulker Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_glazed_vessel': 'Dyeing Unfired Vessel Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_glazed_large_vessel': 'Dyeing Unfired Large Vessel Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_concrete_powder': 'Dyeing Aggregate Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_candle': 'Dyeing Candle Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_leather': 'Dyeing Leather Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_raw_alabaster': 'Dyeing Alabaster Raw Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_bricks_alabaster': 'Dyeing Alabaster Bricks Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_polished_alabaster': 'Dyeing Alabaster Polished Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.purple_windmill_blade': 'Dyeing Windmill Blade Purple',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_wool': 'Dyeing Wool Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_carpet': 'Dyeing Carpet Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_bed': 'Dyeing Bed Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_terracotta': 'Dyeing Terracotta Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_banner': 'Dyeing Banner Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_glazed_terracotta': 'Dyeing Glazed Terracotta Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_ward': 'Imprinting Ward Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_shulker': 'Dyeing Shulker Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_glazed_vessel': 'Dyeing Unfired Vessel Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_glazed_large_vessel': 'Dyeing Unfired Large Vessel Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_concrete_powder': 'Dyeing Aggregate Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_candle': 'Dyeing Candle Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_leather': 'Dyeing Leather Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_raw_alabaster': 'Dyeing Alabaster Raw Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_bricks_alabaster': 'Dyeing Alabaster Bricks Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_polished_alabaster': 'Dyeing Alabaster Polished Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.blue_windmill_blade': 'Dyeing Windmill Blade Blue',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_wool': 'Dyeing Wool Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_carpet': 'Dyeing Carpet Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_bed': 'Dyeing Bed Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_terracotta': 'Dyeing Terracotta Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_banner': 'Dyeing Banner Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_glazed_terracotta': 'Dyeing Glazed Terracotta Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_shulker': 'Dyeing Shulker Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_glazed_vessel': 'Dyeing Unfired Vessel Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_glazed_large_vessel': 'Dyeing Unfired Large Vessel Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_concrete_powder': 'Dyeing Aggregate Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_candle': 'Dyeing Candle Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_leather': 'Dyeing Leather Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_raw_alabaster': 'Dyeing Alabaster Raw Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_bricks_alabaster': 'Dyeing Alabaster Bricks Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_polished_alabaster': 'Dyeing Alabaster Polished Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.brown_windmill_blade': 'Dyeing Windmill Blade Brown',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_wool': 'Dyeing Wool Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_carpet': 'Dyeing Carpet Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_bed': 'Dyeing Bed Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_terracotta': 'Dyeing Terracotta Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_banner': 'Dyeing Banner Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_glazed_terracotta': 'Dyeing Glazed Terracotta Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_far': 'Imprinting Far Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_shulker': 'Dyeing Shulker Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_glazed_vessel': 'Dyeing Unfired Vessel Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_glazed_large_vessel': 'Dyeing Unfired Large Vessel Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_concrete_powder': 'Dyeing Aggregate Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_candle': 'Dyeing Candle Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_leather': 'Dyeing Leather Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_raw_alabaster': 'Dyeing Alabaster Raw Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_bricks_alabaster': 'Dyeing Alabaster Bricks Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_polished_alabaster': 'Dyeing Alabaster Polished Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.green_windmill_blade': 'Dyeing Windmill Blade Green',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_wool': 'Dyeing Wool Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_carpet': 'Dyeing Carpet Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_bed': 'Dyeing Bed Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_terracotta': 'Dyeing Terracotta Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_banner': 'Dyeing Banner Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_glazed_terracotta': 'Dyeing Glazed Terracotta Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_chirp': 'Imprinting Chirp Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_shulker': 'Dyeing Shulker Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_glazed_vessel': 'Dyeing Unfired Vessel Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_glazed_large_vessel': 'Dyeing Unfired Large Vessel Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_concrete_powder': 'Dyeing Aggregate Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_candle': 'Dyeing Candle Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_leather': 'Dyeing Leather Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_raw_alabaster': 'Dyeing Alabaster Raw Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_bricks_alabaster': 'Dyeing Alabaster Bricks Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_polished_alabaster': 'Dyeing Alabaster Polished Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.red_windmill_blade': 'Dyeing Windmill Blade Red',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_wool': 'Dyeing Wool Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_carpet': 'Dyeing Carpet Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_bed': 'Dyeing Bed Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_terracotta': 'Dyeing Terracotta Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_banner': 'Dyeing Banner Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_glazed_terracotta': 'Dyeing Glazed Terracotta Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.disc_stal': 'Imprinting Stal Disc',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_shulker': 'Dyeing Shulker Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_glazed_vessel': 'Dyeing Unfired Vessel Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_glazed_large_vessel': 'Dyeing Unfired Large Vessel Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_concrete_powder': 'Dyeing Aggregate Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_candle': 'Dyeing Candle Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_leather': 'Dyeing Leather Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_raw_alabaster': 'Dyeing Alabaster Raw Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_bricks_alabaster': 'Dyeing Alabaster Bricks Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_polished_alabaster': 'Dyeing Alabaster Polished Black',
-    'tfc.recipe.barrel.tfc.barrel.dye.black_windmill_blade': 'Dyeing Windmill Blade Black',
 
     **{
         'tfc.block_entity.%s' % block: lang(block)

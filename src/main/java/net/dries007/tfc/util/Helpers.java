@@ -35,7 +35,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -71,7 +70,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -111,7 +109,6 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ISlowEntities;
-import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
@@ -122,13 +119,8 @@ import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
-import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
-import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.FluidHeat;
-import net.dries007.tfc.util.data.Support;
 import net.dries007.tfc.util.tooltip.Tooltips;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -446,27 +438,6 @@ public final class Helpers
         CACHED_RECIPE_MANAGER = manager;
     }
 
-    public static void updateReloadableData(RegistryAccess access, RecipeManager manager)
-    {
-        // First, reload all caches
-        IndirectHashCollection.reloadAllCaches(manager);
-
-        // Then apply post reload actions which may query the cache
-        Support.updateMaximumSupportRange();
-        FluidHeat.updateCache();
-
-        TFCComponents.onModifyDefaultComponentsAfterResourceReload();
-        FoodCapability.markRecipeOutputsAsNonDecaying(access, manager);
-
-        SelfTests.runDataPackTests(manager);
-
-        final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
-        for (RecipeType<?> type : BuiltInRegistries.RECIPE_TYPE)
-        {
-            LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), BuiltInRegistries.RECIPE_TYPE.getKey(type));
-        }
-    }
-
     /**
      * Damages {@code stack} by one point, when held by {@code entity} in {@code slot}
      */
@@ -547,7 +518,7 @@ public final class Helpers
             {
                 return;
             }
-            Helpers.choosePest(level, pos).ifPresent(type -> {
+            Helpers.randomEntity(TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
                 final Entity entity = type.create(level);
                 if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
                 {
@@ -570,37 +541,6 @@ public final class Helpers
                 }
             });
         }
-    }
-
-    /**
-     * Chooses what tag to select a pest from depending on climate.
-     */
-    public static Optional<EntityType<?>> choosePest(Level level, BlockPos pos)
-    {
-
-        final ChunkData data = ChunkData.get(level, pos);
-        final float temperature = data.getAverageSeaLevelTemp(pos);
-        if (temperature <= -12) // Throwing a bone to the arctic survivors
-        {
-            return Optional.empty();
-        }
-        else if (temperature < -3) // Where too cold for generic pests, will always be cold biome pests
-        {
-            return Helpers.randomEntity(TFCTags.Entities.COLD_PESTS, level.random);
-        }
-        else if (level.random.nextFloat() <= 0.7) // Otherwise, 30% chance to just skip checking for climate-specific pests and spawning a rat
-        {
-            final float rainfall = data.getRainfall(pos);
-            if (rainfall < 160)
-            {
-                return Helpers.randomEntity(TFCTags.Entities.DESERT_PESTS, level.random);
-            }
-            else if (temperature > 12)
-            {
-                return Helpers.randomEntity(TFCTags.Entities.TROPICAL_PESTS, level.random);
-            }
-        }
-        return Helpers.randomEntity(TFCTags.Entities.UNIVERSAL_PESTS, level.random);
     }
 
     /**
@@ -805,47 +745,6 @@ public final class Helpers
                 if (stack.isEmpty())
                 {
                     entity.discard();
-                }
-            }
-        }
-    }
-
-    /**
-     * Removes / Consumes item entities from 2 lists up to a maximum number of items (taking into account the count of each item)
-     * Passes each item stack, with stack size = 1, to the provided consumer
-     * 
-     * This alternates consuming items from the 2 lists, starting with set1
-     * If one of the sets runs out, it starts only taking items from the other set
-     */
-    public static void alternatingConsumeItemsFromEntitiesIndividually(Collection<ItemEntity> set1, Collection<ItemEntity> set2, int maximum, Consumer<ItemStack> consumer)
-    {
-        int consumed = 0;
-        Iterator<ItemEntity> iter1 = set1.iterator();
-        Iterator<ItemEntity> iter2 = set2.iterator();
-        @Nullable ItemEntity fromSet1 = iter1.hasNext() ? iter1.next() : null;
-        @Nullable ItemEntity fromSet2 = iter2.hasNext() ? iter2.next() : null;
-        while (consumed < maximum && (fromSet1 != null || fromSet2 != null))
-        {
-            if (fromSet1 != null)
-            {
-                consumer.accept(fromSet1.getItem().split(1));
-                consumed++;
-                if (fromSet1.getItem().isEmpty())
-                {
-                    fromSet1.discard();
-                    fromSet1 = iter1.hasNext() ? iter1.next() : null;
-                }
-                if (consumed == maximum) break;
-            }
-
-            if (fromSet2 != null)
-            {
-                consumer.accept(fromSet2.getItem().split(1));
-                consumed++;
-                if (fromSet2.getItem().isEmpty())
-                {
-                    fromSet2.discard();
-                    fromSet2 = iter2.hasNext() ? iter2.next() : null;
                 }
             }
         }

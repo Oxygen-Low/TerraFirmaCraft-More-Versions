@@ -37,8 +37,8 @@ public interface HeatRecipes extends Recipes
 
     default void heatRecipes()
     {
-        add("from_stick", Ingredient.of(Tags.Items.RODS_WOODEN), ItemStackProvider.of(TFCItems.TORCH, 2), 60);
-        add("from_bundle", Ingredient.of(TFCItems.STICK_BUNCH), ItemStackProvider.of(TFCItems.TORCH, 18), 60);
+        add("from_stick", Ingredient.of(Tags.Items.RODS_WOODEN), ItemStackProvider.of(Items.TORCH, 2), 60);
+        add("from_bundle", Ingredient.of(TFCItems.STICK_BUNCH), ItemStackProvider.of(Items.TORCH, 18), 60);
         add(Ingredient.of(TFCItems.KAOLIN_CLAY), ItemStackProvider.of(new ItemStack(TFCItems.POWDERS.get(Powder.KAOLINITE)), new ChanceModifier(0.2f)), 500);
 
         add(Items.CLAY, Items.TERRACOTTA, POTTERY);

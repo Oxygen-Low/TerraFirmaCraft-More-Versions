@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -17,6 +19,7 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -26,7 +29,9 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
+import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
@@ -55,7 +60,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 
     public static boolean isBlastFurnaceInsulationBlock(BlockState state)
     {
-        return Helpers.isBlock(state, TFCTags.Blocks.BLAST_FURNACE_INSULATION);
+        return state.is(TFCTags.Blocks.BLAST_FURNACE_INSULATION);
     }
 
     /**
@@ -74,6 +79,34 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
             }
         }
         return maxHeight;
+    }
+
+    private static BiPredicate<LevelAccessor, BlockPos> matchSheet(Direction face)
+    {
+        return (level, pos) -> {
+            final BlockState state = level.getBlockState(pos);
+            final SheetPileBlockEntity pile = level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).orElse(null);
+            return Helpers.isBlock(state, TFCBlocks.SHEET_PILE.get())
+                && pile != null
+                && isTier3SheetOrHigherInDirection(state, pile, face);
+        };
+    }
+
+    private static BiPredicate<LevelAccessor, BlockPos> matchSheet(Direction face, Direction secondFace)
+    {
+        return (level, pos) -> {
+            final BlockState state = level.getBlockState(pos);
+            final SheetPileBlockEntity pile = level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).orElse(null);
+            return Helpers.isBlock(state, TFCBlocks.SHEET_PILE.get())
+                && pile != null
+                && isTier3SheetOrHigherInDirection(state, pile, face)
+                && isTier3SheetOrHigherInDirection(state, pile, secondFace);
+        };
+    }
+
+    private static boolean isTier3SheetOrHigherInDirection(BlockState state, SheetPileBlockEntity pile, Direction face)
+    {
+        return state.getValue(DirectionPropertyBlock.getProperty(face)) && Helpers.isItem(pile.getSheet(face), TFCTags.Items.BLAST_FURNACE_SHEETS);
     }
 
     public BlastFurnaceBlock(ExtendedProperties properties)

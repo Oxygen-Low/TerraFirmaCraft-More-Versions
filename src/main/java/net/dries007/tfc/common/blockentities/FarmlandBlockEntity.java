@@ -22,20 +22,19 @@ import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.data.Fertilizer;
-import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
 public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, ICalendarTickable
 {
-    private static final float MAX_ADDITIONAL_WATER = 15.0f;
+    private static final float MAX_ADDITIONAL_WATER = 25.0f;
 
     private long lastUpdateTick; // The last tick this farmland was ticked via the block entity's tick() method. A delta of > 1 is used to detect time skips
     private long lastWaterTick; // The last tick the farmland block was ticked via waterTick()
 
+    // TODO :: Actually connect additionalWater to some gameplay system (e.g. watering the soil)
     private float nitrogen, phosphorous, potassium, additionalWater;
 
     public FarmlandBlockEntity(BlockPos pos, BlockState state)
@@ -94,8 +93,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        loadNutrientsWithoutSync(nbt);
-        loadAdditionalWaterWithoutSync(nbt);
+        loadNutrients(nbt);
+        loadAdditionalWater(nbt);
         lastUpdateTick = nbt.getLong("tick");
         lastWaterTick = nbt.getLong("waterTick");
         super.loadAdditional(nbt, provider);
@@ -115,16 +114,12 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     {
         if (includeHydration)
         {
-            final ChunkData data = ChunkData.get(level, pos);
-            final int stormHydration = (int) data.getStormHydration();
-            final int totalRainHydration = FarmlandBlock.getRainHydration(level, pos, stormHydration);
-            final int hydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, totalRainHydration);
-            final int minRainfallHydration = (int) data.getMinRainfallHydration(pos);
-            final int minHydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, minRainfallHydration);
-            final int maxRainfallHydration = (int) data.getMaxRainfallHydration(pos);
-            final int maxHydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, maxRainfallHydration);
-            final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", hydrationValue, minHydrationValue, maxHydrationValue);
+            float accumulatedRainfallValue = ChunkData.get(level, pos).getAccumulatedRainfall();
+            final int hydrationValue = FarmlandBlock.getHydration(level, pos, accumulatedRainfallValue);
+            final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", hydrationValue);
+            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", (int) accumulatedRainfallValue, FarmlandBlock.getRainfallBoost(accumulatedRainfallValue));
             text.accept(hydration);
+            text.accept(accumulatedRainfall);
         }
 
         if (includeNutrients)
@@ -182,14 +177,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     @Override
     public void setAdditionalWater(float additionalWater)
     {
-        setAdditionalWaterWithoutSync(additionalWater);
-        markForSync();
-    }
-
-    @Override
-    public void setAdditionalWaterWithoutSync(float additionalWater)
-    {
         this.additionalWater = Mth.clamp(additionalWater, 0, MAX_ADDITIONAL_WATER);
+        markForSync();
     }
 
     public long getLastWaterTick()

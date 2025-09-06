@@ -55,10 +55,7 @@ public class FirestarterItem extends Item
                 {
                     Helpers.damageItem(stack, player, InteractionHand.MAIN_HAND);
                 }
-                if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), result.getDirection(), player, stack, StartFireEvent.FireStrength.STRONG, chance))
-                {
-                    player.stopUsingItem();
-                }
+                StartFireEvent.startFire(level, pos, level.getBlockState(pos), result.getDirection(), player, stack, StartFireEvent.FireStrength.STRONG, chance);
             }
         }
     }

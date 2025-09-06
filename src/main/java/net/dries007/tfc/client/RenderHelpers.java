@@ -650,7 +650,7 @@ public final class RenderHelpers
                 final float widthRatio = (float) actualWidth / spriteWidth;
                 final float heightRatio = (float) actualHeight / spriteHeight;
 
-                blit(stack, x + offsetX, y + offsetY, actualWidth, actualHeight, sprite.getU0(), sprite.getU(widthRatio), sprite.getV0(), sprite.getV(heightRatio));
+                blit(stack, x + offsetX, y + offsetY, actualWidth, actualHeight, sprite.getU0(), sprite.getU(16 * widthRatio), sprite.getV0(), sprite.getV(16 * heightRatio));
             }
         }
     }

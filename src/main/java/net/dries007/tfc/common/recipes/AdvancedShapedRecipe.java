@@ -7,9 +7,6 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
-
-import org.jetbrains.annotations.VisibleForTesting;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -107,11 +104,5 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.ADVANCED_SHAPED_CRAFTING.get();
-    }
-
-    @VisibleForTesting
-    public Optional<ItemStackProvider> getRemainder()
-    {
-        return remainder;
     }
 }

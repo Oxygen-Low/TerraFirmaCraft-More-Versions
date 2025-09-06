@@ -1,8 +1,0 @@
-{
-  "type": "tfc:landslide",
-  "ingredient": [
-    "tfc:clay/alfisol",
-    "tfc:clay_grass/alfisol"
-  ],
-  "result": "tfc:clay/alfisol"
-}

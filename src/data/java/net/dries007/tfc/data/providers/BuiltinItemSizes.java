@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
 
 import net.dries007.tfc.common.TFCTags;
@@ -44,7 +45,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("doors", ItemTags.DOORS, Size.VERY_LARGE, Weight.HEAVY);
         add("trapdoors", ItemTags.TRAPDOORS, Size.LARGE, Weight.HEAVY);
         add("signs", ItemTags.SIGNS, Size.VERY_SMALL, Weight.MEDIUM);
-        add("hanging_signs", ItemTags.HANGING_SIGNS, Size.VERY_SMALL, Weight.MEDIUM);
+        add("hanging_signs", ItemTags.HANGING_SIGNS, Size.VERY_SMALL, Weight.HEAVY);
         add("boats", ItemTags.BOATS, Size.VERY_LARGE, Weight.HEAVY);
         add("rails", ItemTags.RAILS, Size.LARGE, Weight.VERY_LIGHT);
 
@@ -71,7 +72,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("vessels", TFCTags.Items.VESSELS, Size.NORMAL, Weight.HEAVY);
         add("large_vessels", TFCTags.Items.LARGE_VESSELS, Size.HUGE, Weight.HEAVY);
         add("unfired_molds", TFCTags.Items.UNFIRED_MOLDS, Size.NORMAL, Weight.MEDIUM);
-        add("fired_molds", TFCTags.Items.FIRED_MOLDS, Size.NORMAL, Weight.MEDIUM);
+        add("fired_molds", TFCTags.Items.FIRED_MOLDS, Size.NORMAL, Weight.VERY_HEAVY);
         add("powders", TFCTags.Items.BOWL_POWDERS, Size.TINY, Weight.VERY_LIGHT);
         add("stick_bunch", TFCItems.STICK_BUNCH, Size.NORMAL, Weight.LIGHT);
         add("stick_bundle", TFCItems.STICK_BUNDLE, Size.VERY_LARGE, Weight.MEDIUM);
@@ -93,15 +94,14 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
             Ingredient.of(TFCTags.Items.TOOLS_KNIFE),
             Ingredient.of(Tags.Items.TOOLS_SHEAR),
             Ingredient.of(TFCTags.Items.TOOLS_GLASSWORKING),
-            Ingredient.of(TFCTags.Items.TOOLS_BLOWPIPE),
-            Ingredient.of(TFCItems.FIRESTARTER.get())
+            Ingredient.of(TFCTags.Items.TOOLS_BLOWPIPE)
         ), Size.LARGE, Weight.MEDIUM);
         add("tools", ingredientOf(
             Ingredient.of(Tags.Items.TOOLS_FISHING_ROD),
-            Ingredient.of(Tags.Items.TOOLS_SHIELD),
+            Ingredient.of(Tags.Items.MINING_TOOL_TOOLS),
             Ingredient.of(Tags.Items.MELEE_WEAPON_TOOLS),
             Ingredient.of(Tags.Items.RANGED_WEAPON_TOOLS),
-            Ingredient.of(Tags.Items.TOOLS_MACE)
+            Ingredient.of(Tags.Items.TOOLS_SHIELD)
         ), Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("plants", TFCTags.Items.PLANTS, Size.TINY, Weight.VERY_LIGHT);
         add("sluices", TFCTags.Items.SLUICES, Size.VERY_LARGE, Weight.VERY_HEAVY);

@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.misc;
 
 import java.util.function.IntConsumer;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,14 +32,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-
 import org.jetbrains.annotations.NotNull;
 
-import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.component.TFCComponents;
-import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.config.TFCConfig;
@@ -77,9 +73,7 @@ public class HoldingMinecart extends AbstractMinecart
     @Override
     public InteractionResult interact(Player player, InteractionHand hand)
     {
-        // Always check the main hand. If the player has items in their main hand but not in their
-        // offhand, then the passed in hand will be the offhand.
-        if (player.isSecondaryUseActive() && player.isShiftKeyDown() && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !level().isClientSide)
+        if (player.isSecondaryUseActive() && player.isShiftKeyDown() && !level().isClientSide)
         {
             ItemHandlerHelper.giveItemToPlayer(player, getPickResult());
             setHoldItem(ItemStack.EMPTY);
@@ -278,7 +272,6 @@ public class HoldingMinecart extends AbstractMinecart
             final PowderKegExplosion explosion = new PowderKegExplosion(level(), null, getX(), getY(), getZ(), strength);
             explosion.explode();
             explosion.finalizeExplosion(true);
-            explosion.sendExplosionPacketToClients();
             this.discard();
         }
     }
@@ -289,31 +282,32 @@ public class HoldingMinecart extends AbstractMinecart
         {
             return false;
         }
-
-        final int strength = getPowderkegStrength();
-        if (strength != -1)
+        final int str = getPowderkegStrength();
+        if (str != 0)
         {
-            toRun.accept(strength);
+            toRun.accept(str);
             return true;
         }
         return false;
     }
 
-    /**
-     * @return The explosion strength of the sealed powderkeg contained,
-     * or -1 if no sealed powderkeg is present.
-     */
     public int getPowderkegStrength()
     {
         final ItemStack stack = getHoldItem();
-        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock keg && keg.isStackSealed(stack))
+        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock)
         {
-            final ItemListComponent contents = stack.get(TFCComponents.CONTENTS);
-            if (contents != null)
+            /* todo 1.21, needs saved block entity components
+            final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
+            if (tag != null)
             {
-                return PowderkegBlockEntity.getStrength(contents);
-            }
+                final CompoundTag inventoryTag = tag.getCompound("inventory");
+                final ItemStackHandler inventory = new ItemStackHandler();
+
+                inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
+
+                return PowderkegBlockEntity.getStrength(inventory);
+            }*/
         }
-        return -1;
+        return 0;
     }
 }

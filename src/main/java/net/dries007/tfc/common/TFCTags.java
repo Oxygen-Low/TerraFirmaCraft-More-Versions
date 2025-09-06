@@ -73,7 +73,6 @@ public class TFCTags
         public static final TagKey<Block> STONES_LOOSE = commonTag("stones/loose");
         /** Common solid stone blocks, including stone, cobble, bricks, smooth, plus non-stone bricks */
         public static final TagKey<Block> INSULATION = tag("insulation");
-        public static final TagKey<Block> EXTRA_CAVE_CARVER_REPLACEABLE = tag("extra_cave_carver_replaceable");
 
         public static final TagKey<Block> LAMPS = tag("lamps");
         public static final TagKey<Block> ANVILS = tag("anvils");
@@ -170,25 +169,15 @@ public class TFCTags
         public static final TagKey<Block> FARMLANDS = tag("farmlands");
         public static final TagKey<Block> PATHS = tag("paths");
         public static final TagKey<Block> MUD = tag("mud");
-        public static final TagKey<Block> DUFF = tag("duff");
         public static final TagKey<Block> MUD_BRICKS = tag("mud_bricks");
         /** Includes kaolin clay, both grass and clay block variants */
         public static final TagKey<Block> CLAYS = tag("clays");
         public static final TagKey<Block> KAOLIN_CLAYS = tag("clays/kaolin");
-        public static final TagKey<Block> INCREASES_SOIL_HYDRATION = tag("increases_soil_hydration");
-        public static final TagKey<Block> DECREASES_SOIL_HYDRATION = tag("decreases_soil_hydration");
-        /** Farmland blocks by nutrient bonus */
-        public static final TagKey<Block> VERY_RICH_FARMLAND = tag("very_rich_farmland");
-        public static final TagKey<Block> RICH_FARMLAND = tag("rich_farmland");
-        public static final TagKey<Block> NORMAL_FARMLAND = tag("normal_farmland");
-        public static final TagKey<Block> POOR_FARMLAND = tag("poor_farmland");
-        public static final TagKey<Block> VERY_POOR_FARMLAND = tag("very_poor_farmland");
 
         /**
          * These are all used for various types of plants, as the block that they grow on. They can also be used during world generation,
          * for blocks that these will spawn on (typically the difference between "grows on" and "plantable on").
          */
-        public static final TagKey<Block> ANEMONE_PLANTABLE_ON = tag("anemone_plantable_on");
         public static final TagKey<Block> TREE_GROWS_ON = tag("tree_grows_on");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on");
         public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on");
@@ -222,9 +211,6 @@ public class TFCTags
         public static final TagKey<Block> NATURAL_REGROWING_PLANTS = tag("natural_regrowing_plants");
         /** Blocks that most animals will be able to move through without getting slowed, as would a player. */
         public static final TagKey<Block> ANIMAL_IGNORED_PLANTS = tag("animal_ignored_plants");
-
-        /** Blocks that bears will use their ice-sliding animation on. */
-        public static final TagKey<Block> BEAR_CRAWLS_ON = tag("bear_crawls_on");
 
         /** Used in the Field Guide to display indicators in a multiblock */
         public static final TagKey<Block> CLAY_INDICATORS = tag("clay_indicators");
@@ -284,7 +270,6 @@ public class TFCTags
         public static final TagKey<Fluid> ANY_INFINITE_WATER = create("any_infinite_water");
 
         public static final TagKey<Fluid> FRESH_WATER = create("fresh_water");
-        public static final TagKey<Fluid> SALT_WATER = create("salt_water");
         public static final TagKey<Fluid> INFINITE_WATER = create("infinite_water");
 
         public static final TagKey<Fluid> MIXABLE = create("mixable");
@@ -336,15 +321,12 @@ public class TFCTags
         public static final TagKey<Item> DAIRY = commonTag("foods/dairy");
         public static final TagKey<Item> SALADS = commonTag("foods/salad");
         public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
-        public static final TagKey<Item> SANDWICHES = commonTag("foods/sandwiches");
         /** Includes only unsealed preserves with fruit in them (not empty jars) */
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
         /** Includes only sealed jars with fruit in them */
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
         /** Fruit extracted from an unsealed jar */
         public static final TagKey<Item> JAM = tag("foods/jam");
-        public static final TagKey<Item> JARRED_FOOD = tag("foods/jarred_food");
-        public static final TagKey<Item> SEALED_JARRED_FOOD = tag("foods/sealed_jarred_food");
         /* Includes preserves, sealed preserves, and also empty jars (with and without lid) */
         public static final TagKey<Item> JARS = tag("foods/jars");
         public static final TagKey<Item> SWEETENERS = tag("foods/sweeteners");
@@ -429,7 +411,6 @@ public class TFCTags
         public static final TagKey<Item> LOOMS = tag("looms");
         /** Tag for only TFC barrels, unlike {@link Tags.Items#BARRELS} which includes vanilla type barrels */
         public static final TagKey<Item> BARRELS = tag("barrels");
-        public static final TagKey<Item> TWIGS = tag("twigs");
         public static final TagKey<Item> VESSELS = tag("vessels");
         public static final TagKey<Item> UNFIRED_VESSELS = tag("unfired_vessels");
         public static final TagKey<Item> FIRED_VESSELS = tag("fired_vessels");
@@ -470,7 +451,6 @@ public class TFCTags
         public static final TagKey<Item> TOOLS_HAMMER = commonTag("tools/hammer");
         public static final TagKey<Item> TOOLS_SAW = commonTag("tools/saw");
         public static final TagKey<Item> TOOLS_SCYTHE = commonTag("tools/scythe");
-        public static final TagKey<Item> TOOLS_PROPICK = commonTag("tools/propick");
         public static final TagKey<Item> TOOLS_KNIFE = commonTag("tools/knife");
         public static final TagKey<Item> TOOLS_CHISEL = commonTag("tools/chisel");
         public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");
@@ -478,10 +458,6 @@ public class TFCTags
         public static final TagKey<Item> TOOLS_BLOWPIPE = commonTag("tools/blowpipe");
         /** Used in loot tables to prevent dropping of certain items */
         public static final TagKey<Item> TOOLS_SHARP = tag("tools/sharp");
-        public static final TagKey<Item> TOOLS_LARGE = tag("tools/large");
-        /** Used in advancements **/
-        public static final TagKey<Item> TOOLS_STONE = tag("tools/stone");
-        public static final TagKey<Item> TOOLS_COPPER = tag("tools/copper");
 
         // Damage Types
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");
@@ -513,7 +489,6 @@ public class TFCTags
         /** Used by patchouli */
         public static final TagKey<Item> ORE_DEPOSITS = tag("ore_deposits");
         public static final TagKey<Item> TANNIN_LOGS = tag("tannin_logs");
-        public static final TagKey<Item> FLUXSTONE = tag("fluxstone");
 
         // Device Required Items
         public static final TagKey<Item> FIREPIT_KINDLING = tag("firepit_kindling");
@@ -521,7 +496,6 @@ public class TFCTags
         public static final TagKey<Item> FIREPIT_LOGS = tag("firepit_logs");
         public static final TagKey<Item> LOG_PILE_LOGS = tag("log_pile_logs");
         public static final TagKey<Item> PIT_KILN_STRAW = tag("pit_kiln_straw");
-        public static final TagKey<Item> PIT_KILN_4_STRAW = tag("pit_kiln_4_straw");
         public static final TagKey<Item> PIT_KILN_LOGS = tag("pit_kiln_logs");
         /** Axes that are 60% efficient at destroying logs */
         public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = tag("inefficient_logging_axes");
@@ -583,9 +557,6 @@ public class TFCTags
         public static final TagKey<Item> FOX_SPAWNS_WITH = tag("fox_spawns_with");
         /** Chests, barrels, etc. that can be used as a horse saddlebag */
         public static final TagKey<Item> CARRIED_BY_HORSE = tag("carried_by_horse");
-
-        /** Used in advancements **/
-        public static final TagKey<Item> UNFIRED_POTTERY = tag("unfired_pottery");
 
 
         /**
@@ -652,18 +623,10 @@ public class TFCTags
         public static final TagKey<EntityType<?>> HORSES = tag("horses");
         public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = tag("destroyed_by_leaves");
         public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = tag("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
-        public static final TagKey<EntityType<?>> PESTS = tag("pests");
-        public static final TagKey<EntityType<?>> UNIVERSAL_PESTS = tag("universal_pests"); // spawned during infestations everywhere but the coldest biomes
-        public static final TagKey<EntityType<?>> COLD_PESTS = tag("cold_pests"); // spawned during infestations in boreal climates
-        public static final TagKey<EntityType<?>> DESERT_PESTS = tag("desert_pests"); // spawned during infestations in dry climates
-        public static final TagKey<EntityType<?>> TROPICAL_PESTS = tag("tropical_pests"); // spawned during infestations in tropical climates
+        public static final TagKey<EntityType<?>> PESTS = tag("pests"); // spawned during infestations
         public static final TagKey<EntityType<?>> HUNTED_BY_CATS = tag("hunted_by_cats");
         public static final TagKey<EntityType<?>> HUNTED_BY_DOGS = tag("hunted_by_dogs");
         public static final TagKey<EntityType<?>> SMALL_FISH = tag("small_fish");
-        public static final TagKey<EntityType<?>> RAMMING_ANIMALS = tag("ramming_animals");
-        public static final TagKey<EntityType<?>> BIRD_PREY = tag("bird_prey");
-        public static final TagKey<EntityType<?>> LARGE_PREY = tag("large_prey");
-        public static final TagKey<EntityType<?>> NOT_RAMMED_BY_RAMMERS = tag("not_rammed_by_rammers");
 
         // ===== Data Generated ====== //
 

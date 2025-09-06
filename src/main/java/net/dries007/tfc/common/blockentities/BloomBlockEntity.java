@@ -38,10 +38,7 @@ public class BloomBlockEntity extends TFCBlockEntity
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
-        if (!item.isEmpty())
-        {
-            tag.put("item", item.save(provider));
-        }
+        tag.put("item", item.save(provider));
         tag.putInt("count", count);
         tag.putInt("maxCount", maxCount);
     }

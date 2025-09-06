@@ -84,26 +84,26 @@ public final class BuiltinWorldPreset
     }
 
     private static final Map<Rock, SandBlockType> ROCK_TO_SAND_COLOR = ImmutableMap.<Rock, SandBlockType>builder()
-        .put(GRANITE, SandBlockType.YELLOW)
-        .put(DIORITE, SandBlockType.RED)
+        .put(GRANITE, SandBlockType.BROWN)
+        .put(DIORITE, SandBlockType.WHITE)
         .put(GABBRO, SandBlockType.BLACK)
-        .put(RHYOLITE, SandBlockType.YELLOW)
-        .put(DACITE, SandBlockType.RED)
-        .put(ANDESITE, SandBlockType.RED)
-        .put(BASALT, SandBlockType.BLACK)
-        .put(SHALE, SandBlockType.BROWN)
+        .put(SHALE, SandBlockType.BLACK)
         .put(CLAYSTONE, SandBlockType.BROWN)
         .put(LIMESTONE, SandBlockType.WHITE)
-        .put(CONGLOMERATE, SandBlockType.BROWN)
-        .put(DOLOMITE, SandBlockType.WHITE)
-        .put(CHERT, SandBlockType.RED)
+        .put(CONGLOMERATE, SandBlockType.GREEN)
+        .put(DOLOMITE, SandBlockType.BLACK)
+        .put(CHERT, SandBlockType.YELLOW)
         .put(CHALK, SandBlockType.WHITE)
-        .put(TUFF, SandBlockType.GREEN)
-        .put(QUARTZITE, SandBlockType.WHITE)
-        .put(SLATE, SandBlockType.YELLOW)
-        .put(PHYLLITE, SandBlockType.YELLOW)
-        .put(SCHIST, SandBlockType.YELLOW)
-        .put(GNEISS, SandBlockType.YELLOW)
+        .put(TUFF, SandBlockType.BLACK)
+        .put(RHYOLITE, SandBlockType.RED)
+        .put(BASALT, SandBlockType.RED)
+        .put(ANDESITE, SandBlockType.RED)
+        .put(DACITE, SandBlockType.RED)
+        .put(QUARTZITE, SandBlockType.YELLOW)
+        .put(SLATE, SandBlockType.BROWN)
+        .put(PHYLLITE, SandBlockType.BROWN)
+        .put(SCHIST, SandBlockType.GREEN)
+        .put(GNEISS, SandBlockType.GREEN)
         .put(MARBLE, SandBlockType.WHITE)
         .build();
 
@@ -164,8 +164,8 @@ public final class BuiltinWorldPreset
     private static final String FELSIC = "felsic";
     private static final String INTERMEDIATE = "intermediate";
     private static final String MAFIC = "mafic";
-    private static final String MM_LOW_GRADE = "low_grade";
-    private static final String MM_HIGH_GRADE = "high_grade";
+    private static final String MM_PHYLLITE = "phyllite";
+    private static final String MM_SLATE = "slate";
     private static final String MM_MARBLE = "marble";
     private static final String MM_QUARTZITE = "quartzite";
 
@@ -193,36 +193,35 @@ public final class BuiltinWorldPreset
                     DACITE, IGNEOUS_EXTRUSIVE,
                     BASALT, IGNEOUS_EXTRUSIVE
                 )),
-                layerOf(MM_HIGH_GRADE, Map.of(
-                    SCHIST, BOTTOM,
-                    GNEISS, BOTTOM
+                layerOf(MM_PHYLLITE, Map.of(
+                    PHYLLITE, BOTTOM,
+                    GNEISS, BOTTOM,
+                    SCHIST, BOTTOM
                 )),
-                layerOf(MM_LOW_GRADE, Map.of(
-                    PHYLLITE, MM_HIGH_GRADE,
-                    SLATE, MM_HIGH_GRADE
+                layerOf(MM_SLATE, Map.of(
+                    SLATE, BOTTOM,
+                    PHYLLITE, MM_PHYLLITE
                 )),
                 layerOf(MM_MARBLE, Map.of(MARBLE, BOTTOM)),
                 layerOf(MM_QUARTZITE, Map.of(QUARTZITE, BOTTOM)),
                 layerOf(SEDIMENTARY, Map.of(
-                    SHALE, MM_LOW_GRADE,
-                    CLAYSTONE, MM_LOW_GRADE,
-                    CONGLOMERATE, MM_LOW_GRADE,
+                    SHALE, MM_SLATE,
+                    CLAYSTONE, MM_SLATE,
+                    CONGLOMERATE, MM_SLATE,
                     LIMESTONE, MM_MARBLE,
                     DOLOMITE, MM_MARBLE,
                     CHALK, MM_MARBLE,
                     CHERT, MM_QUARTZITE
                 )),
                 layerOf(UPLIFT, Map.of(
-                    SLATE, MM_HIGH_GRADE,
-                    PHYLLITE, MM_HIGH_GRADE,
+                    SLATE, MM_PHYLLITE,
                     MARBLE, BOTTOM,
                     QUARTZITE, BOTTOM,
-                    DIORITE, MM_LOW_GRADE,
-                    GRANITE, MM_LOW_GRADE,
-                    GABBRO, MM_LOW_GRADE
+                    DIORITE, SEDIMENTARY,
+                    GRANITE, SEDIMENTARY,
+                    GABBRO, SEDIMENTARY
                 ))
             ),
-            // List of layers that can be the top layer for each variety of rock region
             List.of(IGNEOUS_EXTRUSIVE),
             List.of(IGNEOUS_EXTRUSIVE, SEDIMENTARY),
             List.of(IGNEOUS_EXTRUSIVE, IGNEOUS_EXTRUSIVE_X2),

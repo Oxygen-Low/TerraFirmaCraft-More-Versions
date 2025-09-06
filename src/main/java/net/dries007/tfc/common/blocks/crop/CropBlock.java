@@ -52,10 +52,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     public static final VoxelShape HALF_SHAPE = box(2, 0, 2, 14, 8, 14);
     public static final VoxelShape FULL_SHAPE = box(2, 0, 2, 14, 16, 14);
 
-    protected final float nNeeded;
-    protected final float pNeeded;
-    protected final float kNeeded;
-
+    protected final FarmlandBlockEntity.NutrientType primaryNutrient;
     protected final Supplier<? extends Block> dead;
     protected final Supplier<? extends Item> seeds;
     protected final Supplier<ClimateRange> climateRange;
@@ -63,7 +60,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
 
     private final ExtendedProperties extendedProperties;
 
-    protected CropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, float nitrogen, float phosporous, float potassium, Supplier<ClimateRange> climateRange)
+    protected CropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
     {
         super(properties.properties());
 
@@ -72,9 +69,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
 
         this.dead = dead;
         this.seeds = seeds;
-        this.nNeeded = nitrogen;
-        this.pNeeded = phosporous;
-        this.kNeeded = potassium;
+        this.primaryNutrient = primaryNutrient;
         this.climateRange = climateRange;
 
         registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0));
@@ -215,21 +210,9 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     }
 
     @Override
-    public float getNForGrowth()
+    public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
     {
-        return this.nNeeded;
-    }
-
-    @Override
-    public float getPForGrowth()
-    {
-        return this.pNeeded;
-    }
-
-    @Override
-    public float getKForGrowth()
-    {
-        return this.kNeeded;
+        return primaryNutrient;
     }
 
     protected abstract void postGrowthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);

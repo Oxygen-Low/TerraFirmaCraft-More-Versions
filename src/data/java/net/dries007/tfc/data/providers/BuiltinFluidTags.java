@@ -65,7 +65,6 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements Accessors
                 TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getFlowing(),
                 TFCFluids.SPRING_WATER.getSource(), TFCFluids.SPRING_WATER.getFlowing());
         tag(FRESH_WATER).add(Fluids.WATER);
-        tag(SALT_WATER).add(TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getFlowing());
         tag(INFINITE_WATER)
             .addTag(FRESH_WATER)
             .add(

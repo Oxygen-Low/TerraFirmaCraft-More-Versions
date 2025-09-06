@@ -8,7 +8,6 @@
     "tfc:plant/arundo",
     "tfc:plant/dry_phragmite",
     "tfc:plant/jungle_vines",
-    "minecraft:hanging_roots",
-    "tfc:canola"
+    "minecraft:hanging_roots"
   ]
 }

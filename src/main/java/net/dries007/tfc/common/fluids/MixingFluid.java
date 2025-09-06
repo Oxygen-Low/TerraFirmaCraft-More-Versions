@@ -17,12 +17,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
-import net.dries007.tfc.util.Helpers;
 
 public abstract class MixingFluid extends BaseFlowingFluid
 {
@@ -62,11 +59,6 @@ public abstract class MixingFluid extends BaseFlowingFluid
     public boolean isSourceBlockOfThisType(FluidState stateIn)
     {
         return stateIn.getType().isSame(this) && stateIn.isSource();
-    }
-
-    @Override
-    public boolean isSame(Fluid fluid) {
-        return super.isSame(fluid) || Helpers.isFluid(fluid, TFCTags.Fluids.ANY_INFINITE_WATER);
     }
 
     /**

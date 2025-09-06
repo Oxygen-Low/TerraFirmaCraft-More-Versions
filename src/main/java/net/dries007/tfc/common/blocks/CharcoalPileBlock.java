@@ -53,12 +53,19 @@ public class CharcoalPileBlock extends Block
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
-        final int prevLayers = state.getValue(LAYERS);
-        if (prevLayers > 1 && !player.isCreative())
+        playerWillDestroy(level, pos, state, player);
+
+        if (player.isCreative())
         {
-            return level.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), level.isClientSide() ? 11 : 3);
+            return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         }
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+
+        int prevLayers = state.getValue(LAYERS);
+        if (prevLayers == 1)
+        {
+            return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        }
+        return level.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), level.isClientSide ? 11 : 3);
     }
 
     @Override

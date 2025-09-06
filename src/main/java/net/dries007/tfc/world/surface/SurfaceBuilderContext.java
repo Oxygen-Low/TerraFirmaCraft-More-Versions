@@ -47,7 +47,6 @@ public class SurfaceBuilderContext
     private float temperature;
     private float baseGroundwater;
     private float rainfall;
-    private float rainVariance;
     private boolean salty;
 
     public SurfaceBuilderContext(LevelAccessor level, ChunkAccess chunk, ChunkData chunkData, RandomSource random, RockLayerSettings rockLayerSettings, int seaLevel, int minY)
@@ -81,7 +80,6 @@ public class SurfaceBuilderContext
         this.temperature = chunkData.getAverageSeaLevelTemp(x, z);
         this.baseGroundwater = chunkData.getBaseGroundwater(x, z);
         this.rainfall = chunkData.getRainfall(x, z);
-        this.rainVariance = chunkData.getRainVariance(x, z);
         this.salty = salty;
 
         // We iterate down based on the actual surface height (since our capability for overhangs is much more limited than vanilla)
@@ -127,11 +125,6 @@ public class SurfaceBuilderContext
         return rockData.getRock(cursor.getX(), seaLevel, cursor.getZ());
     }
 
-    public RockSettings getApproxSecondRock()
-    {
-        return rockData.getRock(cursor.getX(), Math.max(cursor.getY() - 64, -64), cursor.getZ());
-    }
-
     public RockSettings getBottomRock()
     {
         return rockData.getRock(cursor.getX(), -64, cursor.getZ());
@@ -155,11 +148,6 @@ public class SurfaceBuilderContext
     public float rainfall()
     {
         return rainfall;
-    }
-
-    public float rainVariance()
-    {
-        return rainVariance;
     }
 
     public boolean salty()

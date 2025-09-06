@@ -1,6 +1,5 @@
 {
   "values": [
-    "#tfc:small_fish",
     "tfc:orca",
     "tfc:dolphin",
     "tfc:squid",
@@ -8,6 +7,16 @@
     "tfc:isopod",
     "tfc:lobster",
     "tfc:horseshoe_crab",
-    "tfc:jellyfish"
+    "tfc:cod",
+    "tfc:pufferfish",
+    "tfc:tropical_fish",
+    "tfc:jellyfish",
+    "tfc:salmon",
+    "tfc:rainbow_trout",
+    "tfc:lake_trout",
+    "tfc:bluegill",
+    "tfc:largemouth_bass",
+    "tfc:smallmouth_bass",
+    "tfc:crappie"
   ]
 }

@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "The World",
   "description": "All about the natural world around you.",
-  "icon": "tfc:grass/entisol",
+  "icon": "tfc:grass/loam",
   "sortnum": 0
 }

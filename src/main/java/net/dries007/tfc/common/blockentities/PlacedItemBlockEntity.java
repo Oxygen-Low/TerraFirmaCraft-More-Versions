@@ -27,7 +27,6 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
@@ -44,10 +43,8 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             // This happens here to stop the block dropping its items in onBreakBlock()
             List<ItemStack> items = Helpers.copyToAndClear(placedItem.inventory);
 
-            int stage = PitKilnBlock.strawValue(strawStack.getItem()) - 1;
-
             // Replace the block
-            level.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState().setValue(PitKilnBlock.STAGE, stage));
+            level.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
             placedItem.setRemoved();
             // Play placement sound
             level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
@@ -57,7 +54,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
                 Helpers.copyFrom(items, pitKiln.inventory);
                 // Copy misc data
                 pitKiln.isHoldingLargeItem = placedItem.isHoldingLargeItem;
-                pitKiln.addStraw(strawStack, stage);
+                pitKiln.addStraw(strawStack, 0);
             });
         });
     }
@@ -190,8 +187,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     /**
-     * Ejects any inventory slots that are not supported by the {@code newState}. This should be used over
-     * {@link #ejectInventory()} if the state change might leave some slots still available.
+     * Ejects any inventory slots that are not supported by the {@code newState}. This should be used over {@link #ejectInventory()}
      */
     public void ejectInventoryIfNeeded(BlockState newState)
     {
@@ -213,6 +209,17 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
                 }
             }
         }
+    }
+
+    /**
+     * Use {@link #ejectInventoryIfNeeded(BlockState)} instead.
+     */
+    @Override
+    @DoNotCall
+    @Deprecated
+    public void ejectInventory()
+    {
+        throw new AssertionError();
     }
 
     public float getRotations(int slot)

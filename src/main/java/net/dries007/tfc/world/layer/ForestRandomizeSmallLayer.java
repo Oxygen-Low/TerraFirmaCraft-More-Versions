@@ -23,7 +23,7 @@ public enum ForestRandomizeSmallLayer implements CenterTransformLayer
             final int random = context.random().nextInt((current.isSecondary() ? 40 : 25));
             if (random == 0)
             {
-                return ForestType.CLEARING.ordinal();
+                return ForestType.GRASSLAND.ordinal();
             }
             else if (random == 1)
             {

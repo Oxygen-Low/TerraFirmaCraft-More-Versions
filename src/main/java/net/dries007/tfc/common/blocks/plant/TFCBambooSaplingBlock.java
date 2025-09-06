@@ -21,8 +21,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BambooLeaves;
 
-import net.dries007.tfc.util.Helpers;
-
 public class TFCBambooSaplingBlock extends BambooSaplingBlock
 {
     private final Supplier<? extends Block> stalk;
@@ -48,7 +46,7 @@ public class TFCBambooSaplingBlock extends BambooSaplingBlock
         }
         else
         {
-            if (facing == Direction.UP && Helpers.isBlock(facingState, stalk.get()))
+            if (facing == Direction.UP && facingState.is(stalk.get()))
             {
                 level.setBlock(currentPos, stalk.get().defaultBlockState(), 2);
             }

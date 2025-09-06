@@ -75,7 +75,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     private ChiselMode chiselMode = ChiselMode.SMOOTH.value();
     private NutritionData nutrition = new NutritionData(0.5f, 0f); // Nutrition information
 
-    private boolean modified = true;
+    private boolean modified = false;
 
     public PlayerInfo(Player player)
     {
@@ -114,7 +114,6 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     @Override
     public float getIntoxication()
     {
-        if (intoxicationTick == Long.MIN_VALUE) return 0;
         return (float) Math.max(0, intoxicationTick - calendar().getTicks()) / TFCConfig.SERVER.maxIntoxicationTicks.get();
     }
 
@@ -207,10 +206,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         addThirst(food.water());
         addIntoxication(food.intoxication());
 
-        if (!player.level().isClientSide)
-        {
-            nutrition.addNutrients(food);
-        }
+        nutrition.addNutrients(food);
 
         if (player instanceof ServerPlayer serverPlayer && nutrition.getAverageNutrition() >= 0.999)
         {
@@ -428,19 +424,11 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         return food.getSaturationLevel();
     }
 
-    /**
-     * This method gets called from both the
-     * client and the server, but the nutrition
-     * logic must only be called from the server
-     */
     @Override
     public void setFoodLevel(int foodLevel)
     {
-        if (!this.player.level().isClientSide)
-        {
-            modified = true;
-            nutrition.setHunger(foodLevel);
-        }
+        modified = true;
+        nutrition.setHunger(foodLevel);
         food.setFoodLevel(foodLevel);
     }
 

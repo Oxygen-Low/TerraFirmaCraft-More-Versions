@@ -342,55 +342,10 @@
           "bold": true
         },
         {
-          "text": "Cassava"
-        },
-        {
-          "text": "10.4 - 40"
-        },
-        {
-          "text": "260 - 500"
-        },
-        {
-          "text": "Green Bean"
-        },
-        {
-          "text": " -4 - 19.4"
-        },
-        {
-          "text": "150 - 410"
-        },
-        {
-          "text": "Lentil"
-        },
-        {
-          "text": "-7.6 - 19.4"
-        },
-        {
-          "text": " 75 - 190"
-        },
-        {
-          "text": "Peanut"
-        },
-        {
-          "text": "12.2 - 40"
-        },
-        {
-          "text": "130 - 360"
-        },
-        {
-          "text": "Soybean"
-        },
-        {
-          "text": "-9.4 - 15.8"
-        },
-        {
-          "text": "160 - 410"
-        },
-        {
           "text": "Barley"
         },
         {
-          "text": "-9.4 - 17.6"
+          "text": " -8 - 26"
         },
         {
           "text": " 70 - 310"
@@ -399,7 +354,7 @@
           "text": "Oat"
         },
         {
-          "text": "-9.4 - 15.8"
+          "text": "  3 - 40"
         },
         {
           "text": "140 - 400"
@@ -408,7 +363,7 @@
           "text": "Rye"
         },
         {
-          "text": "-9.4 - 8.6"
+          "text": "-11 - 30"
         },
         {
           "text": "100 - 350"
@@ -417,7 +372,7 @@
           "text": "Maize"
         },
         {
-          "text": "-9.4 - 23.0"
+          "text": " 13 - 40"
         },
         {
           "text": "300 - 500"
@@ -426,7 +381,7 @@
           "text": "Wheat"
         },
         {
-          "text": "-9.4 - 15.8"
+          "text": " -4 - 35"
         },
         {
           "text": "100 - 400"
@@ -435,56 +390,25 @@
           "text": "Rice"
         },
         {
-          "text": "8.6 - 40"
+          "text": " 15 - 30"
         },
         {
-          "text": "200 - 500"
+          "text": "100 - 500"
         },
         {
           "text": "Beet"
         },
         {
-          "text": "-13 - 23.0"
+          "text": " -5 - 20"
         },
         {
           "text": " 70 - 300"
-        }
-      ],
-      "text": "",
-      "title": "Требования к диким культурам",
-      "legend": [],
-      "columns": 2,
-      "first_column_width": 80,
-      "column_width": 70,
-      "row_height": 10,
-      "left_buffer": 2,
-      "top_buffer": 12,
-      "draw_background": false
-    },
-    {
-      "type": "patchouli:empty",
-      "draw_filler": false
-    },
-    {
-      "type": "tfc:table",
-      "strings": [
-        {
-          "text": "Crop",
-          "bold": true
-        },
-        {
-          "text": "Temperature (°C)",
-          "bold": true
-        },
-        {
-          "text": "Rainfall (mm)",
-          "bold": true
         },
         {
           "text": "Cabbage"
         },
         {
-          "text": "-13 - 23.0"
+          "text": "-10 - 27"
         },
         {
           "text": " 60 - 280"
@@ -493,7 +417,7 @@
           "text": "Carrot"
         },
         {
-          "text": "-13 - 23.0"
+          "text": "  3 - 30"
         },
         {
           "text": "100 - 400"
@@ -502,73 +426,28 @@
           "text": "Garlic"
         },
         {
-          "text": "-5.8 - 15.8"
+          "text": "-20 - 18"
         },
         {
           "text": " 60 - 310"
         },
         {
-          "text": "Onion"
+          "text": "Green Bean"
         },
         {
-          "text": "-7.6 - 21.2"
+          "text": "  2 - 35"
         },
         {
-          "text": "100 - 390"
+          "text": "150 - 410"
         },
         {
           "text": "Potato"
         },
         {
-          "text": "-9.4 - 15.8"
+          "text": " -1 - 37"
         },
         {
-          "text": "200 - 420"
-        },
-        {
-          "text": "Squash"
-        },
-        {
-          "text": "-9.4 - 19.4"
-        },
-        {
-          "text": " 90 - 390"
-        },
-        {
-          "text": "Tomato"
-        },
-        {
-          "text": "1.4 - 40"
-        },
-        {
-          "text": "120 - 390"
-        },
-        {
-          "text": "Red Bell Pepper"
-        },
-        {
-          "text": "12.2 - 40"
-        },
-        {
-          "text": "190 - 450"
-        },
-        {
-          "text": "Yellow Bell Pepper"
-        },
-        {
-          "text": "12.2 - 40"
-        },
-        {
-          "text": "190 - 450"
-        },
-        {
-          "text": "Pumpkin"
-        },
-        {
-          "text": "-9.4 - 23.0"
-        },
-        {
-          "text": "120 - 390"
+          "text": "200 - 410"
         }
       ],
       "text": "",
@@ -602,46 +481,55 @@
           "bold": true
         },
         {
-          "text": "Melon"
+          "text": "Onion"
         },
         {
-          "text": "  5 - 40"
+          "text": "  0 - 30"
         },
         {
-          "text": "200 - 500"
+          "text": "100 - 390"
         },
         {
-          "text": "Canola"
+          "text": "Soybean"
         },
         {
-          "text": "-13 - 19.4"
+          "text": "  8 - 30"
         },
         {
-          "text": "120 - 320"
+          "text": "160 - 410"
         },
         {
-          "text": "Radish"
+          "text": "Squash"
         },
         {
-          "text": "-11.2 - 23.0"
+          "text": "  5 - 33"
         },
         {
-          "text": "190 - 410"
+          "text": " 90 - 390"
         },
         {
-          "text": "Alfalfa"
+          "text": "Sugarcane"
         },
         {
-          "text": "-9.4 - 15.8"
+          "text": " 12 - 38"
         },
         {
-          "text": "240 - 480"
+          "text": "160 - 500"
+        },
+        {
+          "text": "Tomato"
+        },
+        {
+          "text": "  0 - 36"
+        },
+        {
+          "text": "120 - 390"
         },
         {
           "text": "Jute"
         },
         {
-          "text": "1.4 - 19.4"
+          "text": "  5 - 37"
         },
         {
           "text": "100 - 410"
@@ -650,19 +538,46 @@
           "text": "Papyrus"
         },
         {
-          "text": "12.2 - 40"
+          "text": " 19 - 37"
         },
         {
           "text": "310 - 500"
         },
         {
-          "text": "Sugarcane"
+          "text": "Pumpkin"
         },
         {
-          "text": "17.6 - 40"
+          "text": "  5 - 22"
         },
         {
-          "text": "160 - 500"
+          "text": "120 - 390"
+        },
+        {
+          "text": "Melon"
+        },
+        {
+          "text": " 19 - 35"
+        },
+        {
+          "text": "200 - 500"
+        },
+        {
+          "text": "Red Bell Pepper"
+        },
+        {
+          "text": " 16 - 30"
+        },
+        {
+          "text": "190 - 400"
+        },
+        {
+          "text": "Yellow Bell Pepper"
+        },
+        {
+          "text": " 16 - 30"
+        },
+        {
+          "text": "190 - 400"
         }
       ],
       "text": "",

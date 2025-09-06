@@ -110,6 +110,12 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     }
 
     @Override
+    public int getDefaultStackSize(ItemStack stack)
+    {
+        return 1; // Stacks to 1, regardless of weight
+    }
+
+    @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         final ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
@@ -119,7 +125,6 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
                 inv.saveToItem(stack, level.registryAccess());
-                modifyWeight(stack);
             }
         }
         return stack;
@@ -154,7 +159,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         }
     }
 
-    public boolean isStackSealed(ItemStack stack)
+    protected boolean isStackSealed(ItemStack stack)
     {
         return stack.has(TFCComponents.CONTENTS);
     }
