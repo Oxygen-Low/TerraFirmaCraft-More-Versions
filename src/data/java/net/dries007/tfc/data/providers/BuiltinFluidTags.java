@@ -123,7 +123,7 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements Accessors
     {
         FluidTagAppender(TagBuilder builder, String modId)
         {
-            super(builder, modId);
+            super(builder);
         }
 
         FluidTagAppender add(Fluid... fluids) { return add(Arrays.stream(fluids)); }
