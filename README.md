@@ -1,4 +1,4 @@
-### // This neoforge conversion is a WIP, expect crashes or bugs.
+### // This conversion to other versions is WIP, so expect crashes and bugs.
 
 
 ![TerraFirmaCraft Splash Image](./img/splash-1.png)
