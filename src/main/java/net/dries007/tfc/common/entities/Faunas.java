@@ -18,6 +18,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
+import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
@@ -222,7 +223,7 @@ public class Faunas
             }
 
             final ChunkData data = ChunkData.get(level, pos);
-            if (!fauna.climate().isValid(data, pos, rand))
+            if (!fauna.climate().isValid(data, pos, rand, SolarCalculator.getInNorthernHemisphere(pos, level.getLevel())))
             {
                 return false;
             }
@@ -232,7 +233,7 @@ public class Faunas
             {
                 return false;
             }
-            if (!fauna.months().isEmpty() && !fauna.months().contains(Calendars.SERVER.getCalendarMonthOfYear()))
+            if (!fauna.months().isEmpty() && !fauna.months().contains(Calendars.SERVER.getHemispheralCalendarMonthOfYear(SolarCalculator.getInNorthernHemisphere(pos, level.getLevel()))))
             {
                 return false;
             }
