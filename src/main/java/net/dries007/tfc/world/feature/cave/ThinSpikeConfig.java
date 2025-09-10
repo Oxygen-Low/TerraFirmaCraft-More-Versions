@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.world.Codecs;
 
 public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHeight, int maxHeight, boolean allowUnderwater) implements FeatureConfiguration

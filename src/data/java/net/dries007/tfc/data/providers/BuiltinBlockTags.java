@@ -720,7 +720,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(POWDER_SNOW_REPLACEABLE).add(
             Blocks.SNOW_BLOCK,
             Blocks.PACKED_ICE,
-            Blocks.PACKED_ICE,
+            Blocks.BLUE_ICE,
             TFCBlocks.SEA_ICE.get());
         tag(TIDE_POOL_BLOCKS).add(
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.CLAM),
