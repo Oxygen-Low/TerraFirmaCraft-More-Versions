@@ -564,7 +564,6 @@ def generate(rm: ResourceManager):
             })
 
     igneous_rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive'])
-    # TODO: Need to stop lava hot springs generating on top of sea ice. As a temporary measure, I added a climate restriction
     configured_placed_feature(rm, 'lava_hot_spring', 'tfc:hot_spring', {
         'fluid_state': 'minecraft:lava',
         'radius': 10,
