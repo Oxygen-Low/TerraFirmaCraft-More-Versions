@@ -1,4 +1,4 @@
-### // This conversion to other versions is WIP, so expect crashes and bugs.
+### // Archived because I do not have time to work on this anymore (still functional though).
 
 
 ![TerraFirmaCraft Splash Image](./img/splash-1.png)
